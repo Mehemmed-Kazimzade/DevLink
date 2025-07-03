@@ -1,43 +1,51 @@
 // theme.ts
 import { createTheme } from '@mui/material/styles';
 
-let theme = createTheme({
-  palette: {
-    primary: {
-      main: 'rgb(27, 27, 27)',
+const getTheme = (mode: string) => {
+  return createTheme({
+    palette: {
+      mode: mode as 'light' | 'dark',
+
+      primary: {
+        main: '#8B5CF6', // vibrant purple accent
+        contrastText: '#FFFFFF',
+      },
+
+      secondary: {
+        main: '#06B6D4', // teal highlight
+        contrastText: '#FFFFFF',
+      },
+
+      background: {
+        default: mode === 'dark' ? '#111827' : '#FFFFFF', // page bg
+        paper: mode === 'dark' ? '#1F2937' : '#F9FAFB',   // card bg
+      },
+
+      text: {
+        primary: mode === 'dark' ? '#F9FAFB' : '#111827', // near black
+        secondary: mode === 'dark' ? '#9CA3AF' : '#374151', // muted gray
+      },
     },
 
-    secondary: {
-      main: 'rgb(94, 92, 92)',
+    typography: {
+      button: {
+        textTransform: 'none',
+        fontWeight: 600,
+      },
+      fontFamily: `'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif`,
     },
 
-    error: {
-      main: '#d32f2f',
+    breakpoints: {
+      values: {
+        xs: 0,
+        sm: 600,
+        md: 900,
+        lg: 1200,
+        xl: 1536,
+      },
     },
+  });
+};
 
-    action: {
-      active: "#388636",
-    }
-
-  },
-
-  typography: {
-    button: {
-      textTransform: 'none',
-      fontWeight: 600,
-    },
-  },
-
-  // Optional: custom breakpoints
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 600,
-      md: 900,
-      lg: 1200,
-      xl: 1536,
-    },
-  },
-});
-
-export default theme;
+export default getTheme;
+    

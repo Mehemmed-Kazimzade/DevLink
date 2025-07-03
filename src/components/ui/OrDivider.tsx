@@ -9,7 +9,7 @@ export default function OrDivider() {
         width: '100%',
       }}
     >
-      <Box sx={{ flex: 1, height: '1px', backgroundColor: 'grey.400' }} />
+      <Box sx={{ flex: 1, height: '1px', backgroundColor: 'grey.700' }} />
       <Typography
         variant="body2"
         sx={{ mx: 2, color: 'grey.600', fontWeight: 500 }}
@@ -17,7 +17,7 @@ export default function OrDivider() {
         or
 
       </Typography>
-      <Box sx={{ flex: 1, height: '1px', backgroundColor: 'grey.400' }} />
+      <Box sx={{ flex: 1, height: '1px', backgroundColor: 'grey.700' }} />
     </Box>
   );
 }

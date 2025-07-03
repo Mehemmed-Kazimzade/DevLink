@@ -10,6 +10,6 @@ export default function RsIcon( { icon }: RsIconProps ) {
     const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
 
     const Icon = icon;
-    return ( <Icon sx={{ fontSize: isLargeScreen ? "33px" : "24px" }} ></Icon>
+    return ( <Icon sx={{ fontSize: isLargeScreen ? "30px" : "24px" }} ></Icon>
     )
 }
