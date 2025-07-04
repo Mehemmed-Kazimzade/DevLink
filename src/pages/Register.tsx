@@ -11,51 +11,55 @@ import RsIcon from "../components/ui/RsIcon";
 import TextFormatIcon from '@mui/icons-material/TextFormat';
 import { Link } from "react-router-dom";
 import PasswordInput from "../components/ui/PasswordInput";
+import { motion } from "motion/react"
 
 export default function Register() {
     const theme = useTheme();
 
     return (
-        <FlexCenterBox>
+        <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+        >
+            <FlexCenterBox>
 
-            <Paper sx={{ width: "100%", maxWidth: "600px", padding:"20px", borderRadius: "20px" }}>
+                <Paper sx={{ width: "100%", maxWidth: "600px", padding:"20px", borderRadius: "20px" }}>
 
-                <RsTypography lg="35px" xs="28px" fontWeight="bold" text="Create your DevLink account" 
-                gutterBottom textAlign={"center"} />
+                    <RsTypography lg="35px" xs="28px" fontWeight="bold" text="Create your DevLink account" 
+                    gutterBottom textAlign={"center"} />
 
-                <Stack sx={{ mt: 2 }} spacing={2}>
-                    <RsInput
-                        label="Your Full Name"
-                        type="text"
-                        placeholder="John Doe"
-                        icon={ <RsIcon icon={TextFormatIcon} /> }
-                    />
+                    <Stack sx={{ mt: 2 }} spacing={2}>
+                        <RsInput
+                            label="Your Full Name"
+                            type="text"
+                            placeholder="John Doe"
+                            icon={ <RsIcon icon={TextFormatIcon} /> }
+                        />
 
-                    <RsInput
-                        label="Your Email Address"
-                        type="email"
-                        placeholder="yourname@domain.com"
-                        icon={<RsIcon icon={AlternateEmailIcon} />} />
+                        <RsInput
+                            label="Your Email Address"
+                            type="email"
+                            placeholder="yourname@domain.com"
+                            icon={<RsIcon icon={AlternateEmailIcon} />} />
 
-                    <PasswordInput />
+                        <PasswordInput />
 
-                    <RsButton text="Register" />
+                        <RsButton text="Register" />
 
-                    <OrDivider />
+                        <OrDivider />
 
-                    <Box display={"flex"} gap={3}>
-                        <RsButton icon={<GoogleIcon />} text="Google" bgColor={theme.palette.secondary.main} />
-                        <RsButton icon={<GitHubIcon /> } text="GitHub" bgColor={theme.palette.secondary.main} />
-                    </Box>
-
-                    <Link to={"/login/"}>
-                        <Typography sx={{color: theme.palette.action.active}}  fontSize={"18px"} textAlign={"center"}> Have an account? Login </Typography>
-                    </Link>
-
-                </Stack>
-
-            </Paper>
-
-        </FlexCenterBox>
+                        <Box display={"flex"} gap={4}>
+                            <RsButton icon={<GoogleIcon />} text="Google" bgColor={theme.palette.secondary.main} />
+                            <RsButton icon={<GitHubIcon /> } text="GitHub" bgColor={theme.palette.secondary.main} />
+                        </Box>
+                        <Link to={"/login/"}>
+                            <Typography className="link" sx={{color: theme.palette.action.active, width: "fit-content", mx: "auto"}}
+                            fontSize={"18px"} textAlign={"center"}> Have an account? Login </Typography>
+                        </Link>
+                    </Stack>
+                </Paper>
+            </FlexCenterBox>
+        </motion.div>
     )
 }

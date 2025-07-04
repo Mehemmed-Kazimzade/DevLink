@@ -14,7 +14,7 @@ export default function RsButton( { text, icon, bgColor }: RsButtonProps ) {
         <Button 
             variant="contained"
             fullWidth
-            sx={{ boxShadow: theme => theme.shadows[3], bgcolor: bgColor }}
+            sx={{ boxShadow: theme => theme.shadows[3], bgcolor: bgColor, borderRadius: 2,  }}
             startIcon={icon}
             size={ isLargeScreen ? "large" : "medium" }>
                 {text}

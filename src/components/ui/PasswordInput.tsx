@@ -6,7 +6,7 @@ import RsIcon from "./RsIcon";
 
 
 export default function PasswordInput() {
-    const [showPassword, setShowPassword] = useState(false);
+    const [showPassword, setShowPassword] = useState(true);
 
     const handleShowPassword = () => setShowPassword(prev => !prev);
 

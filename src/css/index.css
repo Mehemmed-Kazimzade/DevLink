@@ -4,6 +4,30 @@
     padding: 0;
 }
 
-html, body, #root {
+html, body {
     height: 100%;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.link{
+    position: relative;
+    font-weight: bold !important;
+}
+
+.link::before{
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    width: 0;
+    transition: all 0.4s ease-out;
+    height: 3px;
+    background-color: currentColor;
+}
+
+.link:hover::before {
+    width: 100%;
 }
