@@ -11,55 +11,92 @@ import RsIcon from "../components/ui/RsIcon";
 import TextFormatIcon from '@mui/icons-material/TextFormat';
 import { Link } from "react-router-dom";
 import PasswordInput from "../components/ui/PasswordInput";
-import { motion } from "motion/react"
+import MotionDivWrapper from "../components/MotionDivWrapper";
+import { useForm } from "react-hook-form";
+
+interface RegisterFormData {
+    fullName: string;
+    email: string;
+    password: string;
+}
 
 export default function Register() {
     const theme = useTheme();
 
+    const { register, handleSubmit, formState: { errors } } = useForm<RegisterFormData>();
+
+    const onSave = (data: RegisterFormData) => {
+        console.log(data);
+    }
+
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-        >
-            <FlexCenterBox>
+        <MotionDivWrapper>
+            
+            <form onSubmit={handleSubmit(onSave)}>
+                <FlexCenterBox>
 
-                <Paper sx={{ width: "100%", maxWidth: "600px", padding:"20px", borderRadius: "20px" }}>
+                    <Paper sx={{ width: "100%", maxWidth: "600px", padding:"20px", borderRadius: "20px" }}>
 
-                    <RsTypography lg="35px" xs="28px" fontWeight="bold" text="Create your DevLink account" 
-                    gutterBottom textAlign={"center"} />
+                        <RsTypography lg="30px" xs="28px" fontWeight="bold" text="Create your DevLink account" 
+                        gutterBottom textAlign={"center"} />
 
-                    <Stack sx={{ mt: 2 }} spacing={2}>
-                        <RsInput
-                            label="Your Full Name"
-                            type="text"
-                            placeholder="John Doe"
-                            icon={ <RsIcon icon={TextFormatIcon} /> }
-                        />
+                        <Stack sx={{ mt: 2 }} spacing={1.5}>
+                            <RsInput
+                                register={register("fullName", {
+                                    required: "Full name is required",
+                                    minLength: { value: 5, message: "Must be at least 5 chars" },
+                                    maxLength: { value: 25, message: "Must be less than 25 chars" },
+                                    pattern: { value: /^[A-Za-z\s]+$/, message: "Only English letters are allowed for full name" },
+                                })}
+                                
+                                label="Your Full Name"
+                                type="text"
+                                placeholder="John Doe"
+                                icon={ <RsIcon icon={TextFormatIcon} /> }
+                                />
+                            
+                            { errors.fullName && <Typography color="error"> {errors.fullName.message} </Typography> }
 
-                        <RsInput
-                            label="Your Email Address"
-                            type="email"
-                            placeholder="yourname@domain.com"
-                            icon={<RsIcon icon={AlternateEmailIcon} />} />
+                            <RsInput
+                                register={register("email", {
+                                    required: "Email is required",
+                                    minLength: {value: 10, message: "Must be at least 10 chars"},
+                                    validate: value => value.includes("@") || "Email must contain an '@' symbol.",
+                                })}
+                                
+                                label="Your Email Address"
+                                type="email"
+                                placeholder="yourname@domain.com"
+                                icon={<RsIcon icon={AlternateEmailIcon} />} />
 
-                        <PasswordInput />
+                            { errors.email && <Typography color="error"> {errors.email.message} </Typography> }
 
-                        <RsButton text="Register" />
+                            <PasswordInput register={register("password", {
+                                required: true,
+                                pattern: {value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/, message: 
+                                    "Password must be 8+ chars, with uppercase, lowercase, and a number."}
+                                })} />
+                            
+                            { errors.password && <Typography color="error"> {errors.password.message} </Typography> }
 
-                        <OrDivider />
+                            <RsButton type={"submit"} text="Register" />
 
-                        <Box display={"flex"} gap={4}>
-                            <RsButton icon={<GoogleIcon />} text="Google" bgColor={theme.palette.secondary.main} />
-                            <RsButton icon={<GitHubIcon /> } text="GitHub" bgColor={theme.palette.secondary.main} />
-                        </Box>
-                        <Link to={"/login/"}>
-                            <Typography className="link" sx={{color: theme.palette.action.active, width: "fit-content", mx: "auto"}}
-                            fontSize={"18px"} textAlign={"center"}> Have an account? Login </Typography>
-                        </Link>
-                    </Stack>
-                </Paper>
-            </FlexCenterBox>
-        </motion.div>
+                            <OrDivider />
+
+                            <Box display={"flex"} gap={4}>
+                                <RsButton icon={<GoogleIcon />} text="Google" bgColor={theme.palette.secondary.main} />
+                                <RsButton icon={<GitHubIcon /> } text="GitHub" bgColor={theme.palette.secondary.main} />
+                            </Box>
+
+                            <Link to={"/login/"}>
+                                <Typography className="link" sx={{color: theme.palette.action.active, width: "fit-content", mx: "auto"}}
+                                fontSize={"18px"} textAlign={"center"}> Have an account? Login </Typography>
+                            </Link>
+
+                        </Stack>
+                    </Paper>
+                </FlexCenterBox>
+            </form>
+        </MotionDivWrapper>
     )
 }

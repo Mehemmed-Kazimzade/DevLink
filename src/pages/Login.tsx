@@ -10,23 +10,17 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import RsIcon from "../components/ui/RsIcon";
 import { Link } from "react-router-dom";
 import PasswordInput from "../components/ui/PasswordInput";
-import { motion } from "motion/react"
+import MotionDivWrapper from "../components/MotionDivWrapper";
 
 export default function Login() {
     const theme = useTheme();
 
     return <>
-
-        <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-        >
+        <MotionDivWrapper>
             <FlexCenterBox>
-
                 <Paper sx={{ width: "100%", maxWidth: "600px", padding:"20px", borderRadius: "20px" }}>
 
-                    <RsTypography lg="34px" xs="24px" fontWeight="bold" text="Welcome To DevLink" 
+                    <RsTypography lg="30px" xs="24px" fontWeight="bold" text="Welcome To DevLink" 
                     gutterBottom textAlign={"center"} />
 
                     <RsTypography lg="25px" xs="20px" fontWeight="bold" text="Log in to connect and collaborate." 
@@ -67,6 +61,6 @@ export default function Login() {
                     </Stack>
                 </Paper>
             </FlexCenterBox>
-        </motion.div>
+        </MotionDivWrapper>
     </>
 }
