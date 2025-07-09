@@ -21,8 +21,8 @@ export default function PasswordReset() {
             <Box className="passwordResetBox">
                 <form onSubmit={handleSubmit(onSave)}>
                     <Paper sx={{ width: "100%", maxWidth: "600px", padding:"20px", borderRadius: "20px" }}>
-                    <Stack spacing={3}>
-                        <RsTypography lg="30px" xs="24px" fontWeight="bold" 
+                    <Stack spacing={1.5}>
+                        <RsTypography lg="30px" xs="20px" fontWeight="bold" 
                         text="Enter your email address to receive a verification code" 
                         gutterBottom textAlign={"center"} />
 

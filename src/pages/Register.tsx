@@ -37,7 +37,7 @@ export default function Register() {
 
                     <Paper sx={{ width: "100%", maxWidth: "600px", padding:"20px", borderRadius: "20px" }}>
 
-                        <RsTypography lg="30px" xs="28px" fontWeight="bold" text="Create your DevLink account" 
+                        <RsTypography lg="30px" xs="23px" fontWeight="bold" text="Create your DevLink account" 
                         gutterBottom textAlign={"center"} />
 
                         <Stack sx={{ mt: 2 }} spacing={1.5}>
@@ -89,7 +89,7 @@ export default function Register() {
                             </Box>
 
                             <Link to={"/login/"}>
-                                <Typography className="link" sx={{color: theme.palette.action.active, width: "fit-content", mx: "auto"}}
+                                <Typography className="link" sx={{color: theme.palette.secondary.main, width: "fit-content", mx: "auto"}}
                                 fontSize={"18px"} textAlign={"center"}> Have an account? Login </Typography>
                             </Link>
 

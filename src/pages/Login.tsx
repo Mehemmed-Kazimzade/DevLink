@@ -54,8 +54,8 @@ export default function Login() {
                         </Box>
                             
                         <Link to="/register/">
-                            <Typography className="link" sx={{color: theme.palette.action.active, width: "fit-content", mx: "auto"}} 
-                            fontSize={"18px"}> Don't have an account? Register. </Typography>
+                            <Typography className="link" sx={{color: theme.palette.secondary.main, width: "fit-content", mx: "auto"}} 
+                            fontSize={"18px"} textAlign={"center"}> Become a member </Typography>
                         </Link>
 
                     </Stack>

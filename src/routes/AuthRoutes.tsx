@@ -4,6 +4,7 @@ import Register from "../pages/Register";
 import Logout from "../pages/Logout";
 import LogoutSuccess from "../pages/LogoutSuccess";
 import PasswordReset from "../pages/PasswordReset";
+import SixDigits from "../pages/SixDigits";
 
 export default [
     <Route path="/login/" element={<Login />} />,
@@ -11,4 +12,5 @@ export default [
     <Route path="/logout/" element={<Logout />} />,
     <Route path="/logoutSuccess/" element={<LogoutSuccess />} />,
     <Route path="/passwordReset/" element={<PasswordReset />} />,
+    <Route path="/codeChecking/" element={<SixDigits />} />
 ];
