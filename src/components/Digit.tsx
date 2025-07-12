@@ -1,27 +1,28 @@
 import { TextField } from "@mui/material";
 import React from "react";
-import { useState } from "react";
 
 interface DigitProps {
     place: number,
+    value: string,
+    handleChange: (newValue: string, place: number) => void,
     handleFocus: (n: number) => void,
+    handlePaste: (e: React.ClipboardEvent<HTMLInputElement>) => void,
 }
 
-const Digit = React.forwardRef<HTMLInputElement, DigitProps>(({ place, handleFocus }, ref) => {
-    const [value, setValue] = useState<string>("");
+const Digit = React.forwardRef<HTMLInputElement, DigitProps>(({ place, value, handleChange, handleFocus, handlePaste }, ref) => {
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if(e.key === "Backspace" && value === "" && place !== 0){
+        if((e.key === "Backspace") && value === "" && place !== 0){
             handleFocus(place - 1);
         }
     }
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value;
         const regEx = /^[0-9]*$/;
         if (inputValue.length > 1 || !regEx.test(inputValue)) return;
 
-        setValue(inputValue);
+        handleChange(inputValue, place);
 
         if(inputValue.length === 1 && place !== 5) {
             handleFocus(place + 1);
@@ -33,7 +34,8 @@ const Digit = React.forwardRef<HTMLInputElement, DigitProps>(({ place, handleFoc
             inputRef={ref}
             value={value}
             onKeyDown={handleKeyDown}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
+            onPaste={handlePaste}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => onChange(e)}
             slotProps={{
                 input: {
                 inputMode: 'numeric',

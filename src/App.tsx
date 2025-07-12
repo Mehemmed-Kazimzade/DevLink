@@ -5,6 +5,7 @@ import { ThemeProvider } from '@emotion/react';
 import Header from './components/ui/Header';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import getTheme from './contexts/theme';
+import GlobalStylesProvider from './contexts/GlobalStyles';
 
 export default function App() {
     const [mode, setMode] = useState('light');
@@ -26,6 +27,7 @@ export default function App() {
 
     return <>
         <ThemeProvider theme={theme}>
+            <GlobalStylesProvider />
             <CssBaseline />
             <BrowserRouter>
                 <Routes>

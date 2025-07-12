@@ -13,20 +13,27 @@ import { Link } from "react-router-dom";
 import PasswordInput from "../components/ui/PasswordInput";
 import MotionDivWrapper from "../components/MotionDivWrapper";
 import { useForm } from "react-hook-form";
-
-interface RegisterFormData {
-    fullName: string;
-    email: string;
-    password: string;
-}
+import type { RegisterForm } from "../types/RegisterForm";
+import apiRegister from "../api/apiRegister";
 
 export default function Register() {
     const theme = useTheme();
 
-    const { register, handleSubmit, formState: { errors } } = useForm<RegisterFormData>();
+    const { register, handleSubmit, setError, formState: { errors } } = useForm<RegisterForm>();
 
-    const onSave = (data: RegisterFormData) => {
-        console.log(data);
+    const onSave = async (registerFormData: RegisterForm) => {
+        const {status, data} = await apiRegister(registerFormData);
+
+        if(status === "SUCCESS") {
+            return;
+        }
+
+        if(status === "ERROR") {
+            setError("email", { type: "server", message: data }, {shouldFocus: true});
+            return;
+        }
+
+        setError("root", {type:"server", message: "Unexpected error occurred"});
     }
 
     return (
