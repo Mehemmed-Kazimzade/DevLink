@@ -18,29 +18,29 @@ export default function PasswordReset() {
 
     return (
         <MotionDivWrapper>
-            <Box className="passwordResetBox">
+            <Box className="centered-container">
                 <form onSubmit={handleSubmit(onSave)}>
-                    <Paper sx={{ width: "100%", maxWidth: "600px", padding:"20px", borderRadius: "20px" }}>
-                    <Stack spacing={1.5}>
-                        <RsTypography lg="30px" xs="20px" fontWeight="bold" 
-                        text="Enter your email address to receive a verification code" 
-                        gutterBottom textAlign={"center"} />
+                    <Paper className="paper" >
+                        <Stack spacing={1.5}>
+                            <RsTypography lg="30px" xs="20px" fontWeight="bold" 
+                            text="Enter your email address to receive a verification code" 
+                            gutterBottom textAlign={"center"} />
 
-                        <RsInput 
-                            label="Your Email"
-                            type="email"
-                            placeholder="....@gmail.com"
-                            register={register("email", {
-                                required: "Please fill the email",
-                                validate: value => value.includes("@") || "Email must contain '@' symbol." 
-                            })}
-                        />
-        
-                        <Typography color="error"> { errors.email?.message } </Typography>
+                            <RsInput 
+                                label="Your Email"
+                                type="email"
+                                placeholder="....@gmail.com"
+                                register={register("email", {
+                                    required: "Please fill the email",
+                                    validate: value => value.includes("@") || "Email must contain '@' symbol." 
+                                })}
+                            />
+            
+                            <Typography color="error"> { errors.email?.message } </Typography>
 
-                        <RsButton text={"Submit email"} type="submit" />
-                    </Stack>
-                </Paper>
+                            <RsButton text={"Submit email"} type="submit" />
+                        </Stack>
+                    </Paper>
                 </form>
             </Box>
         </MotionDivWrapper>

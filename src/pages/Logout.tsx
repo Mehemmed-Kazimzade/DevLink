@@ -8,17 +8,17 @@ import MotionDivWrapper from "../components/MotionDivWrapper";
 export default function Logout() {
     return <>
         <MotionDivWrapper>
-            <Box className="logoutBox">
-                <Paper sx={{ width: "100%", maxWidth: "600px", padding:"20px", borderRadius: "20px" }}>
+            <Box className="centered-container">
+                <Paper className="paper">
                     <RsTypography lg="34px" xs="24px" fontWeight="bold" text="Are you sure you want to logout" 
                     gutterBottom textAlign={"center"} />
 
                     <FlexBox>
-                        <Link to={""} className="buttonLink">
+                        <Link to={""} className="button-link">
                             <RsButton text="No" />
                         </Link>
 
-                        <Link to={""} className="buttonLink">
+                        <Link to={""} className="button-link">
                             <RsButton text="Yes logout" />
                         </Link>
                     </FlexBox>

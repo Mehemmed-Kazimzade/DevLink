@@ -18,7 +18,7 @@ export default function Login() {
     return <>
         <MotionDivWrapper>
             <FlexCenterBox>
-                <Paper sx={{ width: "100%", maxWidth: "600px", padding:"20px", borderRadius: "20px" }}>
+                <Paper className="paper">
 
                     <RsTypography lg="30px" xs="24px" fontWeight="bold" text="Welcome To DevLink" 
                     gutterBottom textAlign={"center"} />

@@ -9,11 +9,11 @@ export default function LogoutSuccess() {
     return <>
         <MotionDivWrapper>
             <Box className="logoutBox">
-                <Paper sx={{ width: "100%", maxWidth: "600px", padding:"20px", borderRadius: "20px" }}>
+                <Paper className="paper">
                     <RsTypography lg="20px" xs="24px" fontWeight="bold" text="Successfully logged out. Thanks for using DevLink" 
                     gutterBottom textAlign={"center"} />
 
-                    <Link to={""} className="buttonLink">
+                    <Link to={""} className="button-link">
                         <RsButton text="Login Again" icon={<LoginIcon />} />
                     </Link>
                 </Paper>

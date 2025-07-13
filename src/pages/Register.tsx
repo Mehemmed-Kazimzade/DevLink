@@ -42,7 +42,7 @@ export default function Register() {
             <form onSubmit={handleSubmit(onSave)}>
                 <FlexCenterBox>
 
-                    <Paper sx={{ width: "100%", maxWidth: "600px", padding:"20px", borderRadius: "20px" }}>
+                    <Paper className="paper">
 
                         <RsTypography lg="30px" xs="23px" fontWeight="bold" text="Create your DevLink account" 
                         gutterBottom textAlign={"center"} />

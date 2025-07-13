@@ -11,7 +11,7 @@ interface RsTypographyProps extends Omit<TypographyProps, 'fontSize'> {
 
 export default function RsTypography({ fontWeight = "normal", lg, xs, text, ...rest }: RsTypographyProps) {
     const theme = useTheme();
-    const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg'));
+    const isLargeScreen = useMediaQuery("(min-width: 570px)");
 
     return (
         <Typography fontSize={ isLargeScreen ? lg : xs } fontWeight={fontWeight} {...rest} >
