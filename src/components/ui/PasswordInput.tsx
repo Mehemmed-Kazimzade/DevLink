@@ -1,5 +1,5 @@
 import { type UseFormRegister, type FieldValues } from "react-hook-form";
-import { FormControl, OutlinedInput, IconButton, InputAdornment, Typography, Box } from "@mui/material";
+import { FormControl, OutlinedInput, IconButton, InputAdornment, Typography, Box, useMediaQuery } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
 import KeyIcon from '@mui/icons-material/Key';
@@ -10,6 +10,7 @@ interface PasswordInputProps {
 }
 
 export default function PasswordInput( { register }: PasswordInputProps ) {
+    const isLargeScreen = useMediaQuery("(min-width: 580px)");
     const [showPassword, setShowPassword] = useState(true);
 
     const handleShowPassword = () => setShowPassword(prev => !prev);
@@ -21,7 +22,7 @@ export default function PasswordInput( { register }: PasswordInputProps ) {
             
             <Box display={"flex"} alignItems={"center"} width={"100%"}>
                 <RsIcon icon={KeyIcon} />
-                <OutlinedInput sx={{ ml: 1, boxShadow: theme => theme.shadows[1] }}
+                <OutlinedInput sx={{ ml: isLargeScreen ? 1 : 0, boxShadow: theme => theme.shadows[1] }}
                     {...register}
                     fullWidth
                     size="small"

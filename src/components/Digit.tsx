@@ -1,4 +1,4 @@
-import { TextField, useMediaQuery, useTheme } from "@mui/material";
+import { TextField, useMediaQuery } from "@mui/material";
 import React from "react";
 
 interface DigitProps {
@@ -10,9 +10,6 @@ interface DigitProps {
 }
 
 const Digit = React.forwardRef<HTMLInputElement, DigitProps>(({ place, value, handleChange, handleFocus, handlePaste }, ref) => {
-    const theme = useTheme();
-    const isDesktop = useMediaQuery("(min-width: 580px)");
-
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if((e.key === "Backspace") && value === "" && place !== 0){
             handleFocus(place - 1);
@@ -43,7 +40,7 @@ const Digit = React.forwardRef<HTMLInputElement, DigitProps>(({ place, value, ha
             slotProps={{
                 input: {
                 inputMode: 'numeric',
-                style: { textAlign: 'center', fontSize: '1.5rem', width: isDesktop ? "60px" : "40px" , height: isDesktop ? "60px" : "40px",}},
+                style: { fontSize: '1.5rem', paddingLeft: 7, width: 60, height: 60}},
             }}
           variant="outlined"
         />

@@ -6,6 +6,7 @@
 
 html, body {
     height: 100%;
+    overflow-x: hidden;
 }
 
 .centered-container {
@@ -14,6 +15,10 @@ html, body {
     align-items: center;
     justify-content: center;
     margin-inline: 30px;
+}
+
+.css-1k455el {
+    min-height: 0 !important;
 }
 
 .paper {

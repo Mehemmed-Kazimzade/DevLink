@@ -1,6 +1,5 @@
 import Typography, {type TypographyProps } from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
 
 interface RsTypographyProps extends Omit<TypographyProps, 'fontSize'> {
   fontWeight?: TypographyProps['fontWeight']; // make optional, default to 'normal'
@@ -10,7 +9,6 @@ interface RsTypographyProps extends Omit<TypographyProps, 'fontSize'> {
 }
 
 export default function RsTypography({ fontWeight = "normal", lg, xs, text, ...rest }: RsTypographyProps) {
-    const theme = useTheme();
     const isLargeScreen = useMediaQuery("(min-width: 570px)");
 
     return (

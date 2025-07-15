@@ -8,10 +8,10 @@ import MotionDivWrapper from "../components/MotionDivWrapper";
 export default function LogoutSuccess() {
     return <>
         <MotionDivWrapper>
-            <Box className="logoutBox">
+            <Box className="centered-container">
                 <Paper className="paper">
                     <RsTypography lg="20px" xs="24px" fontWeight="bold" text="Successfully logged out. Thanks for using DevLink" 
-                    gutterBottom textAlign={"center"} />
+                    sx={{ mb: 2 }} textAlign={"center"} />
 
                     <Link to={""} className="button-link">
                         <RsButton text="Login Again" icon={<LoginIcon />} />

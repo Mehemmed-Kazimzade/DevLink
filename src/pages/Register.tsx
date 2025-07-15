@@ -39,15 +39,12 @@ export default function Register() {
     return (
         <MotionDivWrapper>
             
+            <RsTypography lg="30px" xs="23px" fontWeight="bold" text="Create your DevLink account" textAlign={"center"} />
+
             <form onSubmit={handleSubmit(onSave)}>
                 <FlexCenterBox>
-
                     <Paper className="paper">
-
-                        <RsTypography lg="30px" xs="23px" fontWeight="bold" text="Create your DevLink account" 
-                        gutterBottom textAlign={"center"} />
-
-                        <Stack sx={{ mt: 2 }} spacing={1.5}>
+                        <Stack sx={{ mt: 1 }} spacing={1.5}>
                             <RsInput
                                 register={register("fullName", {
                                     required: "Full name is required",
@@ -95,15 +92,19 @@ export default function Register() {
                                 <RsButton icon={<GitHubIcon /> } text="GitHub" bgColor={theme.palette.secondary.main} />
                             </Box>
 
-                            <Link to={"/login/"}>
-                                <Typography className="link" sx={{color: theme.palette.secondary.main, width: "fit-content", mx: "auto"}}
-                                fontSize={"18px"} textAlign={"center"}> Have an account? Login </Typography>
-                            </Link>
 
                         </Stack>
                     </Paper>
                 </FlexCenterBox>
             </form>
+
+            <Box maxWidth={"fit-content"} mx={"auto"}>
+                <Link to={"/login/"}>
+                    <Typography className="link" sx={{color: theme.palette.secondary.main }}
+                    fontSize={"18px"}> Have an account? Login </Typography>
+                </Link>
+            </Box>
+
         </MotionDivWrapper>
     )
 }

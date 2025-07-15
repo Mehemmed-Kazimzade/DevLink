@@ -3,7 +3,6 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from "@mui/icons-material/LightMode";
 import { Link, Outlet } from "react-router-dom";
 import FlexBox from "./FlexBox";
-// import logo from "../../assets/output.png";
 
 interface HeaderProps {
     mode: string,

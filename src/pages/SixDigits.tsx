@@ -37,18 +37,21 @@ export default function SixDigits() {
     return (
         <MotionDivWrapper>
             <Box className="centered-container">
-                <form>
-                    <RsTypography lg="36px" xs="23px" fontWeight="bold" text="Verification Code Was Sent" 
+                <form style={{ width: "100%", maxWidth: "600px" }}>
+                    <RsTypography lg="36px" xs="25px" fontWeight="bold" text="Verification Code Was Sent" 
                     gutterBottom textAlign={"center"} />
 
                     <Paper className="paper">
-                        <Stack spacing={isDesktop ? 3 : 5} alignItems={"center"} p={isDesktop ? 2 : 0.5}>
-                            <Typography variant="h5"> Enter the 6 digit code </Typography>
-                            <Box display={"flex"} gap={isDesktop ? 3 : 1.5} justifyContent={"center"}>
+                        <Stack spacing={3} alignItems={"center"} p={2}>
+                            <Typography variant="h5" textAlign={"center"}> Enter the 6 digit code </Typography>
+                            <Box display="grid" gridTemplateColumns={isDesktop ? "repeat(6, auto)" : "repeat(3, auto)"} 
+                                rowGap={2} columnGap={isDesktop ? 3 : 2} justifyContent="center">
+
                                 {refs.map((ref, idx) => (
                                     <Digit key={idx}  ref={ref} value={values[idx]}
                                     handleChange={handleChange} handlePaste={handlePaste} handleFocus={handleFocus} place={idx}  />
                                 ))}
+
                             </Box>
                             <Box display={"flex"} width={"100%"} justifyContent={"space-between"} 
                                 alignItems={"center"} flexDirection={ isDesktop ? "row" : "column-reverse" } gap={3}>
@@ -61,7 +64,6 @@ export default function SixDigits() {
                             </Box>
                         </Stack>
                     </Paper>
-
                 </form>
             </Box>
         </MotionDivWrapper>

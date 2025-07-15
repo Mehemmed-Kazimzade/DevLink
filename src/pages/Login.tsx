@@ -1,4 +1,4 @@
-import { Box, Paper, Stack, Typography, useTheme } from "@mui/material";
+import { Box, Paper, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
 import FlexCenterBox from "../components/ui/FlexContainer";
 import RsTypography from "../components/ui/RsTypography";
 import RsInput from "../components/ui/RsInput";
@@ -14,19 +14,20 @@ import MotionDivWrapper from "../components/MotionDivWrapper";
 
 export default function Login() {
     const theme = useTheme();
+    const isDesktop = useMediaQuery("(min-width: 580px)");
 
     return <>
         <MotionDivWrapper>
+
+            <RsTypography lg="30px" xs="24px" fontWeight="bold" text="Welcome To DevLink" 
+            gutterBottom textAlign={"center"} />
+
+            <RsTypography lg="25px" xs="18px" fontWeight="bold" text="Log in to connect and collaborate." textAlign={"center"} />
+
             <FlexCenterBox>
+
                 <Paper className="paper">
-
-                    <RsTypography lg="30px" xs="24px" fontWeight="bold" text="Welcome To DevLink" 
-                    gutterBottom textAlign={"center"} />
-
-                    <RsTypography lg="25px" xs="20px" fontWeight="bold" text="Log in to connect and collaborate." 
-                    gutterBottom textAlign={"center"} />
-
-                    <Stack sx={{ mt: 3 }} spacing={2}>
+                    <Stack sx={{ mt: 1 }} spacing={isDesktop ? 2 : 2.5}>
                         <RsInput
                             label="Your Email Address"
                             type="email"
@@ -46,21 +47,27 @@ export default function Login() {
 
                         <RsButton text="Login" />
 
-                        <OrDivider />
 
+                        <OrDivider />
                         <Box display={"flex"} gap={4}>
                             <RsButton icon={<GoogleIcon />} text="Google" bgColor={theme.palette.secondary.main} />
                             <RsButton icon={<GitHubIcon /> } text="GitHub" bgColor={theme.palette.secondary.main} />
                         </Box>
                             
-                        <Link to="/register/">
-                            <Typography className="link" sx={{color: theme.palette.secondary.main, width: "fit-content", mx: "auto"}} 
-                            fontSize={"18px"} textAlign={"center"}> Become a member </Typography>
-                        </Link>
 
                     </Stack>
                 </Paper>
+
             </FlexCenterBox>
+
+            <Box maxWidth={"fit-content"} mx={"auto"}>
+                <Link to="/register/">
+                    <Typography className="link" sx={{color: theme.palette.secondary.main}} fontSize={"18px"}>
+                        Become a member
+                    </Typography>
+                </Link>
+            </Box>
+
         </MotionDivWrapper>
     </>
 }

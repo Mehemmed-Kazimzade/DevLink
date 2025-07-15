@@ -11,7 +11,7 @@ export default function Logout() {
             <Box className="centered-container">
                 <Paper className="paper">
                     <RsTypography lg="34px" xs="24px" fontWeight="bold" text="Are you sure you want to logout" 
-                    gutterBottom textAlign={"center"} />
+                    sx={{ mb: 3 }} textAlign={"center"} />
 
                     <FlexBox>
                         <Link to={""} className="button-link">
