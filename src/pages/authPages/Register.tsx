@@ -1,30 +1,36 @@
 import { Box, Paper, Stack, Typography, useTheme } from "@mui/material";
-import FlexCenterBox from "../components/ui/FlexContainer";
-import RsTypography from "../components/ui/RsTypography";
-import RsInput from "../components/ui/RsInput";
+import FlexCenterBox from "../../components/ui/FlexContainer";
+import RsTypography from "../../components/ui/RsTypography";
+import RsInput from "../../components/ui/RsInput";
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
-import RsButton from "../components/ui/RsButton";
-import OrDivider from "../components/ui/OrDivider";
+import RsButton from "../../components/ui/RsButton";
+import OrDivider from "../../components/ui/OrDivider";
 import GoogleIcon from '@mui/icons-material/Google';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import RsIcon from "../components/ui/RsIcon";
+import RsIcon from "../../components/ui/RsIcon";
 import TextFormatIcon from '@mui/icons-material/TextFormat';
-import { Link } from "react-router-dom";
-import PasswordInput from "../components/ui/PasswordInput";
-import MotionDivWrapper from "../components/MotionDivWrapper";
+import { Link, useNavigate } from "react-router-dom";
+import PasswordInput from "../../components/ui/PasswordInput";
+import MotionDivWrapper from "../../components/MotionDivWrapper";
 import { useForm } from "react-hook-form";
-import type { RegisterForm } from "../types/RegisterForm";
-import apiRegister from "../api/apiRegister";
+import type { AuthForm } from "../../types/AuthForm";
+import useAuthApi from "../../api/useAuthApi";
+import fullNameValidation from "../../types/FullNameValidation";
+import emailValidation from "../../types/EmailValidation";
+import passwordValidation from "../../types/PasswordValidation";
 
 export default function Register() {
     const theme = useTheme();
+    const navigate = useNavigate();
 
-    const { register, handleSubmit, setError, formState: { errors } } = useForm<RegisterForm>();
+    const { register, handleSubmit, setError, formState: { errors } } = useForm<AuthForm>();
 
-    const onSave = async (registerFormData: RegisterForm) => {
-        const {status, data} = await apiRegister(registerFormData);
+    const onSave = async (registerFormData: AuthForm) => {
+        const {status, data} = await useAuthApi(registerFormData, "http://localhost:8080/api/v1/auth/register/");
 
         if(status === "SUCCESS") {
+            localStorage.setItem("token", data.token);
+            navigate("/profile/");
             return;
         }
 
@@ -46,13 +52,7 @@ export default function Register() {
                     <Paper className="paper">
                         <Stack sx={{ mt: 1 }} spacing={1.5}>
                             <RsInput
-                                register={register("fullName", {
-                                    required: "Full name is required",
-                                    minLength: { value: 5, message: "Must be at least 5 chars" },
-                                    maxLength: { value: 25, message: "Must be less than 25 chars" },
-                                    pattern: { value: /^[A-Za-z\s]+$/, message: "Only English letters are allowed for full name" },
-                                })}
-                                
+                                register={register("fullName", fullNameValidation)}
                                 label="Your Full Name"
                                 type="text"
                                 placeholder="John Doe"
@@ -62,12 +62,7 @@ export default function Register() {
                             { errors.fullName && <Typography color="error"> {errors.fullName.message} </Typography> }
 
                             <RsInput
-                                register={register("email", {
-                                    required: "Email is required",
-                                    minLength: {value: 10, message: "Must be at least 10 chars"},
-                                    validate: value => value.includes("@") || "Email must contain an '@' symbol.",
-                                })}
-                                
+                                register={register("email", emailValidation)}
                                 label="Your Email Address"
                                 type="email"
                                 placeholder="yourname@domain.com"
@@ -75,11 +70,7 @@ export default function Register() {
 
                             { errors.email && <Typography color="error"> {errors.email.message} </Typography> }
 
-                            <PasswordInput register={register("password", {
-                                required: true,
-                                pattern: {value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/, message: 
-                                    "Password must be 8+ chars, with uppercase, lowercase, and a number."}
-                                })} />
+                            <PasswordInput register={register("password", passwordValidation)} />
                             
                             { errors.password && <Typography color="error"> {errors.password.message} </Typography> }
 

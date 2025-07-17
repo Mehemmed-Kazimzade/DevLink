@@ -1,9 +1,9 @@
 import { Box, Paper} from "@mui/material";
-import RsTypography from "../components/ui/RsTypography";
-import RsButton from "../components/ui/RsButton";
+import RsTypography from "../../components/ui/RsTypography";
+import RsButton from "../../components/ui/RsButton";
 import { Link } from "react-router-dom";
-import FlexBox from "../components/ui/FlexBox";
-import MotionDivWrapper from "../components/MotionDivWrapper";
+import FlexBox from "../../components/ui/FlexBox";
+import MotionDivWrapper from "../../components/MotionDivWrapper";
 
 export default function Logout() {
     return <>

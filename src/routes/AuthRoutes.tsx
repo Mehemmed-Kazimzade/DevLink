@@ -1,10 +1,10 @@
 import { Route } from "react-router-dom";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
-import Logout from "../pages/Logout";
-import LogoutSuccess from "../pages/LogoutSuccess";
-import PasswordReset from "../pages/PasswordReset";
-import SixDigits from "../pages/SixDigits";
+import Login from "../pages/authPages/Login";
+import Register from "../pages/authPages/Register";
+import Logout from "../pages/authPages/Logout";
+import LogoutSuccess from "../pages/authPages/LogoutSuccess";
+import PasswordReset from "../pages/authPages/PasswordReset";
+import SixDigits from "../pages/authPages/SixDigits";
 
 export default [
     <Route path="/login/" element={<Login />} />,

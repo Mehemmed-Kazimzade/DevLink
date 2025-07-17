@@ -1,9 +1,9 @@
 import { Box, Paper, Stack, Typography } from "@mui/material";
-import MotionDivWrapper from "../components/MotionDivWrapper";
-import RsTypography from "../components/ui/RsTypography";
-import RsInput from "../components/ui/RsInput";
+import MotionDivWrapper from "../../components/MotionDivWrapper";
+import RsTypography from "../../components/ui/RsTypography";
+import RsInput from "../../components/ui/RsInput";
 import { useForm } from "react-hook-form";
-import RsButton from "../components/ui/RsButton";
+import RsButton from "../../components/ui/RsButton";
 
 interface FormData {
     email: string;

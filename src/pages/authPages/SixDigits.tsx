@@ -1,9 +1,9 @@
 import { Box, Button, Paper, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
-import Digit from "../components/Digit";
+import Digit from "../../components/Digit";
 import React, { useEffect, useState } from "react";
-import MotionDivWrapper from "../components/MotionDivWrapper";
-import RsTypography from "../components/ui/RsTypography";
-import RsButton from "../components/ui/RsButton";
+import MotionDivWrapper from "../../components/MotionDivWrapper";
+import RsTypography from "../../components/ui/RsTypography";
+import RsButton from "../../components/ui/RsButton";
 import CheckIcon from '@mui/icons-material/Check';
 
 export default function SixDigits() {

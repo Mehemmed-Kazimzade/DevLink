@@ -1,31 +1,31 @@
 import axios from "axios";
-import type { RegisterForm } from "../types/RegisterForm";
+import type { LoginForm } from "../types/LoginForm";
 import type { ApiResponse } from "../types/ApiResponse";
 import type { TokenResponse } from "../types/RegisterResponse";
 
-export default function apiRegister(registerForm: RegisterForm) {
+export default function apiLogin(loginForm: LoginForm) {
     const sendRequest = async (): Promise<ApiResponse<TokenResponse>> => {
         try {
-            const link = "http://localhost:8080/api/v1/auth/register/";
-            const res = await axios.post(link, registerForm);
-            
+            const link = "http://localhost:8080/api/v1/auth/authenticate/";
+            const response = await axios.post(link, loginForm);
+
             return {
                 status: "SUCCESS",
-                data: res.data,
+                data: response.data
             }
         }
         catch(e) {
-            if (axios.isAxiosError(e)){
+            if (axios.isAxiosError(e)) {
                 return {
                     status: "ERROR",
-                    data: e.response?.data,
-                };
+                    data: e.response?.data
+                }
             }
+
             else{
-                console.error("Unexpected error", e);
                 return {
                     status: "UNEXPECTED_ERROR",
-                    data: e,
+                    data: e
                 }
             }
         }
@@ -33,3 +33,5 @@ export default function apiRegister(registerForm: RegisterForm) {
 
     return sendRequest();
 }
+
+
