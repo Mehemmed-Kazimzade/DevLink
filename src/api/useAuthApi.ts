@@ -6,7 +6,7 @@ import type { AuthForm } from "../types/AuthForm";
 export default function useAuthApi(formData: AuthForm, link: string) {
     const sendRequest = async (): Promise<ApiResponse<TokenResponse>> => {
         try {
-            const response = await axios.post(link, formData);
+            const response = await axios.post(link, formData, { withCredentials: true });
             return {
                 status: "SUCCESS",
                 data: response.data,
