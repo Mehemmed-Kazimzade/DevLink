@@ -12,9 +12,9 @@ import { Link } from "react-router-dom";
 import PasswordInput from "../../components/ui/PasswordInput";
 import MotionDivWrapper from "../../components/MotionDivWrapper";
 import { useForm } from "react-hook-form";
-import passwordValidation from "../../types/PasswordValidation";
-import type { AuthForm } from "../../types/AuthForm";
-import emailValidation from "../../types/EmailValidation";
+import passwordValidation from "../../types/authTypes/PasswordValidation";
+import type { AuthForm } from "../../types/authTypes/AuthForm";
+import emailValidation from "../../types/authTypes/EmailValidation";
 import useAuthApi from "../../api/useAuthApi";
 import { useNavigate } from "react-router-dom";
 

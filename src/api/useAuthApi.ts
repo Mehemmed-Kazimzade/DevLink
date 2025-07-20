@@ -1,7 +1,7 @@
 import axios from "axios";
 import type { ApiResponse } from "../types/ApiResponse";
 import type { TokenResponse } from "../types/RegisterResponse";
-import type { AuthForm } from "../types/AuthForm";
+import type { AuthForm } from "../types/authTypes/AuthForm";
 
 export default function useAuthApi(formData: AuthForm, link: string) {
     const sendRequest = async (): Promise<ApiResponse<TokenResponse>> => {

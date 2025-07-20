@@ -13,11 +13,11 @@ import { Link, useNavigate } from "react-router-dom";
 import PasswordInput from "../../components/ui/PasswordInput";
 import MotionDivWrapper from "../../components/MotionDivWrapper";
 import { useForm } from "react-hook-form";
-import type { AuthForm } from "../../types/AuthForm";
+import type { AuthForm } from "../../types/authTypes/AuthForm";
 import useAuthApi from "../../api/useAuthApi";
-import fullNameValidation from "../../types/FullNameValidation";
-import emailValidation from "../../types/EmailValidation";
-import passwordValidation from "../../types/PasswordValidation";
+import fullNameValidation from "../../types/authTypes/FullNameValidation";
+import emailValidation from "../../types/authTypes/EmailValidation";
+import passwordValidation from "../../types/authTypes/PasswordValidation";
 
 export default function Register() {
     const theme = useTheme();
