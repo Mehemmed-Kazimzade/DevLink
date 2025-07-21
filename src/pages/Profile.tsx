@@ -1,44 +1,34 @@
 "use client";
-import {
-  Container,
-  Paper,
-  Avatar,
-  Typography,
-  Chip,
-  Grid,
-  Card,
-  CardContent,
-  CardActions,
-  Button,
-  Box,
-  Stack,
-  useMediaQuery,
-} from "@mui/material";
-import { GitHub, Launch, Code, EmojiEvents, School } from "@mui/icons-material";
-import CodeBlock from "../components/CodeBlock";
-import RsTypography from "../components/ui/RsTypography";
+import { Container,} from "@mui/material";
+import { EmojiEvents, School } from "@mui/icons-material";
+import PersonalInfo from "../components/PersonalInfo";
+import type { Skill } from "../types/userProfileTypes/Skill";
+import type { Project } from "../types/userProfileTypes/Project";
+import Projects from "../components/Projects";
+import type { Snippet } from "../types/userProfileTypes/Snippet";
+import Snippets from "../components/Snippets";
+import type { Certification } from "../types/userProfileTypes/Certification";
+import Certifications from "../components/Certifications";
 
 export default function Profile() {
-  const isSmall = useMediaQuery("(max-width: 440px)");
-
-  const skills = [
-    "React",
-    "Java",
-    "TypeScript",
-    "Node.js",
-    "Python",
-    "AWS",
-    "Docker",
+  const skills: Skill[] = [
+    { skillName: "React" },
+    { skillName: "Java" },
+    { skillName: "TypeScript" },
+    { skillName: "Node.js" },
+    { skillName: "Python" },
+    { skillName: "AWS" },
+    { skillName: "Docker" },
   ];
 
-  const projects = [
+  const projects: Project[] = [
     {
       title: "E-Commerce Platform",
       description:
         "Full-stack e-commerce solution with payment integration and admin dashboard.",
       techStack: ["React", "Node.js", "MongoDB", "Stripe"],
       liveUrl: "#",
-      githubUrl: "#",
+      repoUrl: "#",
     },
     {
       title: "Task Management App",
@@ -46,7 +36,7 @@ export default function Profile() {
         "Collaborative task management tool with real-time updates and team features.",
       techStack: ["Vue.js", "Express", "PostgreSQL", "Socket.io"],
       liveUrl: "#",
-      githubUrl: "#",
+      repoUrl: "#",
     },
     {
       title: "Weather Dashboard",
@@ -54,11 +44,11 @@ export default function Profile() {
         "Interactive weather dashboard with data visualization and location-based forecasts.",
       techStack: ["React", "D3.js", "OpenWeather API", "Tailwind"],
       liveUrl: "#",
-      githubUrl: "#",
+      repoUrl: "#",
     },
   ];
 
-  const snippets = [
+  const snippets: Snippet[] = [
     {
       title: "React Custom Hook",
       language: "JavaScript",
@@ -79,192 +69,53 @@ export default function Profile() {
     },
   ];
 
-  const achievements = [
-    { title: "AWS Certified Solutions Architect", icon: <School /> },
-    { title: "LeetCode Top 5%", icon: <EmojiEvents /> },
-    { title: "Google Cloud Professional", icon: <School /> },
-    { title: "HackerRank 5 Star Java", icon: <EmojiEvents /> },
-    { title: "Certified Kubernetes Administrator", icon: <School /> },
+  const certifications: Certification[] = [
+    {
+      title: "AWS Certified Solutions Architect",
+      icon: <School />,
+      issued_at: "",
+      issuer: "",
+      url: "",
+    },
+    {
+      title: "LeetCode Top 5%",
+      icon: <EmojiEvents />,
+      issued_at: "",
+      issuer: "",
+      url: "",
+    },
+    {
+      title: "Google Cloud Professional",
+      icon: <School />,
+      issued_at: "",
+      issuer: "",
+      url: "",
+    },
+    {
+      title: "HackerRank 5 Star Java",
+      icon: <EmojiEvents />,
+      issued_at: "",
+      issuer: "",
+      url: "",
+    },
+    {
+      title: "Certified Kubernetes Administrator",
+      icon: <School />,
+      issued_at: "",
+      issuer: "",
+      url: "",
+    },
   ];
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Paper elevation={3} sx={{ p: 4, mb: 4, bgcolor: "transparent" }}>
-        <Box display="flex" flexDirection={"column"} gap={3} mb={3}>
-          <Box display={"flex"} gap={3} alignItems={isSmall ? "start" : "center"} 
-              flexDirection={isSmall ? "column" : "row"}>
-            <Avatar
-              sx={{ width: 120, height: 120 }}
-              src="/placeholder.svg?height=120&width=120"
-              alt="Profile Avatar"
-            />
-            <RsTypography text={"John Doe"} xs={"36px"} lg={"40px"} />
-          </Box>
+      <PersonalInfo skills={skills} />
 
-          <Box flex={1} width={"90%"}>
-            <Typography variant="h5" fontWeight={"bold"} gutterBottom>
-              Full Stack Developer & Software Engineer
-            </Typography>
-            <Typography
-              variant="body1"
-              color="text.secondary"
-              sx={{ mb: 2, maxWidth: 750 }}
-            >
-              Passionate software engineer with 5+ years of experience building
-              scalable web applications. I love creating efficient solutions and
-              learning new technologies. Always excited to tackle challenging
-              problems and collaborate with amazing teams.
-            </Typography>
-          </Box>
-        </Box>
+      <Projects projects={projects} />
 
-        <Box>
-          <Typography variant="h6" gutterBottom>
-            Skills & Technologies
-          </Typography>
-          <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-            {skills.map((skill) => (
-              <Chip
-                key={skill}
-                label={skill}
-                variant="outlined"
-                color="primary"
-                sx={{ mb: 1 }}
-              />
-            ))}
-          </Stack>
-        </Box>
-      </Paper>
+      <Snippets snippets={snippets} />
 
-      {/* Projects Section */}
-      <Box mb={4}>
-        <Typography variant="h4" component="h2" gutterBottom>
-          Featured Projects
-        </Typography>
-        <Grid container spacing={3}>
-          {projects.map((project, index) => (
-            <Grid size={{ xs: 12, md: 4 }} key={index}>
-              <Card
-                sx={{
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  bgcolor: "transparent",
-                }}
-              >
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography variant="h6" component="h3" gutterBottom>
-                    {project.title}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {project.description}
-                  </Typography>
-                  <Box mb={2}>
-                    <Typography variant="subtitle2" gutterBottom>
-                      Tech Stack:
-                    </Typography>
-                    <Stack
-                      direction="row"
-                      spacing={0.5}
-                      flexWrap="wrap"
-                      useFlexGap
-                    >
-                      {project.techStack.map((tech) => (
-                        <Chip
-                          key={tech}
-                          label={tech}
-                          size="small"
-                          variant="outlined"
-                          sx={{ mb: 0.5 }}
-                        />
-                      ))}
-                    </Stack>
-                  </Box>
-                </CardContent>
-                <CardActions>
-                  <Button
-                    size="small"
-                    startIcon={<Launch />}
-                    href={project.liveUrl}
-                    target="_blank"
-                  >
-                    Live Demo
-                  </Button>
-                  <Button
-                    size="small"
-                    startIcon={<GitHub />}
-                    href={project.githubUrl}
-                    target="_blank"
-                  >
-                    GitHub
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
-
-      {/* Snippets Section */}
-      <Box mb={4}>
-        <Typography variant="h4" component="h2" gutterBottom>
-          Code Snippets & Gists
-        </Typography>
-        <Grid container spacing={3}>
-          {snippets.map((snippet, index) => (
-            <Grid size={{ xs: 12, md: 6 }} key={index}>
-              <Card sx={{ height: "100%", bgcolor: "transparent"}}>
-                <CardContent>
-                  <Box display="flex" alignItems="center" gap={1} mb={2}>
-                    <Code color="primary" />
-                    <Typography variant="h6" component="h3">
-                      {snippet.title}
-                    </Typography>
-                  </Box>
-                  <Chip
-                    label={snippet.language}
-                    size="small"
-                    color="secondary"
-                    sx={{ mb: 2 }}
-                  />
-                    <CodeBlock language={snippet.language} code={snippet.preview} />
-                </CardContent>
-                <CardActions>
-                  <Button size="small" startIcon={<GitHub />}>
-                    View Git
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
-
-      {/* Achievements Section */}
-      <Paper elevation={3} sx={{ p: 4, bgcolor: "transparent" }}>
-        <Typography variant="h4" component="h2" gutterBottom>
-          Achievements & Certifications
-        </Typography>
-        <Grid container spacing={2}>
-          {achievements.map((achievement, index) => (
-            <Grid size={{ xs: 12, sm: 6, md: 4 }} key={index}>
-              <Card variant="outlined" sx={{ p: 2, textAlign: "center" }}>
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  gap={1}
-                >
-                  {achievement.icon}
-                  <Typography variant="body1" fontWeight="medium">
-                    {achievement.title}
-                  </Typography>
-                </Box>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Paper>
+      <Certifications certifications={certifications} />
     </Container>
   );
 }
