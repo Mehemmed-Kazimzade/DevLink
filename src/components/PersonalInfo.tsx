@@ -2,15 +2,37 @@ import { Paper, Box, Avatar, Typography, Chip, Stack, useMediaQuery } from "@mui
 import RsTypography from "./ui/RsTypography";
 import type { Skill } from "../types/userProfileTypes/Skill";
 import ProfileActions from "./ProfileActions";
+import type { Field } from "../types/formTypes/Field";
+import React, { useRef } from "react";
 
 interface BioProps {
     skills: Skill[],
 }
 
-export default function PersonalInfo({ skills }: BioProps) {
 
+export default function PersonalInfo({ skills }: BioProps) {
+    
     const isSmall = useMediaQuery("(max-width: 440px)");
-  
+
+    const fields: Field[] = [
+        {
+            type: "image",
+            currValue: "https://ui-avatars.com/api/?name=John+Doe",
+            ref: useRef<HTMLInputElement>(null)
+        },
+        {
+            type: "text",
+            currValue: "Full Stack Developer & Software Engineer",
+            ref: useRef<HTMLInputElement>(null)
+        },
+
+        {
+            type: "bigText",
+            currValue: "Passionate software engineer with 5+ years of experience building scalable web applications. I love creating efficient solutions and learning new technologies. Always excited to tackle challenging problems and collaborate with amazing teams.",
+            ref: useRef<HTMLTextAreaElement>(null)
+        }
+    ]
+
     return (
         <Paper elevation={3} sx={{ p: 4, mb: 4, bgcolor: "transparent" }}>
             <Box display={"flex"}  justifyContent={"space-between"}>
@@ -66,7 +88,7 @@ export default function PersonalInfo({ skills }: BioProps) {
                     </Box>
                 </Box>
 
-                <ProfileActions showAddIcon={false} />
+                <ProfileActions showAddIcon={false} fields={fields} title="Editing Personal Info" />
             </Box>
         </Paper>
     )

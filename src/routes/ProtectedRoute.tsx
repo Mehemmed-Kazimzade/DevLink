@@ -12,27 +12,26 @@ export default function ProtectedRoute() {
         setIsValid(false);
     }
 
-    const checkRefreshToken = async () => {
-        const response = await axios.post("http://localhost:8080/api/v1/auth/refresh/", {}, { withCredentials: true });
-        if(response.status === 200) {
-            localStorage.setItem("token", response.data.token);
-            setIsValid(true);
-        }
-        else helper();
-    }
-
     useEffect(() => {
         const checkAuth = async () => {
             const token = localStorage.getItem("token");
             if(!token) {
-                checkRefreshToken();
+                helper();
                 return;
             }
 
             try {
                 const decoded = jwtDecode(token);
                 if(decoded.exp && decoded.exp * 1000 < Date.now()) {
-                    checkRefreshToken();
+
+                    const response = await axios.post("http://localhost:8080/api/v1/auth/refresh/", {}, { withCredentials: true });
+                    if(response.status === 200) {
+                        localStorage.setItem("token", response.data.token);
+                        setIsValid(true);
+                    }
+
+                    else helper();
+
                     return;
                 };
 

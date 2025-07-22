@@ -18,7 +18,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
@@ -98,7 +98,8 @@ export default function DrawerComponent({ mode, toggleMode }: HeaderProps) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
 
-    const icons = [<AccountCircleIcon />, <QuestionAnswerIcon />, <GroupsIcon />, <DataObjectIcon />, <AddToPhotosIcon />];
+    const icons: React.ReactNode[] = [<AccountCircleIcon />, <QuestionAnswerIcon />, <GroupsIcon />, <DataObjectIcon />, <AddToPhotosIcon />];
+    const links: string[] = ["/profile/", "QAcommunity", "/groups/", "/snippets/", "/createPost/"];
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -163,12 +164,14 @@ export default function DrawerComponent({ mode, toggleMode }: HeaderProps) {
                 <List>
                     {['Profile', 'Q&A Commmunity', 'Groups', 'Create Snippet', 'Create Post'].map((text, index) => (
                     <ListItem key={text} disablePadding>
-                        <ListItemButton>
-                                <ListItemIcon>
-                                    { icons[index] }
-                                </ListItemIcon>
-                            <ListItemText primary={text} />
-                       </ListItemButton>
+                      <Link style={{ width: "100%" }} to={links[index]}>
+                          <ListItemButton>
+                                  <ListItemIcon>
+                                      { icons[index] }
+                                  </ListItemIcon>
+                              <ListItemText primary={text} />
+                        </ListItemButton>
+                      </Link>
                     </ListItem>))}
                     <ListItem disablePadding>
                         <ListItemButton onClick={toggleMode}>
@@ -194,7 +197,6 @@ export default function DrawerComponent({ mode, toggleMode }: HeaderProps) {
                 </List>
             </Drawer>
             <Main open={open} sx={{ mt: 5 }}>
-                {/* <DrawerHeader   /> */}
                 <Outlet />
             </Main>
         </Box>
