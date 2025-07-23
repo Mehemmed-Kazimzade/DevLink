@@ -4,6 +4,10 @@ import type { Field } from "../types/formTypes/Field";
 import ImageUpload from "./ImageUpload";
 import EditText from "./EditText";
 import EditBigText from "./EditBigText";
+import DifferFields from "../utils/DifferFields";
+import { useEffect, useRef, useState } from "react";
+import YesOrNoDialog from "./YesOrNoDialog";
+import Technologies from "./Technologies";
 
 interface GlobalModalProps {
   open: boolean;
@@ -25,26 +29,47 @@ const style = {
   p: 4,
 };
 
-export default function GlobalEditModal({open,handleClose,title,fields}: GlobalModalProps) {
+export default function GlobalEditModal({open, handleClose,title,fields}: GlobalModalProps) {
     if (!fields || !Array.isArray(fields)) return;
 
-    const form1 = fields.map(field => field.currValue);
+    const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
-    const onSave = () => {
-        const form2 = [];
-        for(const field of fields) {
-            const element = field.ref.current;
-            if (element?.type === "file" && element instanceof HTMLInputElement) {
-                const file = element.files?.[0];
+    const form1 = useRef<string[]>([]);
+
+    useEffect(() => {
+        form1.current = fields.map(field => field.type !== "image" ? field.currValue : "");
+    }, []);
+
+    const onSave = (hasClickedSave: boolean) => {
+        const form2 = fields.map(field => {
+            if (field.type === "image" && field.ref.current instanceof HTMLInputElement) {
+                return field.ref.current.files?.[0]?.name ?? '';
             }
-            else{
-                form2.push(element);
-            }
-        }
+
+            return field.ref.current?.value ?? "";
+        });
+
+        const haveUserChangedFields = DifferFields(form1.current, form2);
+
+        if (haveUserChangedFields && !hasClickedSave) setDialogOpen(true);
+
+        else handleClose();
     }
 
-    return (
-        <Modal open={open} onClose={handleClose}>
+    const onDialogClose = (hasClickedYes: boolean) => {
+        if (hasClickedYes) {
+            console.log("yes");
+        }
+
+        setDialogOpen(false);
+        handleClose();
+    }
+
+    return <>
+        <YesOrNoDialog title="Are you sure you want to discard changes" text="This action cannot be undone."
+        isDialogOpen={dialogOpen} onClose={onDialogClose} />
+
+        <Modal open={open} onClose={() => onSave(false)}>
             <Box sx={style}>
             <RsTypography text={title} xs="24px" lg={"30px"} />
             <Stack spacing={4} mt={2}>
@@ -62,14 +87,19 @@ export default function GlobalEditModal({open,handleClose,title,fields}: GlobalM
                 if (field.type === "bigText") {
                     return <EditBigText key={idx} ref={field.ref as React.RefObject<HTMLTextAreaElement>} currValue={field.currValue} />
                 }
+
+                if (field.type === "technology") {
+                    return <Technologies key={idx} techStack={field.values ?? []} ref={field.ref as React.RefObject<HTMLInputElement>} />
+                }
+
                 })}
 
                 <Box display={"flex"} gap="20px">
-                    <Button onClick={onSave} variant="contained" sx={{ bgcolor: "#51A687" }}>
+                    <Button onClick={() => onSave(true)} variant="contained" sx={{ bgcolor: "#51A687" }}>
                         SAVE
                     </Button>
 
-                    <Button onClick={onSave} variant="contained" sx={{ bgcolor: "#B31B1B" }}>
+                    <Button onClick={() => onSave(false)} variant="contained" sx={{ bgcolor: "#B31B1B" }}>
                         CANCEL
                     </Button>
                 </Box>
@@ -77,5 +107,5 @@ export default function GlobalEditModal({open,handleClose,title,fields}: GlobalM
             </Stack>
             </Box>
         </Modal>
-    );
+    </>;
 }

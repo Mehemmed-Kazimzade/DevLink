@@ -1,5 +1,5 @@
-export default function DifferFields(field1: string[], field2: string[]): boolean {
-    for(let i = 0; i < field1.length; i++) if (field1[i] !== field2[i]) return false;
+export default function DifferFields(fields1: string[], fields2: string[]): boolean {
+    for(let i = 0; i < fields1.length; i++) if (fields1[i] !== fields2[i]) return true;
 
-    return true;
+    return false;
 }

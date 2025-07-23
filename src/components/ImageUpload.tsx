@@ -13,35 +13,6 @@ const ImageUpload = forwardRef<HTMLInputElement, ImageUploadProps>((props, ref) 
 
     const currValue = props.currValue;
 
-    const getSafeFilename = (fallback = "avatar", mime = "image/png") => {
-        const ext = mime.split("/")[1];
-        return `${fallback}.${ext}`;
-    };
-
-    useEffect(() => {
-        const assignCurrValueAsFile = async () => {
-            try {
-                const response = await fetch(currValue);
-                const blob = await response.blob();
-                const file = new File([blob], getSafeFilename(), { type: blob.type });
-
-                const dataTransfer = new DataTransfer();
-                dataTransfer.items.add(file);
-
-                if (inputRef.current && inputRef.current.files){
-                    inputRef.current.files = dataTransfer.files;
-                }
-
-                const imageUrl = URL.createObjectURL(file);
-                setImagePreview(imageUrl);
-            } catch (err) {
-                console.error("Failed to fetch image:", err);
-            }
-        }
-
-        assignCurrValueAsFile();
-    }, []);
-    
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {

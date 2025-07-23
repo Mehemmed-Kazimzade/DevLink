@@ -12,7 +12,9 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { Launch, GitHub } from "@mui/icons-material";
-import ProfileActions from "./ProfileActions";
+import AddAction from "./AddAction";
+import EditAction from "./EditAction";
+import { useRef } from "react";
 
 interface ProjectsProps {
   projects: Project[];
@@ -23,12 +25,17 @@ export default function Projects({ projects }: ProjectsProps) {
 
   return (
     <Box mb={4}>
-      <Box display={"flex"} justifyContent={"space-between"} alignItems={isSmall ? "start" : "center"}
-            flexDirection={isSmall ? "column" : "row"} mb={2}>
+      <Box
+        display={"flex"}
+        justifyContent={"space-between"}
+        alignItems={isSmall ? "start" : "center"}
+        flexDirection={isSmall ? "column" : "row"}
+        mb={2}
+      >
         <Typography variant="h4" component="h2" gutterBottom>
           Featured Projects
         </Typography>
-        <ProfileActions showAddIcon={true} />
+        <AddAction />
       </Box>
 
       <Grid container spacing={3}>
@@ -43,9 +50,16 @@ export default function Projects({ projects }: ProjectsProps) {
               }}
             >
               <CardContent sx={{ flexGrow: 1 }}>
-                <Typography variant="h6" gutterBottom>
-                  {project.title}
-                </Typography>
+                <Box display={"flex"} alignItems={"center"} justifyContent={"space-between"}>
+                  <Typography variant="h6" gutterBottom>
+                    {project.title}
+                  </Typography>
+                  <EditAction title={"Editing project: " + project.title} fields={[
+                    { type: "text", ref: useRef<HTMLInputElement>(null), currValue: project.title },
+                    { type: "bigText", ref: useRef<HTMLTextAreaElement>(null), currValue: project.description},
+                    { type: "technology", ref: useRef<HTMLInputElement>(null), currValue: "", values: project.techStack }
+                  ]} />
+                </Box>
                 <Typography variant="body2" color="text.secondary">
                   {project.description}
                 </Typography>
@@ -72,25 +86,27 @@ export default function Projects({ projects }: ProjectsProps) {
                 </Box>
               </CardContent>
               <CardActions>
-                {project.liveUrl &&
-                    <Button
-                        size="small"
-                        startIcon={<Launch />}
-                        href={project.liveUrl}
-                        target="_blank">
-                        Live Demo
-                    </Button>
-                }
+                {project.liveUrl && (
+                  <Button
+                    size="small"
+                    startIcon={<Launch />}
+                    href={project.liveUrl}
+                    target="_blank"
+                  >
+                    Live Demo
+                  </Button>
+                )}
 
-                {project.repoUrl &&
-                    <Button
-                        size="small"
-                        startIcon={<GitHub />}
-                        href={project.repoUrl}
-                        target="_blank">
-                        GitHub
-                    </Button>
-                }
+                {project.repoUrl && (
+                  <Button
+                    size="small"
+                    startIcon={<GitHub />}
+                    href={project.repoUrl}
+                    target="_blank"
+                  >
+                    GitHub
+                  </Button>
+                )}
               </CardActions>
             </Card>
           </Grid>
