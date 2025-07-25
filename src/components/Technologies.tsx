@@ -1,28 +1,32 @@
 import { Autocomplete, Box, Chip, Stack, TextField, Typography } from "@mui/material";
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 
 interface TechnologiesProps {
   techStack: string[];
 }
 
-const Technologies = forwardRef<HTMLInputElement, TechnologiesProps>(({ techStack }, ref) => {
-    const inputRef = useRef<HTMLInputElement>(null);
+interface TechnologiesRef {
+  value: string;
+}
+
+const Technologies = forwardRef<TechnologiesRef, TechnologiesProps>(({ techStack }, ref) => {
     const [error, setError] = useState<string | null>(null);
-    const [inputKey, setInputKey] = useState(0); // NEW
+    const [inputKey, setInputKey] = useState(0);
     const [inputValue, setInputValue] = useState("");
     const [selectedTechs, setSelectedTechs] = useState<string[]>(techStack);
 
-    useImperativeHandle(ref, () => inputRef.current!, []);
+    useImperativeHandle(ref, () => ({
+        get value() {
+            return selectedTechs.join(",");
+        }
+    }));
 
-    useEffect(() => {
-        if (inputRef.current) inputRef.current.value = techStack.join(",");
-    }, [techStack]);
+    const handleDelete = (technologyName: string) => setSelectedTechs(prev => prev.filter(e => e !== technologyName));
 
     return (
         <>
         <Box display={"flex"} flexDirection={"column"} gap={2}>
             <Autocomplete
-                id="free-solo-demo"
                 key={inputKey}
                 freeSolo={false}
                 inputValue={inputValue}
@@ -32,22 +36,16 @@ const Technologies = forwardRef<HTMLInputElement, TechnologiesProps>(({ techStac
 
                     if (selectedTech) {
                         if(!selectedTechs.find(tech => tech === selectedTech.name)) {
-                            setSelectedTechs(prev => [...prev, selectedTech.name]);
-    
-                            if (inputRef.current) inputRef.current.value += "," + selectedTech.id;
-                            setInputValue("");
+                            setSelectedTechs(prev => [...prev, selectedTech.name]); 
                             setInputKey(prev => prev + 1);
-                            setError(null);
                         }
-                        else {
-                            setError(selectedTech.name + " already exists");
-                            setInputKey(prev => prev + 1);
-                            setInputValue("");
-                        }
+                        else setError(selectedTech.name + " already exists");
+
+                        setInputValue("");
+                        setInputKey(prev => prev + 1);
                     }
-                    else {
-                        console.log("Invalid or custom input:", value);
-                    }
+
+                    else console.log("Invalid or custom input:", value);
                 }}
                 options={options.map((option) => option.name)}
                 renderInput={(params) => <TextField {...params} label="Choose your technology" />}
@@ -58,9 +56,11 @@ const Technologies = forwardRef<HTMLInputElement, TechnologiesProps>(({ techStac
                 {selectedTechs.map((technologyName) => (
                 <Chip
                     key={technologyName}
+                    style={{ padding: 4 }}
                     label={technologyName}
                     size="small"
                     variant="outlined"
+                    onDelete={() => handleDelete(technologyName)}
                     sx={{ mb: 0.5 }}
                 />
                 ))}

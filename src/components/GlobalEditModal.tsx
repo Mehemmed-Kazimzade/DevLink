@@ -10,26 +10,31 @@ import YesOrNoDialog from "./YesOrNoDialog";
 import Technologies from "./Technologies";
 
 interface GlobalModalProps {
-  open: boolean;
-  handleClose: () => void;
-  title: string;
-  fields: Field[];
+    open: boolean;
+    handleClose: () => void;
+    title: string;
+    fields: Field[];
 }
 
 const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  maxWidth: 700,
-  width: "80%",
-  bgcolor: "background.paper",
-  borderRadius: 3,
-  boxShadow: 24,
-  p: 4,
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    maxWidth: 700,
+    width: "80%",
+    bgcolor: "background.paper",
+    borderRadius: 3,
+    boxShadow: 24,
+    p: 4,
 };
 
-export default function GlobalEditModal({open, handleClose,title,fields}: GlobalModalProps) {
+export default function GlobalEditModal({
+    open,
+    handleClose,
+    title,
+    fields,
+}: GlobalModalProps) {
     if (!fields || !Array.isArray(fields)) return;
 
     const [dialogOpen, setDialogOpen] = useState<boolean>(false);
@@ -37,13 +42,21 @@ export default function GlobalEditModal({open, handleClose,title,fields}: Global
     const form1 = useRef<string[]>([]);
 
     useEffect(() => {
-        form1.current = fields.map(field => field.type !== "image" ? field.currValue : "");
+        form1.current = fields.map((field) => {
+            if (field.type === "image") return "";
+            if (field.type === "technology") return field.values?.join(",") ?? "";
+            return field.currValue ?? "";
+        });
+
     }, []);
 
     const onSave = (hasClickedSave: boolean) => {
-        const form2 = fields.map(field => {
-            if (field.type === "image" && field.ref.current instanceof HTMLInputElement) {
-                return field.ref.current.files?.[0]?.name ?? '';
+        const form2 = fields.map((field) => {
+            if (
+                field.type === "image" &&
+                field.ref.current instanceof HTMLInputElement
+            ) {
+                return field.ref.current.files?.[0]?.name ?? "";
             }
 
             return field.ref.current?.value ?? "";
@@ -52,9 +65,8 @@ export default function GlobalEditModal({open, handleClose,title,fields}: Global
         const haveUserChangedFields = DifferFields(form1.current, form2);
 
         if (haveUserChangedFields && !hasClickedSave) setDialogOpen(true);
-
         else handleClose();
-    }
+    };
 
     const onDialogClose = (hasClickedYes: boolean) => {
         if (hasClickedYes) {
@@ -63,49 +75,91 @@ export default function GlobalEditModal({open, handleClose,title,fields}: Global
 
         setDialogOpen(false);
         handleClose();
-    }
+    };
 
-    return <>
-        <YesOrNoDialog title="Are you sure you want to discard changes" text="This action cannot be undone."
-        isDialogOpen={dialogOpen} onClose={onDialogClose} />
+    return (
+        <>
+            <YesOrNoDialog
+                title="Are you sure you want to discard changes"
+                text="This action cannot be undone."
+                isDialogOpen={dialogOpen}
+                onClose={onDialogClose}
+            />
 
-        <Modal open={open} onClose={() => onSave(false)}>
-            <Box sx={style}>
-            <RsTypography text={title} xs="24px" lg={"30px"} />
-            <Stack spacing={4} mt={2}>
-                {fields.map((field, idx) => {
+            <Modal open={open} onClose={() => onSave(false)}>
+                <Box sx={style}>
+                    <RsTypography text={title} xs="24px" lg={"30px"} />
+                    <Stack spacing={4} mt={2}>
+                        {fields.map((field, idx) => {
+                            if (field.type === "image") {
+                                return (
+                                    <ImageUpload
+                                        key={idx}
+                                        ref={
+                                            field.ref as React.RefObject<HTMLInputElement>
+                                        }
+                                        currValue={field.currValue}
+                                    />
+                                );
+                            }
 
-                if (field.type === "image") {
-                    return <ImageUpload key={idx} ref={field.ref as React.RefObject<HTMLInputElement>}
-                            currValue={field.currValue} />
-                }
+                            if (field.type === "text") {
+                                return (
+                                    <EditText
+                                        key={idx}
+                                        ref={
+                                            field.ref as React.RefObject<HTMLInputElement>
+                                        }
+                                        currValue={field.currValue}
+                                    />
+                                );
+                            }
 
-                if (field.type === "text") {
-                    return <EditText key={idx} ref={(field.ref as React.RefObject<HTMLInputElement>)} currValue={field.currValue} />;
-                }
+                            if (field.type === "bigText") {
+                                return (
+                                    <EditBigText
+                                        key={idx}
+                                        ref={
+                                            field.ref as React.RefObject<HTMLTextAreaElement>
+                                        }
+                                        currValue={field.currValue}
+                                    />
+                                );
+                            }
 
-                if (field.type === "bigText") {
-                    return <EditBigText key={idx} ref={field.ref as React.RefObject<HTMLTextAreaElement>} currValue={field.currValue} />
-                }
+                            if (field.type === "technology") {
+                                return (
+                                    <Technologies
+                                        key={idx}
+                                        techStack={field.values ?? []}
+                                        ref={
+                                            field.ref as React.RefObject<HTMLInputElement>
+                                        }
+                                    />
+                                );
+                            }
+                        })}
 
-                if (field.type === "technology") {
-                    return <Technologies key={idx} techStack={field.values ?? []} ref={field.ref as React.RefObject<HTMLInputElement>} />
-                }
+                        <Box display={"flex"} gap="20px">
+                            <Button
+                                onClick={() => onSave(true)}
+                                variant="contained"
+                                sx={{ bgcolor: "#51A687" }}
+                            >
+                                SAVE
+                            </Button>
 
-                })}
-
-                <Box display={"flex"} gap="20px">
-                    <Button onClick={() => onSave(true)} variant="contained" sx={{ bgcolor: "#51A687" }}>
-                        SAVE
-                    </Button>
-
-                    <Button onClick={() => onSave(false)} variant="contained" sx={{ bgcolor: "#B31B1B" }}>
-                        CANCEL
-                    </Button>
+                            <Button
+                                onClick={() => onSave(false)}
+                                variant="contained"
+                                sx={{ bgcolor: "#B31B1B" }}
+                            >
+                                CANCEL
+                            </Button>
+                        </Box>
+                    </Stack>
                 </Box>
-
-            </Stack>
-            </Box>
-        </Modal>
-    </>;
+            </Modal>
+        </>
+    );
 }

@@ -26,7 +26,7 @@ export default function Profile() {
       title: "E-Commerce Platform",
       description:
         "Full-stack e-commerce solution with payment integration and admin dashboard.",
-      techStack: ["React", "Node.js", "MongoDB", "Stripe"],
+      techStack: [{ skillName: "React" }, { skillName: "Node.js" }, { skillName: "MongoDB" }, { skillName: "Stripe" }],
       liveUrl: "#",
       repoUrl: "#",
     },
@@ -34,7 +34,7 @@ export default function Profile() {
       title: "Task Management App",
       description:
         "Collaborative task management tool with real-time updates and team features.",
-      techStack: ["Vue.js", "Express", "PostgreSQL", "Socket.io"],
+      techStack: [{ skillName: "Vue.js" }, { skillName: "Express" }, { skillName: "PostgreSQL" }, { skillName: "Socket.io" }],
       liveUrl: "#",
       repoUrl: "#",
     },
@@ -42,7 +42,7 @@ export default function Profile() {
       title: "Weather Dashboard",
       description:
         "Interactive weather dashboard with data visualization and location-based forecasts.",
-      techStack: ["React", "D3.js", "OpenWeather API", "Tailwind"],
+      techStack: [{ skillName: "React" }, { skillName: "D3.js" }, { skillName: "OpenWeather API" }, { skillName: "Tailwind" }],
       liveUrl: "#",
       repoUrl: "#",
     },
