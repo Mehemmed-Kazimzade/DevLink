@@ -1,5 +1,4 @@
 export default function DifferFields(before: any[], after: any[]): boolean {
-    console.log(before, after);
     if (before.length !== after.length) return true;
 
     for (let i = 0; i < before.length; i++) {

@@ -13,7 +13,7 @@ export default function PasswordReset() {
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
 
     const onSave = (data: FormData) => {
-        console.log(data.email);
+        // console.log(data.email);
     }
 
     return (

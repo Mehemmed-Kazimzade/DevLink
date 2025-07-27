@@ -35,7 +35,6 @@ export default function Login() {
         }
 
         if(status === "ERROR") {
-            console.log(data);
             setError("email", { type: "server", message: data }, {shouldFocus: true});
             return;
         }

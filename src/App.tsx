@@ -7,6 +7,8 @@ import GlobalStylesProvider from './contexts/GlobalStyles';
 import DrawerComponent from './components/ui/Drawer';
 import ProtectedRoute from "./routes/ProtectedRoute";
 import Profile from "./pages/Profile";
+import { Provider } from "react-redux";
+import { store } from "./slices/store";
 
 export default function App() {
     const [mode, setMode] = useState('light');
@@ -27,18 +29,20 @@ export default function App() {
     }, []);
 
     return <>
-        <ThemeProvider theme={theme}>
-            <GlobalStylesProvider />
-            <BrowserRouter>
-                <Routes>
-                    <Route path='/' element={<DrawerComponent mode={mode} toggleMode={toggleMode} />}>
-                        <Route element={<ProtectedRoute />}>
-                            <Route path="/profile/" element={<Profile />} />
+        <Provider store={store}>
+            <ThemeProvider theme={theme}>
+                <GlobalStylesProvider />
+                <BrowserRouter>
+                    <Routes>
+                        <Route path='/' element={<DrawerComponent mode={mode} toggleMode={toggleMode} />}>
+                            <Route element={<ProtectedRoute />}>
+                                <Route path="/profile/" element={<Profile />} />
+                            </Route>
+                            {AuthRoutes}
                         </Route>
-                        {AuthRoutes}
-                    </Route>
-                </Routes>
-            </BrowserRouter>
-        </ThemeProvider>
+                    </Routes>
+                </BrowserRouter>
+            </ThemeProvider>
+        </Provider>
     </>
 };

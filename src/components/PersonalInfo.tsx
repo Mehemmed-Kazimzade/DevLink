@@ -15,8 +15,12 @@ import { useEffect, useRef, useState } from "react";
 import ConvertToFormData from "../utils/ConvertToFormData";
 import useUpdateCredentials from "../api/useUpdateCredentials";
 import GlobalSnackbar from "./Snackbar";
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import useGetCredentials from "../api/useGetCredentials";
+import { setUserInfo } from "../slices/userSlice";
+import type { RootState } from "../slices/store";
+import type { UserInfo } from "../types/userProfileTypes/UserInfo";
+import fileToBase64 from "../utils/fileToBase64";
 
 interface BioProps {
     skills: Skill[];
@@ -24,8 +28,9 @@ interface BioProps {
 
 export default function PersonalInfo({ skills }: BioProps) {
     const isSmall = useMediaQuery("(max-width: 440px)");
-    const dispatch = useDispatch()
-    
+    const dispatch = useDispatch();
+    const userInfo = useSelector((state: RootState) => state.user).userInfo;
+
     const initialSnackbarState = { open: false, message: "" };
     const [snackbarState, setSnackbarState] = useState(initialSnackbarState);
 
@@ -36,10 +41,9 @@ export default function PersonalInfo({ skills }: BioProps) {
             );
 
             if (response.status === "SUCCESS") {
-
+                const data = response.data;
+                dispatch(setUserInfo(data));
             }
-
-            // if (response )
         };
 
         getUserInfo();
@@ -51,31 +55,22 @@ export default function PersonalInfo({ skills }: BioProps) {
             "http://localhost:8080/api/v1/profile/userInfo/"
         );
 
+        const updatedUserInfo: UserInfo = {
+            profilePictureUrl: userInfo?.profilePictureUrl ?? "",
+            about: updatedData.about,
+            bio: updatedData.bio
+        }
+
+        if (updatedData.profilePictureUrl !== null) {
+            console.log(updatedData.profilePictureUrl);
+            const base64Url = await fileToBase64(updatedData.profilePictureUrl);
+            updatedUserInfo.profilePictureUrl = base64Url;
+        }
+
+        dispatch(setUserInfo(updatedUserInfo));
+        
         setSnackbarState({ open: true, message: response.data });
     };
-
-    const fields: Field[] = [
-        {
-            type: "image",
-            name: "profilePicture",
-            currValue: "https://ui-avatars.com/api/?name=John+Doe",
-            ref: useRef<HTMLInputElement>(null),
-        },
-        {
-            type: "text",
-            name: "bio",
-            currValue: "Full Stack Developer & Software Engineer",
-            ref: useRef<HTMLInputElement>(null),
-        },
-
-        {
-            type: "bigText",
-            name: "about",
-            currValue:
-                "Passionate software engineer with 5+ years of experience building scalable web applications. I love creating efficient solutions and learning new technologies. Always excited to tackle challenging problems and collaborate with amazing teams.",
-            ref: useRef<HTMLTextAreaElement>(null),
-        },
-    ];
 
     return (
         <Paper elevation={3} sx={{ p: 4, mb: 4, bgcolor: "transparent" }}>
@@ -97,7 +92,7 @@ export default function PersonalInfo({ skills }: BioProps) {
                         >
                             <Avatar
                                 sx={{ width: 120, height: 120 }}
-                                src="/placeholder.svg?height=120&width=120"
+                                src={userInfo?.profilePictureUrl}
                                 alt="Profile Avatar"
                             />
 
@@ -110,7 +105,7 @@ export default function PersonalInfo({ skills }: BioProps) {
                                 fontWeight="bold"
                                 gutterBottom
                             >
-                                Full Stack Developer & Software Engineer
+                                {userInfo?.bio}
                             </Typography>
 
                             <Typography
@@ -118,12 +113,7 @@ export default function PersonalInfo({ skills }: BioProps) {
                                 color="text.secondary"
                                 sx={{ mb: 2, maxWidth: 750 }}
                             >
-                                Passionate software engineer with 5+ years of
-                                experience building scalable web applications. I
-                                love creating efficient solutions and learning
-                                new technologies. Always excited to tackle
-                                challenging problems and collaborate with
-                                amazing teams.
+                                {userInfo?.about}
                             </Typography>
                         </Box>
                     </Box>
@@ -153,8 +143,28 @@ export default function PersonalInfo({ skills }: BioProps) {
 
                 <EditAction
                     handleClickSave={handleClickSave}
-                    fields={fields}
                     title="Editing Personal Info"
+                    fields={[
+                        {
+                            type: "image",
+                            name: "profilePictureUrl",
+                            currValue: userInfo?.profilePictureUrl ?? "",
+                            ref: useRef<HTMLInputElement>(null),
+                        },
+                        {
+                            type: "text",
+                            name: "bio",
+                            currValue: userInfo?.bio ?? "",
+                            ref: useRef<HTMLInputElement>(null),
+                        },
+
+                        {
+                            type: "bigText",
+                            name: "about",
+                            currValue: userInfo?.about ?? "",
+                            ref: useRef<HTMLTextAreaElement>(null),
+                        },
+                    ]}
                 />
             </Box>
         </Paper>

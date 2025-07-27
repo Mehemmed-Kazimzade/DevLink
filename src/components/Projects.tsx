@@ -23,8 +23,6 @@ interface ProjectsProps {
 export default function Projects({ projects }: ProjectsProps) {
     const isSmall = useMediaQuery("(max-width: 420px)");
 
-    console.log(projects);
-
     return (
         <Box mb={4}>
             <Box
