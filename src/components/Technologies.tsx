@@ -17,8 +17,6 @@ const Technologies = forwardRef<TechnologiesRef, TechnologiesProps>(({ techStack
 
     useImperativeHandle(ref, () => ({
         get value() {
-
-            
             return selectedTechs.join(",");
         }
     }));

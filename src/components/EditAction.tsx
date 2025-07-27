@@ -7,9 +7,10 @@ import type { Field } from '../types/formTypes/Field';
 interface ProfileActionsProps {
     fields: Field[],
     title: string,
+    handleClickSave: (updatedData: any) => void
 };
 
-export default function EditAction({ fields, title }: ProfileActionsProps) {
+export default function EditAction({ fields, title, handleClickSave }: ProfileActionsProps) {
     const sx = { cursor: "pointer", transition: "300ms opacity ease-out",  ":hover": { opacity: 0.4 } }
     const [openEditModal, setOpenEditModal] = useState<boolean>(false);
 
@@ -21,7 +22,8 @@ export default function EditAction({ fields, title }: ProfileActionsProps) {
                 </Tooltip>
                 <GlobalEditModal open={openEditModal} 
                     fields={fields}
-                    handleClose={() => setOpenEditModal(false)} 
+                    handleClose={() => setOpenEditModal(false)}
+                    handleClickSave={handleClickSave}
                     title={title} />
             </Box>
         </Box>

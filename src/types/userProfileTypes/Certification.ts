@@ -1,5 +1,4 @@
 import type React from "react";
-import type { MUIIconType } from "../MuiIcon";
 
 export interface Certification {
     title: string,

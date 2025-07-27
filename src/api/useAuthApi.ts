@@ -11,7 +11,9 @@ export default function useAuthApi(formData: AuthForm, link: string) {
                 status: "SUCCESS",
                 data: response.data,
             }
-        } catch(e) {
+        }
+
+        catch(e) {
             if (axios.isAxiosError(e)) {
                 return {
                     status: "ERROR",

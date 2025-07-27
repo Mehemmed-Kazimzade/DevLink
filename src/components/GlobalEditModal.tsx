@@ -8,9 +8,12 @@ import DifferFields from "../utils/DifferFields";
 import { useEffect, useRef, useState } from "react";
 import YesOrNoDialog from "./YesOrNoDialog";
 import Technologies from "./Technologies";
+import useUpdateCredentials from "../api/useUpdateCredentials";
+import type { UserInfo } from "../types/userProfileTypes/UserInfo";
 
 interface GlobalModalProps {
     open: boolean;
+    handleClickSave: (updatedData: any) => void,
     handleClose: () => void;
     title: string;
     fields: Field[];
@@ -34,6 +37,7 @@ export default function GlobalEditModal({
     handleClose,
     title,
     fields,
+    handleClickSave
 }: GlobalModalProps) {
     if (!fields || !Array.isArray(fields)) return;
 
@@ -43,7 +47,7 @@ export default function GlobalEditModal({
 
     useEffect(() => {
         form1.current = fields.map((field) => {
-            if (field.type === "image") return "";
+            if (field.type === "image") return field.currValue ?? "";
             if (field.type === "technology") return field.values?.join(",") ?? "";
             return field.currValue ?? "";
         });
@@ -56,7 +60,7 @@ export default function GlobalEditModal({
                 field.type === "image" &&
                 field.ref.current instanceof HTMLInputElement
             ) {
-                return field.ref.current.files?.[0]?.name ?? "";
+                return field.ref.current.files?.[0] ?? null;
             }
 
             return field.ref.current?.value ?? "";
@@ -64,17 +68,28 @@ export default function GlobalEditModal({
 
         const haveUserChangedFields = DifferFields(form1.current, form2);
 
-        if (haveUserChangedFields && !hasClickedSave) setDialogOpen(true);
-        else handleClose();
+        if (hasClickedSave) {
+            if (haveUserChangedFields) {
+                const data: Record<string, any> = {};
+                fields.forEach((field, idx) => {
+                    data[field.name] = form2[idx];
+                });
+
+                handleClickSave(data);
+            }
+
+            handleClose();
+        }
+
+        else {
+            if (haveUserChangedFields) setDialogOpen(true);
+            else handleClose();
+        };
     };
 
     const onDialogClose = (hasClickedYes: boolean) => {
-        if (hasClickedYes) {
-            console.log("yes");
-        }
-
+        if (hasClickedYes) handleClose();
         setDialogOpen(false);
-        handleClose();
     };
 
     return (
