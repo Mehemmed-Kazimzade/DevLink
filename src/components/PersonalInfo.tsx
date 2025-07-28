@@ -55,6 +55,7 @@ export default function PersonalInfo({ skills }: BioProps) {
             "http://localhost:8080/api/v1/profile/userInfo/"
         );
 
+        
         const updatedUserInfo: UserInfo = {
             profilePictureUrl: userInfo?.profilePictureUrl ?? "",
             about: updatedData.about,
