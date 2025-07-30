@@ -65,6 +65,7 @@ export default function Projects({ projects }: ProjectsProps) {
                                         fields={[
                                             {
                                                 type: "text",
+                                                name: "title",
                                                 ref: useRef<HTMLInputElement>(
                                                     null
                                                 ),
@@ -72,6 +73,7 @@ export default function Projects({ projects }: ProjectsProps) {
                                             },
                                             {
                                                 type: "bigText",
+                                                name: "description",
                                                 ref: useRef<HTMLTextAreaElement>(
                                                     null
                                                 ),
@@ -79,9 +81,8 @@ export default function Projects({ projects }: ProjectsProps) {
                                             },
                                             {
                                                 type: "technology",
-                                                ref: useRef<HTMLInputElement>(
-                                                    null
-                                                ),
+                                                name: "techStack",
+                                                ref: useRef<HTMLInputElement>(null),
                                                 currValue: "",
                                                 values: project.techStack.map(
                                                     (skill) => skill.skillName

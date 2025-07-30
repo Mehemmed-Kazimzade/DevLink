@@ -1,12 +1,12 @@
 import { Autocomplete, Box, Chip, Stack, TextField, Typography } from "@mui/material";
-import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import { forwardRef, useImperativeHandle, useState } from "react";
 
 interface TechnologiesProps {
   techStack: string[];
 }
 
-interface TechnologiesRef {
-  value: string;
+export interface TechnologiesRef {
+  value: string[];
 }
 
 const Technologies = forwardRef<TechnologiesRef, TechnologiesProps>(({ techStack }, ref) => {
@@ -17,7 +17,7 @@ const Technologies = forwardRef<TechnologiesRef, TechnologiesProps>(({ techStack
 
     useImperativeHandle(ref, () => ({
         get value() {
-            return selectedTechs.join(",");
+            return selectedTechs;
         }
     }));
 
@@ -38,6 +38,7 @@ const Technologies = forwardRef<TechnologiesRef, TechnologiesProps>(({ techStack
                         if(!selectedTechs.find(tech => tech === selectedTech.name)) {
                             setSelectedTechs(prev => [...prev, selectedTech.name]); 
                             setInputKey(prev => prev + 1);
+                            setError("");
                         }
                         else setError(selectedTech.name + " already exists");
 

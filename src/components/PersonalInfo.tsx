@@ -10,26 +10,23 @@ import {
 import RsTypography from "./ui/RsTypography";
 import type { Skill } from "../types/userProfileTypes/Skill";
 import EditAction from "./EditAction";
-import type { Field } from "../types/formTypes/Field";
 import { useEffect, useRef, useState } from "react";
 import ConvertToFormData from "../utils/ConvertToFormData";
 import useUpdateCredentials from "../api/useUpdateCredentials";
 import GlobalSnackbar from "./Snackbar";
 import { useDispatch, useSelector } from "react-redux";
 import useGetCredentials from "../api/useGetCredentials";
-import { setUserInfo } from "../slices/userSlice";
+import { setUserInfo, setUserSkills } from "../slices/userSlice";
 import type { RootState } from "../slices/store";
 import type { UserInfo } from "../types/userProfileTypes/UserInfo";
 import fileToBase64 from "../utils/fileToBase64";
+import AddAction from "./AddAction";
 
-interface BioProps {
-    skills: Skill[];
-}
-
-export default function PersonalInfo({ skills }: BioProps) {
+export default function PersonalInfo() {
     const isSmall = useMediaQuery("(max-width: 440px)");
     const dispatch = useDispatch();
     const userInfo = useSelector((state: RootState) => state.user).userInfo;
+    const userSkills = useSelector((state: RootState) => state.user).skills;
 
     const initialSnackbarState = { open: false, message: "" };
     const [snackbarState, setSnackbarState] = useState(initialSnackbarState);
@@ -45,8 +42,21 @@ export default function PersonalInfo({ skills }: BioProps) {
                 dispatch(setUserInfo(data));
             }
         };
+        
+        const getUserSkills = async () => {
+            const response = await useGetCredentials(
+                "http://localhost:8080/api/v1/userSkills/getTechStack/"
+            )
+
+            if (response.status === "SUCCESS") {
+                const data = response.data;
+                console.log(data);
+                dispatch(setUserSkills(data));
+            }
+        }
 
         getUserInfo();
+        getUserSkills();
     }, []);
 
     const handleClickSave = async (updatedData: any) => {
@@ -55,23 +65,32 @@ export default function PersonalInfo({ skills }: BioProps) {
             "http://localhost:8080/api/v1/profile/userInfo/"
         );
 
-        
         const updatedUserInfo: UserInfo = {
+            ...userInfo,
             profilePictureUrl: userInfo?.profilePictureUrl ?? "",
             about: updatedData.about,
-            bio: updatedData.bio
-        }
+            bio: updatedData.bio,
+        };
 
         if (updatedData.profilePictureUrl !== null) {
-            console.log(updatedData.profilePictureUrl);
             const base64Url = await fileToBase64(updatedData.profilePictureUrl);
             updatedUserInfo.profilePictureUrl = base64Url;
         }
 
         dispatch(setUserInfo(updatedUserInfo));
-        
+
         setSnackbarState({ open: true, message: response.data });
     };
+
+    const onAddedSkills = async (addedData: any) => {
+
+        // const response = await useUpdateCredentials(
+        //     ConvertToFormData(addedData),
+        //     "http://localhost:8080//api/v1/userSkills/updateTechStack/"
+        // );
+
+        // const updatedUserSkills: Skill[] = addedData;
+    }
 
     return (
         <Paper elevation={3} sx={{ p: 4, mb: 4, bgcolor: "transparent" }}>
@@ -106,7 +125,7 @@ export default function PersonalInfo({ skills }: BioProps) {
                                 fontWeight="bold"
                                 gutterBottom
                             >
-                                {userInfo?.bio}
+                                {userInfo?.bio ?? "No bio yet."}
                             </Typography>
 
                             <Typography
@@ -114,13 +133,13 @@ export default function PersonalInfo({ skills }: BioProps) {
                                 color="text.secondary"
                                 sx={{ mb: 2, maxWidth: 750 }}
                             >
-                                {userInfo?.about}
+                                {userInfo?.about ?? "No about section yet."}
                             </Typography>
                         </Box>
                     </Box>
 
                     <Box>
-                        <Typography variant="h6" gutterBottom>
+                        <Typography variant="h6" gutterBottom fontWeight={"bold"}>
                             Skills & Technologies
                         </Typography>
                         <Stack
@@ -129,7 +148,7 @@ export default function PersonalInfo({ skills }: BioProps) {
                             flexWrap="wrap"
                             useFlexGap
                         >
-                            {skills.map((skill) => (
+                            {userSkills?.map((skill) => (
                                 <Chip
                                     key={skill.skillName}
                                     label={skill.skillName}
@@ -137,36 +156,54 @@ export default function PersonalInfo({ skills }: BioProps) {
                                     color="primary"
                                     sx={{ mb: 1 }}
                                 />
-                            ))}
+                            )) ?? "This information is unavailable"}
                         </Stack>
                     </Box>
                 </Box>
 
-                <EditAction
-                    handleClickSave={handleClickSave}
-                    title="Editing Personal Info"
-                    fields={[
-                        {
-                            type: "image",
-                            name: "profilePictureUrl",
-                            currValue: userInfo?.profilePictureUrl ?? "",
-                            ref: useRef<HTMLInputElement>(null),
-                        },
-                        {
-                            type: "text",
-                            name: "bio",
-                            currValue: userInfo?.bio ?? "",
-                            ref: useRef<HTMLInputElement>(null),
-                        },
+                <Box display={"flex"} gap={2}>
+                    <AddAction
+                        title={"Add skills"}
+                        handleClickSave={onAddedSkills}
+                        fields={[
+                            {
+                                type: "technology",
+                                name: "techStack",
+                                ref: useRef<HTMLInputElement>(null),
+                                currValue: "",
+                                values: userSkills?.map(
+                                    (skill) => skill.skillName
+                                ),
+                            },
+                        ]}
+                    />
 
-                        {
-                            type: "bigText",
-                            name: "about",
-                            currValue: userInfo?.about ?? "",
-                            ref: useRef<HTMLTextAreaElement>(null),
-                        },
-                    ]}
-                />
+                    <EditAction
+                        handleClickSave={handleClickSave}
+                        title="Editing Personal Info"
+                        fields={[
+                            {
+                                type: "image",
+                                name: "profilePictureUrl",
+                                currValue: userInfo?.profilePictureUrl ?? "",
+                                ref: useRef<HTMLInputElement>(null),
+                            },
+                            {
+                                type: "text",
+                                name: "bio",
+                                currValue: userInfo?.bio ?? "",
+                                ref: useRef<HTMLInputElement>(null),
+                            },
+
+                            {
+                                type: "bigText",
+                                name: "about",
+                                currValue: userInfo?.about ?? "",
+                                ref: useRef<HTMLTextAreaElement>(null),
+                            },
+                        ]}
+                    />
+                </Box>
             </Box>
         </Paper>
     );

@@ -7,7 +7,7 @@ import EditBigText from "./EditBigText";
 import DifferFields from "../utils/DifferFields";
 import { useEffect, useRef, useState } from "react";
 import YesOrNoDialog from "./YesOrNoDialog";
-import Technologies from "./Technologies";
+import Technologies, { type TechnologiesRef } from "./Technologies";
 import useUpdateCredentials from "../api/useUpdateCredentials";
 import type { UserInfo } from "../types/userProfileTypes/UserInfo";
 
@@ -43,16 +43,16 @@ export default function GlobalEditModal({
 
     const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
-    const form1 = useRef<string[]>([]);
+    const form1 = useRef<(string | string[])[]>([]);
 
     useEffect(() => {
         form1.current = fields.map((field) => {
             if (field.type === "image") return field.currValue ?? "";
-            if (field.type === "technology") return field.values?.join(",") ?? "";
+            if (field.type === "technology") return field.values ?? [];
             return field.currValue ?? "";
         });
 
-    }, []);
+    }, [fields]);
 
     const onSave = (hasClickedSave: boolean) => {
         const form2 = fields.map((field) => {
@@ -148,7 +148,7 @@ export default function GlobalEditModal({
                                         key={idx}
                                         techStack={field.values ?? []}
                                         ref={
-                                            field.ref as React.RefObject<HTMLInputElement>
+                                            field.ref as React.RefObject<TechnologiesRef>
                                         }
                                     />
                                 );

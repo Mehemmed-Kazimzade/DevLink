@@ -5,9 +5,10 @@ import type { Snippet } from "./Snippet";
 import type { UserInfo } from "./UserInfo";
 
 export interface UserProfile {
+    fullName: string, 
     userInfo: UserInfo | null,
     projects: Project[] | null,
     certifications: Certification[] | null,
     snippets: Snippet[] | null,
-    skill: Skill[] | null,
+    skills: Skill[] | null,
 }

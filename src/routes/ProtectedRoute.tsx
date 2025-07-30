@@ -26,6 +26,7 @@ export default function ProtectedRoute() {
 
                     const response = await axios.post("http://localhost:8080/api/v1/auth/refresh/", {}, { withCredentials: true });
                     if(response.status === 200) {
+                        console.log('yes');
                         localStorage.setItem("token", response.data.token);
                         setIsValid(true);
                     }
