@@ -2,66 +2,18 @@
 import { Container } from "@mui/material";
 import { EmojiEvents, School } from "@mui/icons-material";
 import PersonalInfo from "../components/PersonalInfo";
-import type { Skill } from "../types/userProfileTypes/Skill";
-import type { Project } from "../types/userProfileTypes/Project";
 import Projects from "../components/Projects";
 import type { Snippet } from "../types/userProfileTypes/Snippet";
 import Snippets from "../components/Snippets";
 import type { Certification } from "../types/userProfileTypes/Certification";
 import Certifications from "../components/Certifications";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { fetchProjects, fetchUserInfo, fetchUserSkills } from "../stateManagement/thunks";
+import type { AppDispatch } from "../slices/store";
 
 export default function Profile() {
-    const skills: Skill[] = [
-        { skillName: "React" },
-        { skillName: "Java" },
-        { skillName: "TypeScript" },
-        { skillName: "Node.js" },
-        { skillName: "Python" },
-        { skillName: "AWS" },
-        { skillName: "Docker" },
-    ];
-
-    const projects: Project[] = [
-        {
-            title: "E-Commerce Platform",
-            description:
-                "Full-stack e-commerce solution with payment integration and admin dashboard.",
-            techStack: [
-                { skillName: "React" },
-                { skillName: "Node.js" },
-                { skillName: "MongoDB" },
-                { skillName: "Stripe" },
-            ],
-            liveUrl: "#",
-            repoUrl: "#",
-        },
-        {
-            title: "Task Management App",
-            description:
-                "Collaborative task management tool with real-time updates and team features.",
-            techStack: [
-                { skillName: "Vue.js" },
-                { skillName: "Express" },
-                { skillName: "PostgreSQL" },
-                { skillName: "Socket.io" },
-            ],
-            liveUrl: "#",
-            repoUrl: "#",
-        },
-        {
-            title: "Weather Dashboard",
-            description:
-                "Interactive weather dashboard with data visualization and location-based forecasts.",
-            techStack: [
-                { skillName: "React" },
-                { skillName: "D3.js" },
-                { skillName: "OpenWeather API" },
-                { skillName: "Tailwind" },
-            ],
-            liveUrl: "#",
-            repoUrl: "#",
-        },
-    ];
+    const dispatch = useDispatch<AppDispatch>();
 
     const snippets: Snippet[] = [
         {
@@ -122,11 +74,19 @@ export default function Profile() {
         },
     ];
 
+    useEffect(() => {
+
+        dispatch(fetchUserInfo());
+        dispatch(fetchUserSkills());
+        dispatch(fetchProjects());
+    
+    }, [dispatch]);
+
     return (
         <Container maxWidth="lg" sx={{ py: 4 }}>
-            <PersonalInfo skills={skills} />
+            <PersonalInfo />
 
-            <Projects projects={projects} />
+            <Projects />
 
             <Snippets snippets={snippets} />
 

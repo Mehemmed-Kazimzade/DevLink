@@ -1,4 +1,3 @@
-import type { Project } from "../types/userProfileTypes/Project";
 import {
     Grid,
     Typography,
@@ -15,13 +14,19 @@ import { Launch, GitHub } from "@mui/icons-material";
 import AddAction from "./AddAction";
 import EditAction from "./EditAction";
 import { useRef } from "react";
+import { useSelector } from "react-redux";
+import type { RootState } from "../slices/store";
 
-interface ProjectsProps {
-    projects: Project[];
-}
-
-export default function Projects({ projects }: ProjectsProps) {
+export default function Projects() {
     const isSmall = useMediaQuery("(max-width: 420px)");
+    const projects = useSelector((state: RootState) => state.user).projects;
+
+    const handleClickSave = async (updatedData: any) => {
+        console.log(updatedData);
+        // const response = await useUpdateCredentials(
+
+        // )
+    }
 
     return (
         <Box mb={4}>
@@ -35,11 +40,11 @@ export default function Projects({ projects }: ProjectsProps) {
                 <Typography variant="h4" component="h2" gutterBottom>
                     Featured Projects
                 </Typography>
-                <AddAction />
+                {/* <AddAction /> */}
             </Box>
 
             <Grid container spacing={3}>
-                {projects.map((project, index) => (
+                {(Array.isArray(projects) && projects.length > 0) ? projects.map((project, index) => (
                     <Grid size={{ xs: 12, md: 4 }} key={index}>
                         <Card
                             sx={{
@@ -89,6 +94,8 @@ export default function Projects({ projects }: ProjectsProps) {
                                                 ),
                                             },
                                         ]}
+
+                                        handleClickSave={handleClickSave}
                                     />
                                 </Box>
                                 <Typography
@@ -147,7 +154,7 @@ export default function Projects({ projects }: ProjectsProps) {
                             </CardActions>
                         </Card>
                     </Grid>
-                ))}
+                )) : "No Project Information Avaliable"}
             </Grid>
         </Box>
     );

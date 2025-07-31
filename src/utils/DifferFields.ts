@@ -7,12 +7,18 @@ export default function DifferFields(before: any[], after: any[]): boolean {
         const b = before[i];
         const a = after[i];
 
-        if (a instanceof Array && b instanceof Array) if (!unorderedEqual(a, b)) return true;
-
         if (a === null) continue;
-        if (a instanceof File) return true;
 
-        if (b !== a) return true;
+        else if (a instanceof Array && b instanceof Array) {
+            console.log(unorderedEqual(a,b));
+            if (!unorderedEqual(a, b)) {
+                return true;
+            }
+        }
+
+        else if (a instanceof File) return true;
+
+        else if (b !== a) return true;
     }
 
     return false;

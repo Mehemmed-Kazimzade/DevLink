@@ -1,9 +1,8 @@
 import axios from "axios";
 import type { ApiResponse } from "../types/ApiResponse";
-import type { UserInfo } from "../types/userProfileTypes/UserInfo";
 
-export default function useGetCredentials(link: string) {
-    const sendRequest = async (): Promise<ApiResponse<UserInfo>> => {
+export default function useGetCredentials<T>(link: string) {
+    const sendRequest = async (): Promise<ApiResponse<T>> => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.get(link, {
@@ -12,10 +11,10 @@ export default function useGetCredentials(link: string) {
                 },
                 withCredentials: true,
             });
-
+            
             return {
                 status: "SUCCESS",
-                data: response.data,
+                data: response.data as T,
             }
         }
         catch(e) {

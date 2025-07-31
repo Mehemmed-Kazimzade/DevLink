@@ -8,19 +8,18 @@ import {
     useMediaQuery,
 } from "@mui/material";
 import RsTypography from "./ui/RsTypography";
-import type { Skill } from "../types/userProfileTypes/Skill";
 import EditAction from "./EditAction";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import ConvertToFormData from "../utils/ConvertToFormData";
 import useUpdateCredentials from "../api/useUpdateCredentials";
 import GlobalSnackbar from "./Snackbar";
 import { useDispatch, useSelector } from "react-redux";
-import useGetCredentials from "../api/useGetCredentials";
 import { setUserInfo, setUserSkills } from "../slices/userSlice";
 import type { RootState } from "../slices/store";
 import type { UserInfo } from "../types/userProfileTypes/UserInfo";
 import fileToBase64 from "../utils/fileToBase64";
 import AddAction from "./AddAction";
+import ConvertToSkill from "../utils/ConvertToSkill.";
 
 export default function PersonalInfo() {
     const isSmall = useMediaQuery("(max-width: 440px)");
@@ -30,34 +29,6 @@ export default function PersonalInfo() {
 
     const initialSnackbarState = { open: false, message: "" };
     const [snackbarState, setSnackbarState] = useState(initialSnackbarState);
-
-    useEffect(() => {
-        const getUserInfo = async () => {
-            const response = await useGetCredentials(
-                "http://localhost:8080/api/v1/profile/getUserInfo/"
-            );
-
-            if (response.status === "SUCCESS") {
-                const data = response.data;
-                dispatch(setUserInfo(data));
-            }
-        };
-        
-        const getUserSkills = async () => {
-            const response = await useGetCredentials(
-                "http://localhost:8080/api/v1/userSkills/getTechStack/"
-            )
-
-            if (response.status === "SUCCESS") {
-                const data = response.data;
-                console.log(data);
-                dispatch(setUserSkills(data));
-            }
-        }
-
-        getUserInfo();
-        getUserSkills();
-    }, []);
 
     const handleClickSave = async (updatedData: any) => {
         const response = await useUpdateCredentials(
@@ -83,14 +54,16 @@ export default function PersonalInfo() {
     };
 
     const onAddedSkills = async (addedData: any) => {
+        const response = await useUpdateCredentials(
+            ConvertToFormData(addedData),
+            "http://localhost:8080/api/v1/userSkills/updateTechStack/"
+        );
 
-        // const response = await useUpdateCredentials(
-        //     ConvertToFormData(addedData),
-        //     "http://localhost:8080//api/v1/userSkills/updateTechStack/"
-        // );
+        const convertedSkills = ConvertToSkill(addedData.techStack);
 
-        // const updatedUserSkills: Skill[] = addedData;
-    }
+        dispatch(setUserSkills(convertedSkills));
+        setSnackbarState({open: true, message: response.data});
+    };
 
     return (
         <Paper elevation={3} sx={{ p: 4, mb: 4, bgcolor: "transparent" }}>
@@ -139,7 +112,11 @@ export default function PersonalInfo() {
                     </Box>
 
                     <Box>
-                        <Typography variant="h6" gutterBottom fontWeight={"bold"}>
+                        <Typography
+                            variant="h6"
+                            gutterBottom
+                            fontWeight={"bold"}
+                        >
                             Skills & Technologies
                         </Typography>
                         <Stack
@@ -148,15 +125,19 @@ export default function PersonalInfo() {
                             flexWrap="wrap"
                             useFlexGap
                         >
-                            {userSkills?.map((skill) => (
-                                <Chip
-                                    key={skill.skillName}
-                                    label={skill.skillName}
-                                    variant="outlined"
-                                    color="primary"
-                                    sx={{ mb: 1 }}
-                                />
-                            )) ?? "This information is unavailable"}
+                            {!userSkills ||
+                            (Array.isArray(userSkills) &&
+                                userSkills.length === 0)
+                                ? "No skills were added"
+                                : userSkills.map((skill, idx) => (
+                                      <Chip
+                                          key={idx}
+                                          label={skill.skillName}
+                                          variant="outlined"
+                                          color="primary"
+                                          sx={{ mb: 1 }}
+                                      />
+                                  ))}
                         </Stack>
                     </Box>
                 </Box>

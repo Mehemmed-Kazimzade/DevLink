@@ -10,6 +10,7 @@ import YesOrNoDialog from "./YesOrNoDialog";
 import Technologies, { type TechnologiesRef } from "./Technologies";
 import useUpdateCredentials from "../api/useUpdateCredentials";
 import type { UserInfo } from "../types/userProfileTypes/UserInfo";
+import type { Skill } from "../types/userProfileTypes/Skill";
 
 interface GlobalModalProps {
     open: boolean;
@@ -72,6 +73,10 @@ export default function GlobalEditModal({
             if (haveUserChangedFields) {
                 const data: Record<string, any> = {};
                 fields.forEach((field, idx) => {
+                    if (field.type === "technology") {
+                        const strArr = form2[idx] as string[];
+                        data[field.name] = strArr.map(t => ( { skillName: t } ));
+                    }
                     data[field.name] = form2[idx];
                 });
 
@@ -81,6 +86,7 @@ export default function GlobalEditModal({
             handleClose();
         }
 
+        
         else {
             if (haveUserChangedFields) setDialogOpen(true);
             else handleClose();
