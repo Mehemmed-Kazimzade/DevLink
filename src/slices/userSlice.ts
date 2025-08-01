@@ -1,6 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { UserProfile } from "../types/userProfileTypes/UserProfile";
-import { fetchProjects, fetchUserInfo, fetchUserSkills } from "../stateManagement/thunks";
+import {
+    fetchProjects,
+    fetchUserInfo,
+    fetchUserSkills,
+} from "../stateManagement/thunks";
 import type { UserInfo } from "../types/userProfileTypes/UserInfo";
 
 const initialState: UserProfile = {
@@ -18,6 +22,23 @@ const userSlice = createSlice({
     reducers: {
         setProjects(state, action) {
             state.projects = action.payload;
+        },
+
+        updateProject(state, action) {
+            state.projects = state.projects?.map((project) =>
+                project.id === action.payload.id ? action.payload : project
+            ) ?? [];
+        },
+
+        deleteProject(state, action) {
+            state.projects =
+                state.projects?.filter(
+                    (project) => project.id !== action.payload
+                ) ?? null;
+        },
+
+        addProject(state, action) {
+            state.projects?.push(action.payload);
         },
 
         setUserSkills(state, action) {
@@ -47,9 +68,17 @@ const userSlice = createSlice({
             })
             .addCase(fetchProjects.fulfilled, (state, action) => {
                 state.projects = action.payload;
-            })
+            });
     },
 });
 
-export const { setUserSkills, setUserInfo, clearProfile } = userSlice.actions;
+export const {
+    setUserSkills,
+    addProject,
+    setUserInfo,
+    setProjects,
+    deleteProject,
+    clearProfile,
+    updateProject,
+} = userSlice.actions;
 export default userSlice.reducer;

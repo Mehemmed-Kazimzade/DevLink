@@ -1,6 +1,7 @@
 import type { Skill } from "./Skill";
 
 export interface Project {
+    id: number,
     title: string,
     description: string,
     techStack: Skill[],

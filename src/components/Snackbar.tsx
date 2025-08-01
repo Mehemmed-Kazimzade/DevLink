@@ -4,12 +4,14 @@ interface GlobalSnackbarProps {
     message: string;
     open: boolean;
     handleClose: () => void;
+    severity: "success" | "error",
 }
 
 export default function GlobalSnackbar({
     message,
     open,
     handleClose,
+    severity
 }: GlobalSnackbarProps) {
     return (
         <Snackbar
@@ -22,7 +24,7 @@ export default function GlobalSnackbar({
         >
             <Alert
                 onClose={handleClose}
-                severity="success"
+                severity={severity}
                 sx={{ width: "100%", fontSize: 14, alignItems: "center" }}
                 variant="filled"
             >

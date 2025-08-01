@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import RsTypography from "./ui/RsTypography";
 import EditAction from "./EditAction";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import ConvertToFormData from "../utils/ConvertToFormData";
 import useUpdateCredentials from "../api/useUpdateCredentials";
 import GlobalSnackbar from "./Snackbar";
@@ -18,8 +18,9 @@ import { setUserInfo, setUserSkills } from "../slices/userSlice";
 import type { RootState } from "../slices/store";
 import type { UserInfo } from "../types/userProfileTypes/UserInfo";
 import fileToBase64 from "../utils/fileToBase64";
-import AddAction from "./AddAction";
 import ConvertToSkill from "../utils/ConvertToSkill.";
+import useSnackbar from "../hooks/useSnackbar";
+import { initialSnackbarState } from "../constants/initialSnackbarState";
 
 export default function PersonalInfo() {
     const isSmall = useMediaQuery("(max-width: 440px)");
@@ -27,8 +28,7 @@ export default function PersonalInfo() {
     const userInfo = useSelector((state: RootState) => state.user).userInfo;
     const userSkills = useSelector((state: RootState) => state.user).skills;
 
-    const initialSnackbarState = { open: false, message: "" };
-    const [snackbarState, setSnackbarState] = useState(initialSnackbarState);
+    const { isSnackbarOpen, setSnackbarState, snackbarMessage, snackbarSeverity } = useSnackbar();
 
     const handleClickSave = async (updatedData: any) => {
         const response = await useUpdateCredentials(
@@ -50,7 +50,7 @@ export default function PersonalInfo() {
 
         dispatch(setUserInfo(updatedUserInfo));
 
-        setSnackbarState({ open: true, message: response.data });
+        setSnackbarState({ open: true, message: response.data, severity: "success" });
     };
 
     const onAddedSkills = async (addedData: any) => {
@@ -62,17 +62,18 @@ export default function PersonalInfo() {
         const convertedSkills = ConvertToSkill(addedData.techStack);
 
         dispatch(setUserSkills(convertedSkills));
-        setSnackbarState({open: true, message: response.data});
+        setSnackbarState({ open: true, message: response.data, severity: "success" });
     };
 
     return (
         <Paper elevation={3} sx={{ p: 4, mb: 4, bgcolor: "transparent" }}>
             <GlobalSnackbar
-                open={snackbarState.open}
+                open={isSnackbarOpen}
                 handleClose={() => {
                     setSnackbarState(initialSnackbarState);
                 }}
-                message={snackbarState.message}
+                message={snackbarMessage}
+                severity={snackbarSeverity}
             />
             <Box display={"flex"} justifyContent={"space-between"}>
                 <Box>
@@ -143,7 +144,8 @@ export default function PersonalInfo() {
                 </Box>
 
                 <Box display={"flex"} gap={2}>
-                    <AddAction
+                    <EditAction
+                        type="add"
                         title={"Add skills"}
                         handleClickSave={onAddedSkills}
                         fields={[

@@ -14,7 +14,6 @@ import CodeBlock from "./CodeBlock";
 import type { Snippet } from "../types/userProfileTypes/Snippet";
 import ProfileActions from "./EditAction";
 import EditAction from "./EditAction";
-import AddAction from "./AddAction";
 import { useRef } from "react";
 
 interface SnippetsProps {
@@ -36,7 +35,6 @@ export default function Snippets({ snippets }: SnippetsProps) {
                 <Typography variant="h4" component="h2" gutterBottom>
                     Code Snippets & Gists
                 </Typography>
-                <AddAction />
             </Box>
             <Grid container spacing={3}>
                 {snippets.map((snippet, index) => (

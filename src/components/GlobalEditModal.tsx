@@ -92,7 +92,7 @@ export default function GlobalEditModal({
             else handleClose();
         };
     };
-
+g
     const onDialogClose = (hasClickedYes: boolean) => {
         if (hasClickedYes) handleClose();
         setDialogOpen(false);
