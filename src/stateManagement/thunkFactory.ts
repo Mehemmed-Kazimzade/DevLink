@@ -6,7 +6,6 @@ export default function createFetchThunk<T>(type: string, url: string, transform
         type,
         async (_, thunkAPI) => {
             const response = await useGetCredentials<T>(url);
-            console.log(response.data);
 
             if(response.status === "SUCCESS") {
                 const transformed = transform ? transform(response.data) : response.data;

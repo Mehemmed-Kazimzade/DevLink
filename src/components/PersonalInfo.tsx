@@ -162,6 +162,7 @@ export default function PersonalInfo() {
                     />
 
                     <EditAction
+                        type="edit"
                         handleClickSave={handleClickSave}
                         title="Editing Personal Info"
                         fields={[

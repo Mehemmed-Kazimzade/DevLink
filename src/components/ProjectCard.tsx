@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import EditAction from "./EditAction";
 import type { Project } from "../types/userProfileTypes/Project";
-import useProjectFieldDistributor from "../distributers/ProjectFieldDistributer";
 import { GitHub, Launch } from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { sx } from "../constants/SxForIcons";
@@ -23,16 +22,17 @@ import type { SnackbarState } from "../constants/initialSnackbarState";
 import useUpdateCredentials from "../api/useUpdateCredentials";
 import ConvertToFormData from "../utils/ConvertToFormData";
 import ConvertToSkill from "../utils/ConvertToSkill.";
+import { sxForWordBreaking } from "../constants/SxForWordBreaking";
+import useProjectFieldDistributor from "../distributers/useProjectFieldDistributer";
 
 interface ProjectCardProps {
     project: Project;
-    setSnackbarState: (snackbarState: SnackbarState) => void
+    setSnackbarState: (snackbarState: SnackbarState) => void;
 }
 
 export default function ProjectCard({
     project,
-    setSnackbarState
-
+    setSnackbarState,
 }: ProjectCardProps) {
     const fields = useProjectFieldDistributor(
         project.title,
@@ -47,23 +47,27 @@ export default function ProjectCard({
         const response = await useUpdateCredentials(
             ConvertToFormData(updatedData),
             "http://localhost:8080/api/v1/profile/updateProject/"
-        )
+        );
 
-        
         if (response.status === "SUCCESS") {
             updatedData.id = id;
             updatedData.techStack = ConvertToSkill(updatedData.techStack);
-            console.log(updatedData);
-            dispatch(updateProject(updatedData));
-            setSnackbarState({ open: true, message: `Project ${project.title} updated.`, severity: "success" });
-        }
-        
-        else{
-            setSnackbarState({ open: true, message: response.data, severity: "success" });
-        }
 
+            dispatch(updateProject(updatedData));
+            setSnackbarState({
+                open: true,
+                message: `Project ${updatedData.title} updated.`,
+                severity: "success",
+            });
+        } else {
+            setSnackbarState({
+                open: true,
+                message: response.data,
+                severity: "success",
+            });
+        }
     };
-    
+
     const onDelete = async (hasClickedYes: boolean, id: number) => {
         if (hasClickedYes) {
             const response = await useDeleteCredentials(
@@ -71,13 +75,19 @@ export default function ProjectCard({
             );
 
             if (response.status === "SUCCESS") {
-                setSnackbarState({ open: true, message: response.data.message, severity: "success" });
+                setSnackbarState({
+                    open: true,
+                    message: response.data.message,
+                    severity: "success",
+                });
 
                 dispatch(deleteProject(id));
-            }
-            
-            else {
-                setSnackbarState({ open: true, message: response.data, severity: "error" });
+            } else {
+                setSnackbarState({
+                    open: true,
+                    message: response.data,
+                    severity: "error",
+                });
             }
         }
 
@@ -90,7 +100,9 @@ export default function ProjectCard({
                 title="Are you sure you want to delete this project"
                 text="This action cannot be undone"
                 isDialogOpen={dialogOpen}
-                onClose={(hasClickedYes: boolean) => onDelete(hasClickedYes, project.id)}
+                onClose={(hasClickedYes: boolean) =>
+                    onDelete(hasClickedYes, project.id)
+                }
             />
 
             <Card
@@ -107,7 +119,12 @@ export default function ProjectCard({
                         alignItems={"center"}
                         justifyContent={"space-between"}
                     >
-                        <Typography variant="h6" gutterBottom>
+                        <Typography
+                            sx={sxForWordBreaking}
+                            variant="h6"
+                            fontWeight={"bold"}
+                            gutterBottom
+                        >
                             {project.title}
                         </Typography>
                         <Box display={"flex"} gap={2}>
@@ -115,7 +132,9 @@ export default function ProjectCard({
                                 type="edit"
                                 title={"Editing project: " + project.title}
                                 fields={fields}
-                                handleClickSave={(updatedData: any) => onUpdate(updatedData, project.id)}
+                                handleClickSave={(updatedData: any) =>
+                                    onUpdate(updatedData, project.id)
+                                }
                             />
                             <DeleteIcon
                                 onClick={() => setDialogOpen(true)}
@@ -123,11 +142,20 @@ export default function ProjectCard({
                             />
                         </Box>
                     </Box>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography
+                        sx={sxForWordBreaking}
+                        variant="body1"
+                        color="text.secondary"
+                        gutterBottom
+                    >
                         {project.description}
                     </Typography>
-                    <Box mb={2}>
-                        <Typography variant="subtitle2" gutterBottom>
+                    <Box mt={2} mb={2}>
+                        <Typography
+                            variant="body1"
+                            fontWeight={"bold"}
+                            gutterBottom
+                        >
                             Tech Stack:
                         </Typography>
                         <Stack

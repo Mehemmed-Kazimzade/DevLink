@@ -1,5 +1,6 @@
 import { TextField } from "@mui/material";
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { sxForWordBreaking } from "../constants/SxForWordBreaking";
 
 interface EditBigTextProps {
     currValue: string
@@ -21,6 +22,7 @@ const EditBigText = forwardRef<HTMLTextAreaElement, EditBigTextProps>(({ currVal
             minRows={3}
             maxRows={14}
             variant="outlined"
+            sx={sxForWordBreaking}
             fullWidth
             defaultValue={currValue}
         />

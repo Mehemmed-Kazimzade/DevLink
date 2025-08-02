@@ -1,5 +1,6 @@
 import { TextField } from "@mui/material";
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
+import { sxForWordBreaking } from "../constants/SxForWordBreaking";
 
 interface EditTextProps {
     currValue: string
@@ -16,6 +17,7 @@ const EditText = forwardRef<HTMLInputElement, EditTextProps>(({ currValue }, ref
 
     return (
         <TextField
+            sx={sxForWordBreaking}
             inputRef={inputRef}
             variant="outlined"
             defaultValue={currValue}

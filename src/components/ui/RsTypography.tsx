@@ -1,5 +1,6 @@
 import Typography, {type TypographyProps } from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { sxForWordBreaking } from '../../constants/SxForWordBreaking';
 
 interface RsTypographyProps extends Omit<TypographyProps, 'fontSize'> {
   fontWeight?: TypographyProps['fontWeight']; // make optional, default to 'normal'
@@ -12,7 +13,7 @@ export default function RsTypography({ fontWeight = "normal", lg, xs, text, ...r
     const isLargeScreen = useMediaQuery("(min-width: 570px)");
 
     return (
-        <Typography fontSize={ isLargeScreen ? lg : xs } fontWeight={fontWeight} {...rest} >
+        <Typography sx={sxForWordBreaking} fontSize={ isLargeScreen ? lg : xs } fontWeight={fontWeight} {...rest} >
             {text}
         </Typography>
     )

@@ -8,9 +8,7 @@ import DifferFields from "../utils/DifferFields";
 import { useEffect, useRef, useState } from "react";
 import YesOrNoDialog from "./YesOrNoDialog";
 import Technologies, { type TechnologiesRef } from "./Technologies";
-import useUpdateCredentials from "../api/useUpdateCredentials";
-import type { UserInfo } from "../types/userProfileTypes/UserInfo";
-import type { Skill } from "../types/userProfileTypes/Skill";
+import SelectLanguage, { type SelectLanguageRef } from "./SelectLanguage";
 
 interface GlobalModalProps {
     open: boolean;
@@ -27,6 +25,8 @@ const style = {
     transform: "translate(-50%, -50%)",
     maxWidth: 700,
     width: "80%",
+    maxHeight: "700px",
+    overflow: "scroll",
     bgcolor: "background.paper",
     borderRadius: 3,
     boxShadow: 24,
@@ -92,7 +92,7 @@ export default function GlobalEditModal({
             else handleClose();
         };
     };
-g
+
     const onDialogClose = (hasClickedYes: boolean) => {
         if (hasClickedYes) handleClose();
         setDialogOpen(false);
@@ -158,6 +158,18 @@ g
                                         }
                                     />
                                 );
+                            }
+
+                            if (field.type === "singleTech") {
+                                return (
+                                    <SelectLanguage
+                                        key={idx}
+                                        selectedTech={field.currValue}
+                                        ref={
+                                            field.ref as React.RefObject<SelectLanguageRef>
+                                        }
+                                    />
+                                )
                             }
                         })}
 

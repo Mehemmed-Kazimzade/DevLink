@@ -1,104 +1,81 @@
-import {
-    Grid,
-    Typography,
-    Box,
-    Card,
-    CardContent,
-    CardActions,
-    Button,
-    Chip,
-    useMediaQuery,
-} from "@mui/material";
-import { Code, GitHub } from "@mui/icons-material";
-import CodeBlock from "./CodeBlock";
-import type { Snippet } from "../types/userProfileTypes/Snippet";
-import ProfileActions from "./EditAction";
+import { Grid, Typography, Box, useMediaQuery } from "@mui/material";
 import EditAction from "./EditAction";
-import { useRef } from "react";
+import useSnippetFieldDistributor from "../distributers/useSnippetFieldDistributor";
+import SnippetCard from "./SnippetCard";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../slices/store";
+import useAddCredentials from "../api/useAddCredentials";
+import ConvertToFormData from "../utils/ConvertToFormData";
+import { v4 as id } from "uuid";
+import useSnackbar from "../hooks/useSnackbar";
+import { addSnippet } from "../slices/userSlice";
+import GlobalSnackbar from "./Snackbar";
+import { initialSnackbarState } from "../constants/initialSnackbarState";
 
-interface SnippetsProps {
-    snippets: Snippet[];
-}
-
-export default function Snippets({ snippets }: SnippetsProps) {
+export default function Snippets() {
     const isSmall = useMediaQuery("(max-width: 420px)");
+    const snippets = useSelector((state: RootState) => state.user.snippets);
+    const dispatch = useDispatch();
+    const {
+        isSnackbarOpen,
+        setSnackbarState,
+        snackbarMessage,
+        snackbarSeverity,
+    } = useSnackbar();
+
+    const handleAddSnippet = async (addedData: any) => {
+        const response = await useAddCredentials(
+            ConvertToFormData(addedData),
+            "http://localhost:8080/api/v1/profile/addSnippet/"
+        );
+        console.log(addedData);
+
+        if (response.status === "SUCCESS") {
+            addedData.id = response.data.id ?? id();
+            dispatch(addSnippet(addedData));
+
+            setSnackbarState({ open: true, severity: "success", message: response.data.message });
+        }
+
+    };
 
     return (
-        <Box mb={4}>
-            <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                alignItems={isSmall ? "start" : "center"}
-                flexDirection={isSmall ? "column" : "row"}
-                mb={2}
-            >
-                <Typography variant="h4" component="h2" gutterBottom>
-                    Code Snippets & Gists
-                </Typography>
+        <>
+            <GlobalSnackbar
+                open={isSnackbarOpen}
+                severity={snackbarSeverity}
+                message={snackbarMessage}
+                handleClose={() => setSnackbarState(initialSnackbarState)}
+            />
+            <Box mb={4}>
+                <Box
+                    display={"flex"}
+                    justifyContent={"space-between"}
+                    alignItems={isSmall ? "start" : "center"}
+                    flexDirection={isSmall ? "column" : "row"}
+                    mb={2}
+                >
+                    <Typography variant="h4" component="h2" gutterBottom>
+                        Code Snippets & Gists
+                    </Typography>
+
+                    <EditAction
+                        type="add"
+                        title="Add Snippet"
+                        fields={useSnippetFieldDistributor("", "", "")}
+                        handleClickSave={handleAddSnippet}
+                    />
+                </Box>
+                <Grid container spacing={3}>
+                    {snippets
+                        ? snippets.map((snippet, index) => (
+                              <Grid size={{ xs: 12, md: 6 }} key={index}>
+                                  <SnippetCard snippet={snippet} />
+                              </Grid>
+                          ))
+                        : "No code snippets were found."}
+                </Grid>
             </Box>
-            <Grid container spacing={3}>
-                {snippets.map((snippet, index) => (
-                    <Grid size={{ xs: 12, md: 6 }} key={index}>
-                        <Card sx={{ height: "100%", bgcolor: "transparent" }}>
-                            <CardContent>
-                                <Box
-                                    display="flex"
-                                    alignItems="center"
-                                    justifyContent={"space-between"}
-                                    mb={2}
-                                >
-                                    <Box
-                                        display="flex"
-                                        alignItems="center"
-                                        gap={1}
-                                    >
-                                        <Code color="primary" />
-                                        <Typography variant="h6">
-                                            {snippet.title}
-                                        </Typography>
-                                    </Box>
-                                    <EditAction
-                                        title={
-                                            "Editing snipper" + snippet.title
-                                        }
-                                        fields={[
-                                            {
-                                                type: "text",
-                                                currValue: snippet.title,
-                                                ref: useRef<HTMLInputElement>(
-                                                    null
-                                                ),
-                                            },
-                                            {
-                                                type: "bigText",
-                                                currValue: snippet.preview,
-                                                ref: useRef<HTMLTextAreaElement>(
-                                                    null
-                                                ),
-                                            },
-                                        ]}
-                                    />
-                                </Box>
-                                <Chip
-                                    label={snippet.language}
-                                    size="small"
-                                    color="secondary"
-                                    sx={{ mb: 2 }}
-                                />
-                                <CodeBlock
-                                    language={snippet.language}
-                                    code={snippet.preview}
-                                />
-                            </CardContent>
-                            <CardActions>
-                                <Button size="small" startIcon={<GitHub />}>
-                                    View Git
-                                </Button>
-                            </CardActions>
-                        </Card>
-                    </Grid>
-                ))}
-            </Grid>
-        </Box>
+        </>
     );
 }

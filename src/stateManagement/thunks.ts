@@ -1,5 +1,6 @@
 import type { Project } from "../types/userProfileTypes/Project";
 import type { Skill } from "../types/userProfileTypes/Skill";
+import type { Snippet } from "../types/userProfileTypes/Snippet";
 import type { UserInfo } from "../types/userProfileTypes/UserInfo";
 import type { UserSkillResponse } from "../types/UserSkillResponse";
 import createFetchThunk from "./thunkFactory";
@@ -14,6 +15,12 @@ export const fetchUserSkills = createFetchThunk<Skill[]>(
     "http://localhost:8080/api/v1/userSkills/getTechStack/",
     (data: UserSkillResponse) => data.techStack
 );
+
+export const fetchSnippets = createFetchThunk<Snippet[]>(
+    "user/fetchSnippets",
+    "http://localhost:8080/api/v1/snippet/getSnippets/",
+    (data) => data.snippets,
+)
 
 export const fetchProjects = createFetchThunk<Project[]>(
     "user/fetchProjects",
