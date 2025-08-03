@@ -25,7 +25,7 @@ export default function useSnippetFieldDistributor(
         },
 
         {
-            type: "bigText",
+            type: "editor",
             name: "preview",
             currValue: snippetPreview,
             ref: previewRef,

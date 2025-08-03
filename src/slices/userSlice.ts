@@ -6,7 +6,6 @@ import {
     fetchUserInfo,
     fetchUserSkills,
 } from "../stateManagement/thunks";
-import type { UserInfo } from "../types/userProfileTypes/UserInfo";
 
 const initialState: UserProfile = {
     fullName: "",
@@ -22,9 +21,10 @@ const userSlice = createSlice({
     initialState: initialState,
     reducers: {
         updateProject(state, action) {
-            state.projects = state.projects?.map((project) =>
-                project.id === action.payload.id ? action.payload : project
-            ) ?? [];
+            state.projects =
+                state.projects?.map((project) =>
+                    project.id === action.payload.id ? action.payload : project
+                ) ?? [];
         },
 
         deleteProject(state, action) {
@@ -40,6 +40,17 @@ const userSlice = createSlice({
 
         addSnippet(state, action) {
             state.snippets?.push(action.payload);
+        },
+
+        updateSnippet(state, action) {
+            state.snippets =
+                state.snippets?.map((snippet) =>
+                    snippet.id === action.payload.id ? action.payload : snippet
+                ) ?? null;
+        },
+
+        deleteSnippet(state, action) {
+            state.snippets = state.snippets?.filter(snippet => snippet.id !== action.payload) ?? null;
         },
 
         setUserSkills(state, action) {
@@ -68,11 +79,12 @@ const userSlice = createSlice({
                 state.skills = action.payload;
             })
             .addCase(fetchProjects.fulfilled, (state, action) => {
+                console.log(action.payload);
                 state.projects = action.payload;
             })
             .addCase(fetchSnippets.fulfilled, (state, action) => {
                 state.snippets = action.payload;
-            })
+            });
     },
 });
 
@@ -83,6 +95,8 @@ export const {
     deleteProject,
     clearProfile,
     updateProject,
+    deleteSnippet,
+    updateSnippet,
     addSnippet,
 } = userSlice.actions;
 export default userSlice.reducer;

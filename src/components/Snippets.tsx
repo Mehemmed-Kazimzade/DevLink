@@ -26,9 +26,8 @@ export default function Snippets() {
     const handleAddSnippet = async (addedData: any) => {
         const response = await useAddCredentials(
             ConvertToFormData(addedData),
-            "http://localhost:8080/api/v1/profile/addSnippet/"
+            "http://localhost:8080/api/v1/snippet/addSnippet/"
         );
-        console.log(addedData);
 
         if (response.status === "SUCCESS") {
             addedData.id = response.data.id ?? id();
@@ -36,7 +35,6 @@ export default function Snippets() {
 
             setSnackbarState({ open: true, severity: "success", message: response.data.message });
         }
-
     };
 
     return (
@@ -47,6 +45,7 @@ export default function Snippets() {
                 message={snackbarMessage}
                 handleClose={() => setSnackbarState(initialSnackbarState)}
             />
+
             <Box mb={4}>
                 <Box
                     display={"flex"}
@@ -67,10 +66,10 @@ export default function Snippets() {
                     />
                 </Box>
                 <Grid container spacing={3}>
-                    {snippets
+                    {Array.isArray(snippets) && snippets.length !== 0
                         ? snippets.map((snippet, index) => (
                               <Grid size={{ xs: 12, md: 6 }} key={index}>
-                                  <SnippetCard snippet={snippet} />
+                                  <SnippetCard snippet={snippet} setSnackbarState={setSnackbarState} />
                               </Grid>
                           ))
                         : "No code snippets were found."}

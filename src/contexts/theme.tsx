@@ -19,6 +19,7 @@ const getTheme = (mode: string) => {
       background: {
         default: mode === 'dark' ? '#111827' : '#FFFFFF', // page bg
         paper: mode === 'dark' ? '#1F2937' : '#F9FAFB',   // card bg
+        editor: mode === 'dark' ? '#374151' : '#E5E7EB'
       },
 
       text: {

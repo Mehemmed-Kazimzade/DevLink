@@ -4,7 +4,9 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { type SelectChangeEvent } from "@mui/material/Select";
 import { options } from "../constants/Options";
-import { forwardRef, useImperativeHandle, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
+import { useDispatch } from "react-redux";
+import { updateCodeLanguage } from "../slices/extraSlices";
 
 interface SelectLanguageProps {
     selectedTech: string,
@@ -16,6 +18,16 @@ export interface SelectLanguageRef {
 
 const SelectLanguage = forwardRef<SelectLanguageRef, SelectLanguageProps>(( { selectedTech }, ref ) => {
     const [tech, setTech] = useState(selectedTech);
+    const dispatch = useDispatch();
+
+    const findOptionId = (e: string) => {
+        const selectedOption = options.find(option => option.name === e)
+        dispatch(updateCodeLanguage(selectedOption?.id ?? ""));
+    }
+
+    useEffect(() => {
+        findOptionId(selectedTech);
+    }, []);
 
     useImperativeHandle(ref, () => ({
         get value() {
@@ -23,8 +35,11 @@ const SelectLanguage = forwardRef<SelectLanguageRef, SelectLanguageProps>(( { se
         }
     }))
 
-    const handleChange = (event: SelectChangeEvent) =>
-        setTech(event.target.value as string);
+    const handleChange = (event: SelectChangeEvent) => {
+        const selectedName = event.target.value;
+        setTech(selectedName);
+        findOptionId(selectedName);
+    }
 
     return (
         <Box sx={{ minWidth: 120 }}>

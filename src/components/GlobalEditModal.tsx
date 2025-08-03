@@ -5,14 +5,15 @@ import ImageUpload from "./ImageUpload";
 import EditText from "./EditText";
 import EditBigText from "./EditBigText";
 import DifferFields from "../utils/DifferFields";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import YesOrNoDialog from "./YesOrNoDialog";
 import Technologies, { type TechnologiesRef } from "./Technologies";
 import SelectLanguage, { type SelectLanguageRef } from "./SelectLanguage";
+import CodeEditor, { type PreviewRef } from "./CodeEditor";
 
 interface GlobalModalProps {
     open: boolean;
-    handleClickSave: (updatedData: any) => void,
+    handleClickSave: (updatedData: any) => void;
     handleClose: () => void;
     title: string;
     fields: Field[];
@@ -38,7 +39,7 @@ export default function GlobalEditModal({
     handleClose,
     title,
     fields,
-    handleClickSave
+    handleClickSave,
 }: GlobalModalProps) {
     if (!fields || !Array.isArray(fields)) return;
 
@@ -52,7 +53,6 @@ export default function GlobalEditModal({
             if (field.type === "technology") return field.values ?? [];
             return field.currValue ?? "";
         });
-
     }, [fields]);
 
     const onSave = (hasClickedSave: boolean) => {
@@ -75,7 +75,9 @@ export default function GlobalEditModal({
                 fields.forEach((field, idx) => {
                     if (field.type === "technology") {
                         const strArr = form2[idx] as string[];
-                        data[field.name] = strArr.map(t => ( { skillName: t } ));
+                        data[field.name] = strArr.map((t) => ({
+                            skillName: t,
+                        }));
                     }
                     data[field.name] = form2[idx];
                 });
@@ -84,13 +86,10 @@ export default function GlobalEditModal({
             }
 
             handleClose();
-        }
-
-        
-        else {
+        } else {
             if (haveUserChangedFields) setDialogOpen(true);
             else handleClose();
-        };
+        }
     };
 
     const onDialogClose = (hasClickedYes: boolean) => {
@@ -169,7 +168,17 @@ export default function GlobalEditModal({
                                             field.ref as React.RefObject<SelectLanguageRef>
                                         }
                                     />
-                                )
+                                );
+                            }
+
+                            if (field.type === "editor") {
+                                return (
+                                    <CodeEditor
+                                        key={idx}
+                                        preview={field.currValue}
+                                        ref={field.ref as RefObject<PreviewRef>}
+                                    />
+                                );
                             }
                         })}
 
