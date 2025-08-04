@@ -8,21 +8,20 @@ import {
     Chip,
     Typography,
 } from "@mui/material";
-import type { Snippet } from "../types/userProfileTypes/Snippet";
-import useSnippetFieldDistributor from "../distributers/useSnippetFieldDistributor";
+import type { Snippet } from "../../types/userProfileTypes/Snippet";
+import useSnippetFieldDistributor from "../../distributers/useSnippetFieldDistributor";
 import EditAction from "./EditAction";
 import CodeBlock from "./CodeBlock";
-import useAddCredentials from "../api/useAddCredentials";
-import ConvertToFormData from "../utils/ConvertToFormData";
+import ConvertToFormData from "../../utils/ConvertToFormData";
 import { useDispatch } from "react-redux";
-import { deleteSnippet, updateSnippet } from "../slices/userSlice";
-import type { SnackbarState } from "../constants/initialSnackbarState";
-import useDeleteCredentials from "../api/useDeleteCredentials";
-import YesOrNoDialog from "./YesOrNoDialog";
+import { deleteSnippet, updateSnippet } from "../../slices/userSlice";
+import type { SnackbarState } from "../../constants/initialSnackbarState";
+import useDeleteCredentials from "../../api/useDeleteCredentials";
+import YesOrNoDialog from "../YesOrNoDialog";
 import { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { sx } from "../constants/SxForIcons";
-import useUpdateCredentials from "../api/useUpdateCredentials";
+import { sx } from "../../constants/SxForIcons";
+import useUpdateCredentials from "../../api/useUpdateCredentials";
 
 interface SnippetCardProps {
     snippet: Snippet;

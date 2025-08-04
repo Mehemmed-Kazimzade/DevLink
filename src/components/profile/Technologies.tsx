@@ -1,6 +1,6 @@
 import { Autocomplete, Box, Chip, Stack, TextField, Typography } from "@mui/material";
 import { forwardRef, useImperativeHandle, useState } from "react";
-import { options } from "../constants/Options";
+import { options } from "../../constants/Options";
 
 interface TechnologiesProps {
     techStack: string[];

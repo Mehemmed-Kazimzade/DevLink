@@ -1,5 +1,5 @@
 import { Avatar, Box, Button, Typography } from "@mui/material"
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 
 interface ImageUploadProps {
     currValue: string,

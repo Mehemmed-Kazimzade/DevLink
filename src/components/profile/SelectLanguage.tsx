@@ -3,10 +3,10 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { type SelectChangeEvent } from "@mui/material/Select";
-import { options } from "../constants/Options";
+import { options } from "../../constants/Options";
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { useDispatch } from "react-redux";
-import { updateCodeLanguage } from "../slices/extraSlices";
+import { updateCodeLanguage } from "../../slices/extraSlices";
 
 interface SelectLanguageProps {
     selectedTech: string,

@@ -1,6 +1,6 @@
 import { TextField } from "@mui/material";
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
-import { sxForWordBreaking } from "../constants/SxForWordBreaking";
+import { sxForWordBreaking } from "../../constants/SxForWordBreaking";
 
 interface EditTextProps {
     currValue: string

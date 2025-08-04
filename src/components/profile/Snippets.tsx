@@ -1,16 +1,16 @@
 import { Grid, Typography, Box, useMediaQuery } from "@mui/material";
 import EditAction from "./EditAction";
-import useSnippetFieldDistributor from "../distributers/useSnippetFieldDistributor";
+import useSnippetFieldDistributor from "../../distributers/useSnippetFieldDistributor";
 import SnippetCard from "./SnippetCard";
 import { useDispatch, useSelector } from "react-redux";
-import type { RootState } from "../slices/store";
-import useAddCredentials from "../api/useAddCredentials";
-import ConvertToFormData from "../utils/ConvertToFormData";
+import type { RootState } from "../../slices/store";
+import useAddCredentials from "../../api/useAddCredentials";
+import ConvertToFormData from "../../utils/ConvertToFormData";
 import { v4 as id } from "uuid";
-import useSnackbar from "../hooks/useSnackbar";
-import { addSnippet } from "../slices/userSlice";
-import GlobalSnackbar from "./Snackbar";
-import { initialSnackbarState } from "../constants/initialSnackbarState";
+import useSnackbar from "../../hooks/useSnackbar";
+import { addSnippet } from "../../slices/userSlice";
+import GlobalSnackbar from "../Snackbar";
+import { initialSnackbarState } from "../../constants/initialSnackbarState";
 
 export default function Snippets() {
     const isSmall = useMediaQuery("(max-width: 420px)");

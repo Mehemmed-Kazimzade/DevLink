@@ -9,6 +9,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import Profile from "./pages/Profile";
 import { Provider } from "react-redux";
 import { store } from "./slices/store";
+import Q_A_Rotues from "./routes/Q_A_Rotues";
 
 export default function App() {
     const [mode, setMode] = useState('light');
@@ -37,6 +38,9 @@ export default function App() {
                         <Route path='/' element={<DrawerComponent mode={mode} toggleMode={toggleMode} />}>
                             <Route element={<ProtectedRoute />}>
                                 <Route path="/profile/" element={<Profile />} />
+                            </Route>
+                            <Route path="/QA/">
+                                { Q_A_Rotues }
                             </Route>
                             {AuthRoutes}
                         </Route>

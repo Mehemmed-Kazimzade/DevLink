@@ -1,6 +1,6 @@
 import { TextField } from "@mui/material";
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
-import { sxForWordBreaking } from "../constants/SxForWordBreaking";
+import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
+import { sxForWordBreaking } from "../../constants/SxForWordBreaking";
 
 interface EditBigTextProps {
     currValue: string

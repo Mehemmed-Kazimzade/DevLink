@@ -55,17 +55,7 @@ It combines the community aspect of LinkedIn + knowledge-sharing like StackOverf
 
     Optional: real-time chat in groups (future version)
 
-✅ 5. Learning Dashboard
-
-    Create personal learning goals
-
-    Track tasks: To-Do, In Progress, Done
-
-    View progress charts
-
-    Share progress with friends
-
-✅ 6. Notifications
+✅ 5. Notifications
 
     New answers/comments
 
@@ -73,7 +63,7 @@ It combines the community aspect of LinkedIn + knowledge-sharing like StackOverf
 
     Activity on your posts
 
-✅ 7. Admin UI (Future)
+✅ 6. Admin UI (Future)
 
     Manage flagged content
 

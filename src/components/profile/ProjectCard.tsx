@@ -9,21 +9,21 @@ import {
     Typography,
 } from "@mui/material";
 import EditAction from "./EditAction";
-import type { Project } from "../types/userProfileTypes/Project";
+import type { Project } from "../../types/userProfileTypes/Project";
 import { GitHub, Launch } from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { sx } from "../constants/SxForIcons";
-import YesOrNoDialog from "./YesOrNoDialog";
+import { sx } from "../../constants/SxForIcons";
+import YesOrNoDialog from "../YesOrNoDialog";
 import { useState } from "react";
-import useDeleteCredentials from "../api/useDeleteCredentials";
+import useDeleteCredentials from "../../api/useDeleteCredentials";
 import { useDispatch } from "react-redux";
-import { deleteProject, updateProject } from "../slices/userSlice";
-import type { SnackbarState } from "../constants/initialSnackbarState";
-import useUpdateCredentials from "../api/useUpdateCredentials";
-import ConvertToFormData from "../utils/ConvertToFormData";
-import ConvertToSkill from "../utils/ConvertToSkill.";
-import { sxForWordBreaking } from "../constants/SxForWordBreaking";
-import useProjectFieldDistributor from "../distributers/useProjectFieldDistributer";
+import { deleteProject, updateProject } from "../../slices/userSlice";
+import type { SnackbarState } from "../../constants/initialSnackbarState";
+import useUpdateCredentials from "../../api/useUpdateCredentials";
+import ConvertToFormData from "../../utils/ConvertToFormData";
+import ConvertToSkill from "../../utils/ConvertToSkill.";
+import { sxForWordBreaking } from "../../constants/SxForWordBreaking";
+import useProjectFieldDistributor from "../../distributers/useProjectFieldDistributer";
 
 interface ProjectCardProps {
     project: Project;

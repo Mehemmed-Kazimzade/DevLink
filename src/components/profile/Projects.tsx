@@ -1,16 +1,16 @@
 import { Grid, Typography, Box, useMediaQuery } from "@mui/material";
 import EditAction from "./EditAction";
 import { useDispatch, useSelector } from "react-redux";
-import type { RootState } from "../slices/store";
-import useAddCredentials from "../api/useAddCredentials";
-import { addProject } from "../slices/userSlice";
-import useSnackbar from "../hooks/useSnackbar";
-import GlobalSnackbar from "./Snackbar";
-import { initialSnackbarState } from "../constants/initialSnackbarState";
+import type { RootState } from "../../slices/store";
+import useAddCredentials from "../../api/useAddCredentials";
+import { addProject } from "../../slices/userSlice";
+import useSnackbar from "../../hooks/useSnackbar";
+import GlobalSnackbar from "../Snackbar";
+import { initialSnackbarState } from "../../constants/initialSnackbarState";
 import ProjectCard from "./ProjectCard";
 import { v4 as id } from 'uuid';
-import ConvertToSkill from "../utils/ConvertToSkill.";
-import useProjectFieldDistributor from "../distributers/useProjectFieldDistributer";
+import ConvertToSkill from "../../utils/ConvertToSkill.";
+import useProjectFieldDistributor from "../../distributers/useProjectFieldDistributer";
 
 export default function Projects() {
     const isSmall = useMediaQuery("(max-width: 420px)");

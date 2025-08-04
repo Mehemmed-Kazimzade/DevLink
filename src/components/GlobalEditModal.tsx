@@ -1,15 +1,15 @@
 import { Box, Button, Modal, Stack } from "@mui/material";
 import RsTypography from "./ui/RsTypography";
 import type { Field } from "../types/formTypes/Field";
-import ImageUpload from "./ImageUpload";
-import EditText from "./EditText";
-import EditBigText from "./EditBigText";
+import ImageUpload from "./profile/ImageUpload";
+import EditText from "./profile/EditText";
+import EditBigText from "./profile/EditBigText";
 import DifferFields from "../utils/DifferFields";
 import { useEffect, useRef, useState, type RefObject } from "react";
 import YesOrNoDialog from "./YesOrNoDialog";
-import Technologies, { type TechnologiesRef } from "./Technologies";
-import SelectLanguage, { type SelectLanguageRef } from "./SelectLanguage";
-import CodeEditor, { type PreviewRef } from "./CodeEditor";
+import Technologies, { type TechnologiesRef } from "./profile/Technologies";
+import SelectLanguage, { type SelectLanguageRef } from "./profile/SelectLanguage";
+import CodeEditor, { type PreviewRef } from "./profile/CodeEditor";
 
 interface GlobalModalProps {
     open: boolean;

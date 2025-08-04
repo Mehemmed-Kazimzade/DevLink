@@ -6,7 +6,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import MuiAppBar, { type AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -99,7 +98,7 @@ export default function DrawerComponent({ mode, toggleMode }: HeaderProps) {
     const [open, setOpen] = React.useState(false);
 
     const icons: React.ReactNode[] = [<AccountCircleIcon />, <QuestionAnswerIcon />, <GroupsIcon />, <DataObjectIcon />, <AddToPhotosIcon />];
-    const links: string[] = ["/profile/", "QAcommunity", "/groups/", "/snippets/", "/createPost/"];
+    const links: string[] = ["/profile/", "/QA/questions", "/groups/", "/snippets/", "/createPost/"];
 
     const handleDrawerOpen = () => {
         setOpen(true);

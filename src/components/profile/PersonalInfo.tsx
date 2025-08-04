@@ -7,20 +7,20 @@ import {
     Stack,
     useMediaQuery,
 } from "@mui/material";
-import RsTypography from "./ui/RsTypography";
+import RsTypography from "../ui/RsTypography";
 import EditAction from "./EditAction";
 import { useRef } from "react";
-import ConvertToFormData from "../utils/ConvertToFormData";
-import useUpdateCredentials from "../api/useUpdateCredentials";
-import GlobalSnackbar from "./Snackbar";
+import ConvertToFormData from "../../utils/ConvertToFormData";
+import useUpdateCredentials from "../../api/useUpdateCredentials";
+import GlobalSnackbar from "../Snackbar";
 import { useDispatch, useSelector } from "react-redux";
-import { setUserInfo, setUserSkills } from "../slices/userSlice";
-import type { RootState } from "../slices/store";
-import type { UserInfo } from "../types/userProfileTypes/UserInfo";
-import fileToBase64 from "../utils/fileToBase64";
-import ConvertToSkill from "../utils/ConvertToSkill.";
-import useSnackbar from "../hooks/useSnackbar";
-import { initialSnackbarState } from "../constants/initialSnackbarState";
+import { setUserInfo, setUserSkills } from "../../slices/userSlice";
+import type { RootState } from "../../slices/store";
+import type { UserInfo } from "../../types/userProfileTypes/UserInfo";
+import fileToBase64 from "../../utils/fileToBase64";
+import ConvertToSkill from "../../utils/ConvertToSkill.";
+import useSnackbar from "../../hooks/useSnackbar";
+import { initialSnackbarState } from "../../constants/initialSnackbarState";
 
 export default function PersonalInfo() {
     const isSmall = useMediaQuery("(max-width: 440px)");

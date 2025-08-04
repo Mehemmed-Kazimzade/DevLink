@@ -1,8 +1,8 @@
 import Editor from "@monaco-editor/react";
 import { Box, useTheme } from "@mui/material";
 import { useSelector } from "react-redux";
-import type { RootState } from "../slices/store";
-import { monacoLanguageMap } from "../constants/MonacoLangMap";
+import type { RootState } from "../../slices/store";
+import { monacoLanguageMap } from "../../constants/MonacoLangMap";
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 
 interface CodeEditorProps {
