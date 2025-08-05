@@ -1,5 +1,5 @@
 import type React from "react";
-import type { TechnologiesRef } from "../../components/Technologies";
+import type { TechnologiesRef } from "../../components/profile/Technologies";
 
 export interface Field {
     type: string,
