@@ -9,8 +9,8 @@ import {
     Divider,
     Alert,
     IconButton,
-    Chip,
     TextField,
+    useMediaQuery,
 } from "@mui/material";
 
 import {
@@ -22,25 +22,40 @@ import MDEditor from '@uiw/react-md-editor';
 import { Controller, useForm } from "react-hook-form";
 import type { QuestionPostForm } from "../../types/formTypes/QuestionPostForm";
 import QuestionTagsContainer from "./QuestionTagsContainer";
+import useAddCredentials from "../../api/useAddCredentials";
+import ConvertToFormData from "../../utils/ConvertToFormData";
+import useSnackbar from "../../hooks/useSnackbar";
+import GlobalSnackbar from "../Snackbar";
+import { initialSnackbarState } from "../../constants/initialSnackbarState";
 
 export default function QuestionPost() {
-    const [value, setValue] = useState("");
-    const [questionTitle, setQuestionTitle] = useState<string>("");
-    const [questionBody, setQuestionBody] = useState<string>("");
-    const [questionTags, setQuestionTags] = useState<string[]>([]);
+    const isSmall = useMediaQuery("(max-width: 500px)");
     const [tagInput, setTagInput] = useState<string>("");
 
-    const {register, handleSubmit, control, setError, formState: { errors }} = useForm<QuestionPostForm>();
+    const {register, handleSubmit, control, formState: { errors }} = useForm<QuestionPostForm>();
+    const {snackbarMessage, setSnackbarState, snackbarSeverity, isSnackbarOpen} = useSnackbar();
 
-    const handleChange = (s: string | undefined) => {
-        if (s !== undefined) setValue(s);
+    const onSave = async (questionPostFormData: QuestionPostForm) => {
+        const response = await useAddCredentials(
+            ConvertToFormData(questionPostFormData),
+            "http://localhost:8080/api/v1/question/postQuestion/"
+        );
+
+        if (response.status === "SUCCESS") {
+            setSnackbarState({ open: true, message: response.data.message, severity:"success"  });
+        }
+        else {
+            setSnackbarState({ open: true, message: response.data, severity:"error"  });
+        }
     }
 
-    const onSave = (questionPostFormData: QuestionPostForm) => {
-        console.log(questionPostFormData);
-    }
-
-    return (
+    return <>
+        <GlobalSnackbar
+            open={isSnackbarOpen}
+            severity={snackbarSeverity}
+            message={snackbarMessage}
+            handleClose={() => setSnackbarState(initialSnackbarState)}
+        />
         <Box sx={{ maxWidth: 1000, mx: "auto", p: 3 }}>
             <form onSubmit={handleSubmit(onSave)}>
                 <Box sx={{ mb: 4 }}>
@@ -82,7 +97,7 @@ export default function QuestionPost() {
                                 <TextField
                                     {...register("questionTitle", {
                                         minLength: {value: 10, message: "Title must be at least 10 characters long"},
-                                        required: "This field is required"
+                                        required: "Title cannot be empty"
                                     })}
                                     fullWidth
                                     placeholder="e.g. How to implement authentication in React with TypeScript?"
@@ -117,7 +132,7 @@ export default function QuestionPost() {
                                     name="questionBody"
                                     control={control}
                                     defaultValue=""
-                                    rules={{ required: "This field is required" }}
+                                    rules={{ required: "Question body cannot be empty" }}
                                     render={({ field }) => (
                                         <MDEditor
                                             textareaProps={{placeholder: "Include all the information someone would need to answer your question"}}
@@ -151,24 +166,29 @@ export default function QuestionPost() {
                                     name="questionTags"
                                     control={control}
                                     defaultValue={[]}
-                                    rules={{ validate: val => val.length > 0 || "This field is required"}}
+                                    rules={{ validate: val => val.length > 0 || "Include at least one tag"}}
                                     render={({ field }) => (
                                         <>
-                                        <Box sx={{ display: "flex", gap: 1, mb: 2 }}>
+                                        <Box sx={{ display: "flex", gap: isSmall ? 2 : 1, mb: 2,
+                                            flexDirection: isSmall ? "column" : "row" }}>
+
                                             <TextField placeholder="e.g. react, typescript, authentication"
                                                 size="small"
                                                 sx={{ flex: 1 }}
                                                 value={tagInput}
                                                 onChange={e => setTagInput(e.target.value)}
                                                 disabled={field.value.length >= 5}
+                                                helperText={"Tag must be 2-25 chars"}
                                             />
 
                                             <Button variant="outlined" startIcon={<Add />}
+                                                    sx={{ mb: 2 }}
                                                     disabled={
                                                         !tagInput.trim() || 
                                                         field.value.length >= 5 || 
                                                         tagInput.length < 2 ||
-                                                        questionTags.some(tag => tag === tagInput)
+                                                        tagInput.length > 25 ||
+                                                        field.value.some(tag => tag === tagInput)
                                                     }
 
                                                     onClick={() => {
@@ -181,7 +201,10 @@ export default function QuestionPost() {
                                             </Button>
                                         </Box>
 
-                                        <QuestionTagsContainer questionTags={field.value} />
+                                        <QuestionTagsContainer questionTags={field.value}
+                                            deleteTag={(tagName: string) => {
+                                                field.onChange(field.value.filter(tag => tag !== tagName));
+                                            }}/>
 
                                         <Typography variant="body2" color="text.secondary">
                                             Add up to 5 tags to describe what your question
@@ -240,5 +263,5 @@ export default function QuestionPost() {
                 </Card>
             </form>
         </Box>
-    );
+    </>;
 }
