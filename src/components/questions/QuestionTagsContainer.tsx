@@ -1,12 +1,12 @@
 import { Box, Chip, Stack, useTheme } from "@mui/material";
 
 interface QuestionTagsContainerProps {
-    questionTags: string[];
+    tags: string[];
     deleteTag: (tagName: string) => void;
 }
 
 export default function QuestionTagsContainer({
-    questionTags,
+    tags,
     deleteTag,
 }: QuestionTagsContainerProps) {
     const theme = useTheme();
@@ -14,7 +14,7 @@ export default function QuestionTagsContainer({
     return (
         <Box sx={{ mb: 2 }}>
             <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                {questionTags.map((tag, index) => (
+                {tags.map((tag, index) => (
                     <Chip
                         key={index}
                         label={tag}

@@ -20,7 +20,7 @@ import {
 import { useState } from "react";
 import MDEditor from '@uiw/react-md-editor';
 import { Controller, useForm } from "react-hook-form";
-import type { QuestionPostForm } from "../../types/formTypes/QuestionPostForm";
+import { type QuestionPostForm } from "../../types/questions/PostOperations";
 import QuestionTagsContainer from "./QuestionTagsContainer";
 import useAddCredentials from "../../api/useAddCredentials";
 import ConvertToFormData from "../../utils/ConvertToFormData";
@@ -163,7 +163,7 @@ export default function QuestionPost() {
                                 </Box>
 
                                 <Controller 
-                                    name="questionTags"
+                                    name="tags"
                                     control={control}
                                     defaultValue={[]}
                                     rules={{ validate: val => val.length > 0 || "Include at least one tag"}}
@@ -201,7 +201,7 @@ export default function QuestionPost() {
                                             </Button>
                                         </Box>
 
-                                        <QuestionTagsContainer questionTags={field.value}
+                                        <QuestionTagsContainer tags={field.value}
                                             deleteTag={(tagName: string) => {
                                                 field.onChange(field.value.filter(tag => tag !== tagName));
                                             }}/>
@@ -212,7 +212,7 @@ export default function QuestionPost() {
                                         </Typography>
 
                                         <Typography fontSize="small" color="error">
-                                            {errors.questionTags?.message}
+                                            {errors.tags?.message}
                                         </Typography>
                                         </>
                                     )}
