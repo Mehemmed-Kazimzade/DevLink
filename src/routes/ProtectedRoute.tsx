@@ -1,15 +1,33 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode, type JwtPayload } from "jwt-decode";
 import { useEffect, useState } from "react";
 import LoadingSpinner from "../components/LoadingSpinner";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../slices/store";
+import { setFullName } from "../slices/userSlice";
+
+interface jwtPayload extends JwtPayload {
+    fullName: string,
+}
 
 export default function ProtectedRoute() {
     const [isValid, setIsValid] = useState<null | boolean>(null);
+    const fullName = useSelector((root: RootState) => root.user.fullName);
+    const dispatch = useDispatch();
 
     const helper = () => {
         localStorage.removeItem('token');
         setIsValid(false);
+    }
+
+    const setFullNameIfEmpty = (token: string) => {
+        const decoded = jwtDecode<jwtPayload>(token);
+        if (!fullName) {
+            const temp = decoded.fullName;
+            const fullName = temp.charAt(0).toUpperCase() + temp.slice(1);
+            dispatch(setFullName(fullName));
+        }
     }
 
     useEffect(() => {
@@ -26,8 +44,8 @@ export default function ProtectedRoute() {
 
                     const response = await axios.post("http://localhost:8080/api/v1/auth/refresh/", {}, { withCredentials: true });
                     if(response.status === 200) {
-                        console.log('yes');
                         localStorage.setItem("token", response.data.token);
+                        setFullNameIfEmpty(response.data.token);
                         setIsValid(true);
                     }
 
@@ -43,7 +61,10 @@ export default function ProtectedRoute() {
                 });
 
                 if (response.status === 401 || response.status === 403) helper();
-                else setIsValid(true);
+                else{
+                    setFullNameIfEmpty(token);
+                    setIsValid(true)
+                };
             }
             catch(e) {
                 helper();

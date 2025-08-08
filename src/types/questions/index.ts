@@ -1,10 +1,9 @@
-import type { UserInfo } from "../userProfileTypes/UserInfo";
-
 export type VoteType = 'UP' | 'DOWN' | 'STATIC';
 
 export type UserDto = {
   id: number;
   fullName: string;
+  userSlug: string;
   profileImageUrl: string; // base64 image string
 };
 
@@ -47,3 +46,7 @@ export type QuestionDto = {
   comments: CommentDto[];
   answers: AnswerDto[];
 };
+
+export type QuestionResponse = {
+  questions: QuestionDto[]
+}

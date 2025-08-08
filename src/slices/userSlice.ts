@@ -20,6 +20,9 @@ const userSlice = createSlice({
     name: "user",
     initialState: initialState,
     reducers: {
+
+        // User Projects
+
         updateProject(state, action) {
             state.projects =
                 state.projects?.map((project) =>
@@ -38,6 +41,8 @@ const userSlice = createSlice({
             state.projects?.push(action.payload);
         },
 
+        // User Snippets
+
         addSnippet(state, action) {
             state.snippets?.push(action.payload);
         },
@@ -52,6 +57,8 @@ const userSlice = createSlice({
         deleteSnippet(state, action) {
             state.snippets = state.snippets?.filter(snippet => snippet.id !== action.payload) ?? null;
         },
+
+        // User Info
 
         setUserSkills(state, action) {
             state.skills = action.payload;
@@ -79,7 +86,6 @@ const userSlice = createSlice({
                 state.skills = action.payload;
             })
             .addCase(fetchProjects.fulfilled, (state, action) => {
-                console.log(action.payload);
                 state.projects = action.payload;
             })
             .addCase(fetchSnippets.fulfilled, (state, action) => {
@@ -90,6 +96,7 @@ const userSlice = createSlice({
 
 export const {
     setUserSkills,
+    setFullName,
     addProject,
     setUserInfo,
     deleteProject,

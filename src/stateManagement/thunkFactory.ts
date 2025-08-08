@@ -1,10 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import useGetCredentials from "../api/useGetCredentials";
 
-export default function createFetchThunk<T>(type: string, url: string, transform?: (data: any) => T) {
-    return createAsyncThunk(
+export default function createFetchThunk<T>(type: string, transform?: (data: any) => T) {
+    return createAsyncThunk<T, string>(
         type,
-        async (_, thunkAPI) => {
+        async (url, thunkAPI) => {
             const response = await useGetCredentials<T>(url);
 
             if(response.status === "SUCCESS") {

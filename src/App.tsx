@@ -38,9 +38,9 @@ export default function App() {
                         <Route path='/' element={<DrawerComponent mode={mode} toggleMode={toggleMode} />}>
                             <Route element={<ProtectedRoute />}>
                                 <Route path="/profile/" element={<Profile />} />
-                            </Route>
-                            <Route path="/QA/">
-                                { Q_A_Rotues }
+                                <Route path="/QA/">
+                                    { Q_A_Rotues }
+                                </Route>
                             </Route>
                             {AuthRoutes}
                         </Route>

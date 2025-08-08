@@ -25,8 +25,9 @@ import { initialSnackbarState } from "../../constants/initialSnackbarState";
 export default function PersonalInfo() {
     const isSmall = useMediaQuery("(max-width: 440px)");
     const dispatch = useDispatch();
-    const userInfo = useSelector((state: RootState) => state.user).userInfo;
-    const userSkills = useSelector((state: RootState) => state.user).skills;
+    const fullName = useSelector((state: RootState) => state.user.fullName);
+    const userInfo = useSelector((state: RootState) => state.user.userInfo);
+    const userSkills = useSelector((state: RootState) => state.user.skills);
 
     const { isSnackbarOpen, setSnackbarState, snackbarMessage, snackbarSeverity } = useSnackbar();
 
@@ -90,7 +91,7 @@ export default function PersonalInfo() {
                                 alt="Profile Avatar"
                             />
 
-                            <RsTypography text="John Doe" xs="36px" lg="40px" />
+                            <RsTypography text={fullName} xs="36px" lg="40px" />
                         </Box>
 
                         <Box flex={1} width="100%">

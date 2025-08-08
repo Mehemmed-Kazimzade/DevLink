@@ -7,16 +7,17 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { fetchProjects, fetchSnippets, fetchUserInfo, fetchUserSkills } from "../stateManagement/thunks";
 import type { AppDispatch } from "../slices/store";
+import { getProjects, getSnippets, getTechStack, getUserInfo } from "../constants/urls";
 
 export default function Profile() {
     const dispatch = useDispatch<AppDispatch>();
 
     useEffect(() => {
 
-        dispatch(fetchUserInfo());
-        dispatch(fetchUserSkills());
-        dispatch(fetchProjects());
-        dispatch(fetchSnippets());
+        dispatch(fetchUserInfo(getUserInfo));
+        dispatch(fetchUserSkills(getTechStack));
+        dispatch(fetchProjects(getProjects));
+        dispatch(fetchSnippets(getSnippets));
     
     }, [dispatch]);
 
