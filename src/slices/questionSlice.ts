@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { type QuestionDto, type QuestionResponse } from "../types/questions";
-import { X } from "@mui/icons-material";
+import { type QuestionDto } from "../types/questions";
 import { fetchQuestions } from "../stateManagement/thunks";
 
 interface InitialStateInterface {
@@ -21,7 +20,7 @@ const questionSlice = createSlice({
     reducers: {},
 
     extraReducers: (builder) => {
-        builder.addCase(fetchQuestions.pending, (state, action) => {
+        builder.addCase(fetchQuestions.pending, (state, _) => {
             state.loading = true;
             state.error = null;
         })
