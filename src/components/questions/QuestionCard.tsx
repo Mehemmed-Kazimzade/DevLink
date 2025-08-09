@@ -11,35 +11,9 @@ import {
     useMediaQuery,
 } from "@mui/material";
 import { ThumbUp, Visibility, AccessTime } from "@mui/icons-material";
+import type { QuestionDto } from "../../types/questions";
 
-interface QuestionCardProps {
-    id: string;
-    title: string;
-    excerpt: string;
-    tags: string[];
-    votes: number;
-    answers: number;
-    views: number;
-    author: {
-        name: string;
-        avatar: string;
-        reputation: number;
-    };
-    createdAt: string;
-    isAnswered?: boolean;
-}
-
-export default function QuestionCard({
-    title,
-    excerpt,
-    tags,
-    votes,
-    answers,
-    views,
-    author,
-    createdAt,
-    isAnswered = false,
-}: QuestionCardProps) {
+export default function QuestionCard({question}: {question: QuestionDto}) {
 
     const isSmall = useMediaQuery("(max-width: 500px)");
 
@@ -85,12 +59,12 @@ export default function QuestionCard({
                                 sx={{
                                     fontWeight: "bold",
                                     color:
-                                        votes > 0
+                                        question.votes > 0
                                             ? "success.main"
                                             : "text.secondary",
                                 }}
                             >
-                                {votes}
+                                {question.votes}
                             </Typography>
                             <Typography
                                 variant="caption"
@@ -106,10 +80,10 @@ export default function QuestionCard({
                                     display: "flex",
                                     alignItems: "center",
                                     justifyContent: "center",
-                                    bgcolor: isAnswered
+                                    bgcolor: question.isResolved
                                         ? "success.main"
                                         : "grey.300",
-                                    color: isAnswered
+                                    color: question.isResolved
                                         ? "white"
                                         : "text.secondary",
                                     borderRadius: 1,
@@ -122,7 +96,7 @@ export default function QuestionCard({
                                     variant="body2"
                                     sx={{ fontWeight: "bold" }}
                                 >
-                                    {answers}
+                                    {question.answersCount}
                                 </Typography>
                             </Box>
                             <Typography
@@ -146,7 +120,7 @@ export default function QuestionCard({
                                 <Typography
                                     variant="body2"
                                 >
-                                    {views}
+                                    {question.views}
                                 </Typography>
                             </Box>
                             <Typography
@@ -174,10 +148,9 @@ export default function QuestionCard({
                                 lineHeight: 1.3,
                             }}
                         >
-                            {title}
+                            {question.questionTitle}
                         </Typography>
 
-                        {/* Question Excerpt */}
                         <Typography
                             variant="body2"
                             sx={{
@@ -189,7 +162,7 @@ export default function QuestionCard({
                                 overflow: "hidden",
                             }}
                         >
-                            {excerpt}
+                            {question.questionBody}
                         </Typography>
 
                         {/* Tags */}
@@ -200,7 +173,7 @@ export default function QuestionCard({
                                 flexWrap="wrap"
                                 useFlexGap
                             >
-                                {tags.map((tag, index) => (
+                                {question.tags.map((tag, index) => (
                                     <Chip
                                         key={index}
                                         label={tag}
@@ -240,8 +213,8 @@ export default function QuestionCard({
                                 }}
                             >
                                 <Avatar
-                                    src={author.avatar}
-                                    alt={author.name}
+                                    src={question.userDto.profileImageUrl}
+                                    alt={question.userDto.fullName}
                                     sx={{ width: 24, height: 24 }}
                                 />
                                 <Box>
@@ -252,14 +225,14 @@ export default function QuestionCard({
                                             color: "#1976d2",
                                         }}
                                     >
-                                        {author.name}
+                                        {question.userDto.fullName}
                                     </Typography>
-                                    <Typography
+                                    {/* <Typography
                                         variant="caption"
                                     >
-                                        {author.reputation.toLocaleString()}{" "}
+                                        {question.userDto.reputation.toLocaleString()}{" "}
                                         reputation
-                                    </Typography>
+                                    </Typography> */}
                                 </Box>
                             </Box>
 
@@ -274,7 +247,7 @@ export default function QuestionCard({
                                 <Typography
                                     variant="caption"
                                 >
-                                    {createdAt}
+                                    {question.createdAt}
                                 </Typography>
                             </Box>
                         </Box>
