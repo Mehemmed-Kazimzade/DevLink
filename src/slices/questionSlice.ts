@@ -26,6 +26,8 @@ const questionSlice = createSlice({
         })
 
         .addCase(fetchQuestions.fulfilled, (state, action) => {
+            state.loading = false;
+            state.error = null;
             state.questions = action.payload;
         })
 

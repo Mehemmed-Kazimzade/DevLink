@@ -17,12 +17,11 @@ export default function useGetCredentials<T>(link: string) {
                 data: response.data,
             }
         }
-        catch(e) {
-            console.error("Error occurred: " + e);
-
+        
+        catch(e: any) {
             return {
                 status: "ERROR",
-                data: "",
+                data: e.response.data,
             };
         }
     }

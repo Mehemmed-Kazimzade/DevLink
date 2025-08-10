@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { ThumbUp, Visibility, AccessTime } from "@mui/icons-material";
 import type { QuestionDto } from "../../types/questions";
+import ReactMarkdown from 'react-markdown';
 
 export default function QuestionCard({question}: {question: QuestionDto}) {
 
@@ -151,7 +152,7 @@ export default function QuestionCard({question}: {question: QuestionDto}) {
                             {question.questionTitle}
                         </Typography>
 
-                        <Typography
+                        {/* <Typography
                             variant="body2"
                             sx={{
                                 mb: 2,
@@ -161,9 +162,11 @@ export default function QuestionCard({question}: {question: QuestionDto}) {
                                 WebkitBoxOrient: "vertical",
                                 overflow: "hidden",
                             }}
-                        >
-                            {question.questionBody}
-                        </Typography>
+                        > */}
+                        <Box mb={2}>
+                            <ReactMarkdown>{question.questionBody}</ReactMarkdown>
+                        </Box>
+                        {/* </Typography> */}
 
                         {/* Tags */}
                         <Box sx={{ mb: 2 }}>

@@ -1,17 +1,27 @@
-import { useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import QuestionsContainer from "../../components/questions/QuestionsContainer";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../slices/store";
+import LoadingSpinner from "../../components/LoadingSpinner";
+import { fetchQuestions } from "../../stateManagement/thunks";
+import { useEffect } from "react";
+import type { AppDispatch } from "../../slices/store";
+import { getQuestions } from "../../constants/urls";
 
 export default function Questions() {
-    const { userSlug } = useParams<{ userSlug: string }>() ?? "";
-    const { questions, loading, error } = useSelector((state: RootState) => state.questions);
+    const [ searchParams ] = useSearchParams();
+    const userSlug = searchParams.get("userSlug") ?? "";
+    const { loading } = useSelector((state: RootState) => state.questions);
+    const dispatch = useDispatch<AppDispatch>();
 
-    const questionsFrom = userSlug?.split("-")[1] ?? "";
+    useEffect(() => {
+        dispatch(fetchQuestions(`${getQuestions}?userSlug=${userSlug}`));
+    }, []);
 
-    return (
-        
+    const questionsFrom = userSlug?.split("-")[1] ?? "community";
 
-        <QuestionsContainer questionsFrom={questionsFrom} />
-    )
+    return <>
+        {loading ? <LoadingSpinner /> :
+        <QuestionsContainer questionsFrom={questionsFrom} />}
+    </>
 }
