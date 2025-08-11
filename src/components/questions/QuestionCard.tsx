@@ -12,10 +12,11 @@ import {
 } from "@mui/material";
 import { ThumbUp, Visibility, AccessTime } from "@mui/icons-material";
 import type { QuestionDto } from "../../types/questions";
-import ReactMarkdown from 'react-markdown';
+import MarkdownViewer from "../profile/MarkdownViewer";
+import FindDateDifference from "../../utils/FindDateDifference";
+import { Link } from "react-router-dom";
 
-export default function QuestionCard({question}: {question: QuestionDto}) {
-
+export default function QuestionCard({ question }: { question: QuestionDto }) {
     const isSmall = useMediaQuery("(max-width: 500px)");
 
     return (
@@ -31,7 +32,13 @@ export default function QuestionCard({question}: {question: QuestionDto}) {
             }}
         >
             <CardContent sx={{ p: 3 }}>
-                <Box sx={{ display: "flex", gap: 2, flexDirection: isSmall ? "column-reverse" : "row" }}>
+                <Box
+                    sx={{
+                        display: "flex",
+                        gap: 2,
+                        flexDirection: isSmall ? "column-reverse" : "row",
+                    }}
+                >
                     {/* Stats Column */}
                     <Box
                         sx={{
@@ -67,11 +74,7 @@ export default function QuestionCard({question}: {question: QuestionDto}) {
                             >
                                 {question.votes}
                             </Typography>
-                            <Typography
-                                variant="caption"
-                            >
-                                votes
-                            </Typography>
+                            <Typography variant="caption">votes</Typography>
                         </Box>
 
                         {/* Answers */}
@@ -100,11 +103,7 @@ export default function QuestionCard({question}: {question: QuestionDto}) {
                                     {question.answersCount}
                                 </Typography>
                             </Box>
-                            <Typography
-                                variant="caption"
-                            >
-                                answers
-                            </Typography>
+                            <Typography variant="caption">answers</Typography>
                         </Box>
 
                         {/* Views */}
@@ -118,17 +117,11 @@ export default function QuestionCard({question}: {question: QuestionDto}) {
                                 }}
                             >
                                 <Visibility fontSize="small" color="disabled" />
-                                <Typography
-                                    variant="body2"
-                                >
+                                <Typography variant="body2">
                                     {question.views}
                                 </Typography>
                             </Box>
-                            <Typography
-                                variant="caption"
-                            >
-                                views
-                            </Typography>
+                            <Typography variant="caption">views</Typography>
                         </Box>
                     </Box>
 
@@ -164,7 +157,11 @@ export default function QuestionCard({question}: {question: QuestionDto}) {
                             }}
                         > */}
                         <Box mb={2}>
-                            <ReactMarkdown>{question.questionBody}</ReactMarkdown>
+                            <MarkdownViewer
+                                content={
+                                    question.questionBody.slice(0, 247) + "..."
+                                }
+                            />
                         </Box>
                         {/* </Typography> */}
 
@@ -202,42 +199,44 @@ export default function QuestionCard({question}: {question: QuestionDto}) {
                             sx={{
                                 mt: 2,
                                 display: "flex",
-                                flexDirection: isSmall ? "column" : "row", 
+                                flexDirection: isSmall ? "column" : "row",
                                 justifyContent: "space-between",
                                 alignItems: !isSmall ? "center" : "start",
                                 gap: 2,
                             }}
                         >
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    gap: 1,
-                                }}
-                            >
-                                <Avatar
-                                    src={question.userDto.profileImageUrl}
-                                    alt={question.userDto.fullName}
-                                    sx={{ width: 24, height: 24 }}
-                                />
-                                <Box>
-                                    <Typography
-                                        variant="body2"
-                                        sx={{
-                                            fontWeight: 500,
-                                            color: "#1976d2",
-                                        }}
-                                    >
-                                        {question.userDto.fullName}
-                                    </Typography>
-                                    {/* <Typography
+                            <Link to={`/profile/${question.userDto.userSlug}`}>
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: 1,
+                                    }}
+                                >
+                                    <Avatar
+                                        src={question.userDto.profileImageUrl}
+                                        alt={question.userDto.fullName}
+                                        sx={{ width: 24, height: 24 }}
+                                    />
+                                    <Box>
+                                        <Typography
+                                            variant="body2"
+                                            sx={{
+                                                fontWeight: 500,
+                                                color: "#1976d2",
+                                            }}
+                                        >
+                                            {question.userDto.fullName}
+                                        </Typography>
+                                        {/* <Typography
                                         variant="caption"
                                     >
                                         {question.userDto.reputation.toLocaleString()}{" "}
                                         reputation
                                     </Typography> */}
+                                    </Box>
                                 </Box>
-                            </Box>
+                            </Link>
 
                             <Box
                                 sx={{
@@ -247,10 +246,11 @@ export default function QuestionCard({question}: {question: QuestionDto}) {
                                 }}
                             >
                                 <AccessTime fontSize="small" color="disabled" />
-                                <Typography
-                                    variant="caption"
-                                >
-                                    {question.createdAt}
+                                <Typography variant="caption">
+                                    Created{" "}
+                                    {FindDateDifference(
+                                        new Date(question.createdAt).getTime()
+                                    )}
                                 </Typography>
                             </Box>
                         </Box>

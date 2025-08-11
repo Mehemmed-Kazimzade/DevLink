@@ -8,17 +8,28 @@ import { useDispatch } from "react-redux";
 import { fetchProjects, fetchSnippets, fetchUserInfo, fetchUserSkills } from "../stateManagement/thunks";
 import type { AppDispatch } from "../slices/store";
 import { getProjects, getSnippets, getTechStack, getUserInfo } from "../constants/urls";
+import { useParams } from "react-router-dom";
 
 export default function Profile() {
+    const { userSlug } = useParams<{ userSlug: string }>();
     const dispatch = useDispatch<AppDispatch>();
 
+    console.log(userSlug);
+
     useEffect(() => {
+        if (userSlug === "me" || !userSlug) {
+
+        }
+
+        else {
+            
+        }
 
         dispatch(fetchUserInfo(getUserInfo));
         dispatch(fetchUserSkills(getTechStack));
         dispatch(fetchProjects(getProjects));
         dispatch(fetchSnippets(getSnippets));
-    
+
     }, [dispatch]);
 
     return (

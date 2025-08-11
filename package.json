@@ -30,7 +30,9 @@
     "react-router-dom": "^7.6.3",
     "react-simple-code-editor": "^0.14.1",
     "react-spinner": "^0.2.7",
+    "react-syntax-highlighter": "^15.6.1",
     "redux": "^5.0.1",
+    "rehype-highlight": "^7.0.2",
     "shiki": "^3.9.1",
     "uuid": "^11.1.0"
   },
@@ -39,6 +41,7 @@
     "@types/prismjs": "^1.26.5",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
+    "@types/react-syntax-highlighter": "^15.5.13",
     "@vitejs/plugin-react": "^4.5.2",
     "eslint": "^9.29.0",
     "eslint-plugin-react-hooks": "^5.2.0",

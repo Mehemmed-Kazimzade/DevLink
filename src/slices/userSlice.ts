@@ -8,12 +8,12 @@ import {
 } from "../stateManagement/thunks";
 
 const initialState: UserProfile = {
+    userSlug: "",
     fullName: "",
     userInfo: null,
     skills: null,
     projects: null,
     snippets: null,
-    certifications: null,
 };
 
 const userSlice = createSlice({

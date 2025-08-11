@@ -27,6 +27,7 @@ import ConvertToFormData from "../../utils/ConvertToFormData";
 import useSnackbar from "../../hooks/useSnackbar";
 import GlobalSnackbar from "../Snackbar";
 import { initialSnackbarState } from "../../constants/initialSnackbarState";
+import { redirect } from "react-router-dom";
 
 export default function QuestionPost() {
     const isSmall = useMediaQuery("(max-width: 500px)");
@@ -43,7 +44,9 @@ export default function QuestionPost() {
 
         if (response.status === "SUCCESS") {
             setSnackbarState({ open: true, message: response.data.message, severity:"success"  });
+            redirect("/QA/questions/");
         }
+
         else {
             setSnackbarState({ open: true, message: response.data, severity:"error"  });
         }
