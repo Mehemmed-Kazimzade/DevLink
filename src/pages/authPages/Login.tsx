@@ -30,7 +30,7 @@ export default function Login() {
 
         if(status === "SUCCESS") {
             localStorage.setItem("token", data.token);
-            navigate("/profile/");
+            navigate("/profile/me/");
             return;
         }
 

@@ -27,3 +27,20 @@ export const fetchQuestions = createFetchThunk<QuestionDto[]>(
     "questions/fetchQuestions",
     (data) => data.questions
 );
+
+export const fetchViewedUserInfo = createFetchThunk<UserInfo>("user/fetchViewedUserInfo")
+
+export const fetchViewedUserSkills = createFetchThunk<Skill[]>(
+    "user/fetchViewedUserSkills",
+    (data: UserSkillResponse) => data.techStack
+)
+
+export const fetchViewedUserSnippets = createFetchThunk<Snippet[]>(
+    "user/fetchViewedUserSnippets",
+    (data) => data.snippets
+);
+
+export const fetchViewedUserProjects = createFetchThunk<Project[]>(
+    "user/fetchViewedUserProjects",
+    (data) => data.projects
+);

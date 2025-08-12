@@ -22,14 +22,32 @@ import ConvertToSkill from "../../utils/ConvertToSkill.";
 import useSnackbar from "../../hooks/useSnackbar";
 import { initialSnackbarState } from "../../constants/initialSnackbarState";
 
-export default function PersonalInfo() {
+export default function PersonalInfo({
+    isCurrentUser,
+}: {
+    isCurrentUser: boolean;
+}) {
     const isSmall = useMediaQuery("(max-width: 440px)");
     const dispatch = useDispatch();
-    const fullName = useSelector((state: RootState) => state.user.fullName);
-    const userInfo = useSelector((state: RootState) => state.user.userInfo);
-    const userSkills = useSelector((state: RootState) => state.user.skills);
 
-    const { isSnackbarOpen, setSnackbarState, snackbarMessage, snackbarSeverity } = useSnackbar();
+    const fullName = useSelector((state: RootState) =>
+        isCurrentUser ? state.user.fullName : state.viewedUser.fullName
+    );
+
+    const userInfo = useSelector((state: RootState) =>
+        isCurrentUser ? state.user.userInfo : state.viewedUser.userInfo
+    );
+
+    const userSkills = useSelector((state: RootState) =>
+        isCurrentUser ? state.user.skills : state.viewedUser.skills
+    );
+
+    const {
+        isSnackbarOpen,
+        setSnackbarState,
+        snackbarMessage,
+        snackbarSeverity,
+    } = useSnackbar();
 
     const handleClickSave = async (updatedData: any) => {
         const response = await useUpdateCredentials(
@@ -51,7 +69,11 @@ export default function PersonalInfo() {
 
         dispatch(setUserInfo(updatedUserInfo));
 
-        setSnackbarState({ open: true, message: response.data, severity: "success" });
+        setSnackbarState({
+            open: true,
+            message: response.data,
+            severity: "success",
+        });
     };
 
     const onAddedSkills = async (addedData: any) => {
@@ -63,7 +85,11 @@ export default function PersonalInfo() {
         const convertedSkills = ConvertToSkill(addedData.techStack);
 
         dispatch(setUserSkills(convertedSkills));
-        setSnackbarState({ open: true, message: response.data, severity: "success" });
+        setSnackbarState({
+            open: true,
+            message: response.data,
+            severity: "success",
+        });
     };
 
     return (
@@ -76,6 +102,7 @@ export default function PersonalInfo() {
                 message={snackbarMessage}
                 severity={snackbarSeverity}
             />
+
             <Box display={"flex"} justifyContent={"space-between"}>
                 <Box>
                     <Box display="flex" flexDirection="column" gap={3} mb={3}>
@@ -144,7 +171,7 @@ export default function PersonalInfo() {
                     </Box>
                 </Box>
 
-                <Box display={"flex"} gap={2}>
+                <Box display={isCurrentUser ? "flex" : "none"} gap={2}>
                     <EditAction
                         type="add"
                         title={"Add skills"}

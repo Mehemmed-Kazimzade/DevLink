@@ -27,8 +27,6 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import GroupsIcon from "@mui/icons-material/Groups";
 import DataObjectIcon from "@mui/icons-material/DataObject";
 import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
-import { useSelector } from "react-redux";
-import type { RootState } from "../../slices/store";
 
 const drawerWidth = 240;
 
@@ -107,12 +105,19 @@ export default function DrawerComponent({ mode, toggleMode }: HeaderProps) {
         <GroupsIcon />,
         <DataObjectIcon />,
     ];
+
     const links: string[] = [
-        `/profile/me/`,
+        "/profile/me/",
         "/QA/questions/",
         "/QA/questionPost/",
         "/groups/",
         "/snippets/",
+    ];
+
+    const authLinks: string[] = [
+        "/login/",
+        "register/",
+        "/logout/",
     ];
 
     const handleDrawerOpen = () => {
@@ -221,16 +226,18 @@ export default function DrawerComponent({ mode, toggleMode }: HeaderProps) {
                 <List>
                     {["Login", "Register", "Logout"].map((text, index) => (
                         <ListItem key={text} disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    {index % 2 === 0 ? (
-                                        <InboxIcon />
-                                    ) : (
-                                        <MailIcon />
-                                    )}
-                                </ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItemButton>
+                            <Link style={{ width: "100%" }} to={authLinks[index]}>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        {index % 2 === 0 ? (
+                                            <InboxIcon />
+                                        ) : (
+                                            <MailIcon />
+                                        )}
+                                    </ListItemIcon>
+                                    <ListItemText primary={text} />
+                                </ListItemButton>
+                            </Link>
                         </ListItem>
                     ))}
                 </List>

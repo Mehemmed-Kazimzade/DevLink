@@ -1,11 +1,21 @@
 import { Box, Paper} from "@mui/material";
 import RsTypography from "../../components/ui/RsTypography";
 import RsButton from "../../components/ui/RsButton";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FlexBox from "../../components/ui/FlexBox";
 import MotionDivWrapper from "../../components/MotionDivWrapper";
+import logout from "../../api/logout";
 
 export default function Logout() {
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        const token = localStorage.getItem("token") ?? "";
+        await logout("http://localhost:8080/api/v1/auth/logout/", token);
+        localStorage.removeItem("token");
+        navigate("/logoutSuccess/");
+    }
+
     return <>
         <MotionDivWrapper>
             <Box className="centered-container">
@@ -15,12 +25,10 @@ export default function Logout() {
 
                     <FlexBox>
                         <Link to={""} className="button-link">
-                            <RsButton text="No" />
+                            <RsButton text="No, go back to Home page" />
                         </Link>
 
-                        <Link to={""} className="button-link">
-                            <RsButton text="Yes logout" />
-                        </Link>
+                        <RsButton onClick={handleLogout} text="Yes logout" />
                     </FlexBox>
                 </Paper>
             </Box>

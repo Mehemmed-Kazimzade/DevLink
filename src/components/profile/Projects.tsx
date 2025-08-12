@@ -12,9 +12,9 @@ import { v4 as id } from 'uuid';
 import ConvertToSkill from "../../utils/ConvertToSkill.";
 import useProjectFieldDistributor from "../../distributers/useProjectFieldDistributer";
 
-export default function Projects() {
+export default function Projects({isCurrentUser}: {isCurrentUser: boolean}) {
     const isSmall = useMediaQuery("(max-width: 420px)");
-    const projects = useSelector((state: RootState) => state.user).projects;
+    const projects = useSelector((state: RootState) => isCurrentUser ? state.user.projects : state.viewedUser.projects);
     const dispatch = useDispatch();
     const { isSnackbarOpen, setSnackbarState, snackbarMessage, snackbarSeverity } = useSnackbar();
 
@@ -54,12 +54,15 @@ export default function Projects() {
                         Featured Projects
                     </Typography>
 
-                    <EditAction
-                        type="add"
-                        title="Add Project"
-                        fields={useProjectFieldDistributor("", "", [])}
-                        handleClickSave={handleAddProject}
-                    />
+                    <Box display={isCurrentUser ? "block" : "none"}>
+                        <EditAction
+                            type="add"
+                            title="Add Project"
+                            fields={useProjectFieldDistributor("", "", [])}
+                            handleClickSave={handleAddProject}
+                        />
+                    </Box>
+
                 </Box>
 
                 <Grid container spacing={3}>
@@ -68,6 +71,7 @@ export default function Projects() {
                               <Grid size={{ xs: 12, md: 4 }} key={project.id}>
                                   <ProjectCard
                                       project={project}
+                                      isCurrentUser={isCurrentUser}
                                       setSnackbarState={setSnackbarState}
                                   />
                               </Grid>

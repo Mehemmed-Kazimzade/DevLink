@@ -25,11 +25,13 @@ import useUpdateCredentials from "../../api/useUpdateCredentials";
 
 interface SnippetCardProps {
     snippet: Snippet;
+    isCurrentUser: boolean;
     setSnackbarState: (snackbarState: SnackbarState) => void;
 }
 
 export default function SnippetCard({
     snippet,
+    isCurrentUser,
     setSnackbarState,
 }: SnippetCardProps) {
     const dispatch = useDispatch();
@@ -106,7 +108,7 @@ export default function SnippetCard({
                                 {snippet.title}
                             </Typography>
                         </Box>
-                        <Box display={"flex"} gap={2}>
+                        <Box display={isCurrentUser ? "flex" : "none"} gap={2}>
                             <EditAction
                                 type="edit"
                                 title={"Editing snippet " + snippet.title}

@@ -12,9 +12,9 @@ import { addSnippet } from "../../slices/userSlice";
 import GlobalSnackbar from "../Snackbar";
 import { initialSnackbarState } from "../../constants/initialSnackbarState";
 
-export default function Snippets() {
+export default function Snippets({isCurrentUser}: {isCurrentUser: boolean}) {
     const isSmall = useMediaQuery("(max-width: 420px)");
-    const snippets = useSelector((state: RootState) => state.user.snippets);
+    const snippets = useSelector((state: RootState) => isCurrentUser ? state.user.snippets : state.viewedUser.snippets);
     const dispatch = useDispatch();
     const {
         isSnackbarOpen,
@@ -58,18 +58,20 @@ export default function Snippets() {
                         Code Snippets & Gists
                     </Typography>
 
-                    <EditAction
-                        type="add"
-                        title="Add Snippet"
-                        fields={useSnippetFieldDistributor("", "", "")}
-                        handleClickSave={handleAddSnippet}
-                    />
+                    <Box display={isCurrentUser ? "block" : "none"}>
+                        <EditAction
+                            type="add"
+                            title="Add Snippet"
+                            fields={useSnippetFieldDistributor("", "", "")}
+                            handleClickSave={handleAddSnippet}
+                        />
+                    </Box>
                 </Box>
                 <Grid container spacing={3}>
                     {Array.isArray(snippets) && snippets.length !== 0
                         ? snippets.map((snippet, index) => (
                               <Grid size={{ xs: 12, md: 6 }} key={index}>
-                                  <SnippetCard snippet={snippet} setSnackbarState={setSnackbarState} />
+                                  <SnippetCard isCurrentUser={isCurrentUser} snippet={snippet} setSnackbarState={setSnackbarState} />
                               </Grid>
                           ))
                         : "No code snippets were found."}

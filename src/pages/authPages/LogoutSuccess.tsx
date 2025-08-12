@@ -13,7 +13,7 @@ export default function LogoutSuccess() {
                     <RsTypography lg="20px" xs="24px" fontWeight="bold" text="Successfully logged out. Thanks for using DevLink" 
                     sx={{ mb: 2 }} textAlign={"center"} />
 
-                    <Link to={""} className="button-link">
+                    <Link to={"/login/"} className="button-link">
                         <RsButton text="Login Again" icon={<LoginIcon />} />
                     </Link>
                 </Paper>

@@ -27,13 +27,16 @@ import useProjectFieldDistributor from "../../distributers/useProjectFieldDistri
 
 interface ProjectCardProps {
     project: Project;
+    isCurrentUser: boolean,
     setSnackbarState: (snackbarState: SnackbarState) => void;
 }
 
 export default function ProjectCard({
     project,
+    isCurrentUser,
     setSnackbarState,
 }: ProjectCardProps) {
+
     const fields = useProjectFieldDistributor(
         project.title,
         project.description,
@@ -127,7 +130,7 @@ export default function ProjectCard({
                         >
                             {project.title}
                         </Typography>
-                        <Box display={"flex"} gap={2}>
+                        <Box display={isCurrentUser ? "flex" : "none"} gap={2}>
                             <EditAction
                                 type="edit"
                                 title={"Editing project: " + project.title}
