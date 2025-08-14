@@ -16,11 +16,19 @@ import MarkdownViewer from "../profile/MarkdownViewer";
 import FindDateDifference from "../../utils/FindDateDifference";
 import { Link } from "react-router-dom";
 
-export default function QuestionCard({ question }: { question: QuestionDto }) {
+interface QuestionCardProps {
+    question: QuestionDto;
+    handleMouseEnter: (questionSlug: string) => void;
+    handleMouseLeave: () => void;
+}
+
+export default function QuestionCard({ question, handleMouseEnter, handleMouseLeave }: QuestionCardProps) {
     const isSmall = useMediaQuery("(max-width: 500px)");
 
     return (
         <Card
+            onMouseEnter={() => handleMouseEnter(question.questionSlug)}
+            onMouseLeave={handleMouseLeave}
             sx={{
                 mb: 2,
                 border: "1px solid #e0e0e0",
@@ -125,37 +133,21 @@ export default function QuestionCard({ question }: { question: QuestionDto }) {
                         </Box>
                     </Box>
 
-                    {/* Content Column */}
                     <Box sx={{ flex: 1 }}>
-                        {/* Question Title */}
-                        <Typography
-                            variant="h6"
-                            component="h3"
-                            sx={{
-                                mb: 1,
-                                color: "#1976d2",
-                                cursor: "pointer",
-                                "&:hover": {
-                                    color: "#1565c0",
-                                },
-                                fontWeight: 500,
-                                lineHeight: 1.3,
-                            }}
-                        >
-                            {question.questionTitle}
-                        </Typography>
 
-                        {/* <Typography
-                            variant="body2"
-                            sx={{
-                                mb: 2,
-                                lineHeight: 1.5,
-                                display: "-webkit-box",
-                                WebkitLineClamp: 2,
-                                WebkitBoxOrient: "vertical",
-                                overflow: "hidden",
-                            }}
-                        > */}
+                        <Link to={question.questionSlug}>
+                            <Typography
+                                variant="h6"
+                                component="h3"
+                                sx={{mb: 1,color: "#1976d2",cursor: "pointer","&:hover": {color: "#1565c0",},
+                                    fontWeight: 500,
+                                    lineHeight: 1.3,}}>
+
+                                {question.questionTitle}
+
+                        </Typography>
+                        </Link>
+
                         <Box mb={2}>
                             <MarkdownViewer
                                 content={
@@ -205,7 +197,7 @@ export default function QuestionCard({ question }: { question: QuestionDto }) {
                                 gap: 2,
                             }}
                         >
-                            <Link to={`/profile/${question.userDto.userSlug}`}>
+                            <Link to={`/profile/${question.user.userSlug}`}>
                                 <Box
                                     sx={{
                                         display: "flex",
@@ -214,8 +206,8 @@ export default function QuestionCard({ question }: { question: QuestionDto }) {
                                     }}
                                 >
                                     <Avatar
-                                        src={question.userDto.profileImageUrl}
-                                        alt={question.userDto.fullName}
+                                        src={question.user.profileImageUrl}
+                                        alt={question.user.fullName}
                                         sx={{ width: 24, height: 24 }}
                                     />
                                     <Box>
@@ -226,7 +218,7 @@ export default function QuestionCard({ question }: { question: QuestionDto }) {
                                                 color: "#1976d2",
                                             }}
                                         >
-                                            {question.userDto.fullName}
+                                            {question.user.fullName}
                                         </Typography>
                                         {/* <Typography
                                         variant="caption"

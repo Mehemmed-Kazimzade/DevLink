@@ -5,7 +5,13 @@ import type { QuestionResponse } from "../types/questions";
 export default function getQuestions(by: string) {
     const fetchQuestions = async (): Promise<ApiResponse<QuestionResponse>> => {
         try {
-            const response = await axios.get(`http://localhost:8080/api/v1/question/getQuestions/${by}`);
+            const token = localStorage.getItem("token");
+            const response = await axios.get(`http://localhost:8080/api/v1/question/getQuestions/${by}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                withCredentials: true,
+            });
             
             return {
                 status: "SUCCESS",

@@ -41,6 +41,7 @@ export type QuestionDto = {
   views: number;
   tags: string[];
   votes: number;
+  questionSlug: string;
   isResolved: boolean;
   questionStatus: QuestionStatus;
   createdAt: string;  // ISO timestamp

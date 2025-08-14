@@ -73,7 +73,12 @@ const userSlice = createSlice({
         },
 
         clearProfile(state) {
+            state.userSlug = "";
+            state.fullName = "";
+            state.skills = null;
             state.userInfo = null;
+            state.projects = null;
+            state.snippets = null;
         },
     },
 

@@ -14,7 +14,7 @@ export default function useGetCredentials<T>(link: string) {
             
             return {
                 status: "SUCCESS",
-                data: response.data,
+                data: response.data as T,
             }
         }
         

@@ -5,14 +5,18 @@ import { Link, useNavigate } from "react-router-dom";
 import FlexBox from "../../components/ui/FlexBox";
 import MotionDivWrapper from "../../components/MotionDivWrapper";
 import logout from "../../api/logout";
+import { useDispatch } from "react-redux";
+import { clearProfile } from "../../slices/userSlice";
 
 export default function Logout() {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleLogout = async () => {
         const token = localStorage.getItem("token") ?? "";
         await logout("http://localhost:8080/api/v1/auth/logout/", token);
         localStorage.removeItem("token");
+        dispatch(clearProfile());
         navigate("/logoutSuccess/");
     }
 
