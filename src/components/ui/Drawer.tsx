@@ -110,7 +110,7 @@ export default function DrawerComponent({ mode, toggleMode }: HeaderProps) {
         "/profile/me/",
         "/QA/questions/",
         "/QA/questionPost/",
-        "/groups/",
+        "/QA/questions/detailPage/",
         "/snippets/",
     ];
 

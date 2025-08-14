@@ -20,12 +20,16 @@ export type CommentDto = {
 };
 
 export type AnswerDto = {
+  id: number;
+  isAccepted: boolean;
   content: string;
   currentUserVote: VoteType;
   user: UserDto;
   upVotes: number;
   downVotes: number;
   comments: CommentDto[];
+  createdAt: string;
+  lastEdited: string;
 };
 
 export type QuestionStatus = 'OPEN' | 'CLOSED' | 'DRAFT';
@@ -42,7 +46,7 @@ export type QuestionDto = {
   createdAt: string;  // ISO timestamp
   updatedAt: string;  // ISO timestamp
   answersCount: number;
-  userDto: UserDto;
+  user: UserDto;
   comments: CommentDto[];
   answers: AnswerDto[];
 };

@@ -4,7 +4,7 @@ import PersonalInfo from "../components/profile/PersonalInfo";
 import Projects from "../components/profile/Projects";
 import Snippets from "../components/profile/Snippets";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
     fetchProjects,
     fetchSnippets,
@@ -15,7 +15,7 @@ import {
     fetchViewedUserSkills,
     fetchViewedUserSnippets,
 } from "../stateManagement/thunks";
-import type { AppDispatch } from "../slices/store";
+import type { AppDispatch, RootState } from "../slices/store";
 import {
     getProjects,
     getSnippets,
@@ -29,6 +29,7 @@ import CapitalizeString from "../utils/CapitalizeString";
 
 export default function Profile() {
     const { userSlug } = useParams<{ userSlug: string }>();
+    console.log(useSelector((root: RootState) => root.user.userSlug));
     const dispatch = useDispatch<AppDispatch>();
 
     const isCurrentUser = userSlug === "me" || !userSlug;
