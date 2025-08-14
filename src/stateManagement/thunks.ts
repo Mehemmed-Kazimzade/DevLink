@@ -44,3 +44,7 @@ export const fetchViewedUserProjects = createFetchThunk<Project[]>(
     "user/fetchViewedUserProjects",
     (data) => data.projects
 );
+
+export const fetchViewedQuestion = createFetchThunk<QuestionDto>(
+    "cachedQuestions/fetchViewedQuestion"
+)

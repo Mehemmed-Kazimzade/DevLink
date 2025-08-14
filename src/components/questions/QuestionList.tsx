@@ -1,36 +1,25 @@
 "use client";
 import { Box } from "@mui/material";
 import QuestionCard from "./QuestionCard";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import type { RootState } from "../../slices/store";
 import { useRef } from "react";
-import { cacheQuestion } from "../../slices/cachedQuestionSlice";
-import useGetCredentials from "../../api/useGetCredentials";
-import type { QuestionDto } from "../../types/questions";
+import useFetchQuestionsIfNeeded from "../../hooks/useFetchQuestionsIfNeeded";
 
 export default function QuestionList() {
     const hoverTimer = useRef<number | null>(null);
     const questions = useSelector(
         (state: RootState) => state.questions.questions
     );
-    const dispatch = useDispatch();
+    const lastFetched = useSelector(
+        (root: RootState) => root.cachedQuestions.lastFetched
+    );
+
+    const fetchQuestionsIfNeeded = useFetchQuestionsIfNeeded();
 
     const handleMouseEnter = (questionSlug: string) => {
         hoverTimer.current = setTimeout(async () => {
-            const questionDetails = await useGetCredentials<QuestionDto>(
-                `http://localhost:8080/api/v1/question/${questionSlug}`
-            );
-
-            console.log(questionDetails);
-
-            dispatch(
-                cacheQuestion({
-                    id: questionSlug,
-                    data: questionDetails.data,
-                })
-            );
-
-            console.log("yes");
+            fetchQuestionsIfNeeded(questionSlug, lastFetched);
         }, 500);
     };
 

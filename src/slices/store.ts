@@ -3,6 +3,7 @@ import userReducer from "./userSlice";
 import extraSlices from "./extraSlices";
 import questionReducer from "./questionSlice";
 import viewedUserReducer from "./viewedUserSlice";
+import cachedQuestions from "./cachedQuestionSlice";
 
 export const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
         questions: questionReducer,
         viewedUser: viewedUserReducer,
         extraSlices: extraSlices,
+        cachedQuestions: cachedQuestions
     }
 })
 

@@ -3,3 +3,4 @@ export const getTechStack = "http://localhost:8080/api/v1/userSkills/getTechStac
 export const getProjects = "http://localhost:8080/api/v1/profile/getProject/";
 export const getSnippets = "http://localhost:8080/api/v1/snippet/getSnippets/";
 export const getQuestions = "http://localhost:8080/api/v1/question/getQuestions/";
+export const getViewedQuestion = "http://localhost:8080/api/v1/question/";
