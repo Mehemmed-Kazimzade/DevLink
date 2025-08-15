@@ -16,7 +16,7 @@ export type AnswerVoteDto = {
 export type CommentDto = {
   id: number;
   content: string;
-  user: UserDto;
+  user: UserDto | undefined;
 };
 
 export type AnswerDto = {

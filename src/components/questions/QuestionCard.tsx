@@ -135,7 +135,7 @@ export default function QuestionCard({ question, handleMouseEnter, handleMouseLe
 
                     <Box sx={{ flex: 1 }}>
 
-                        <Link to={question.questionSlug}>
+                        <Link to={`/QA/${question.questionSlug}`}>
                             <Typography
                                 variant="h6"
                                 component="h3"

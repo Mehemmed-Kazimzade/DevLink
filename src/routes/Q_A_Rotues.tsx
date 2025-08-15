@@ -5,6 +5,6 @@ import QuestionDetailPage from "../components/questions/QuestionDetail";
 
 export default [
     <Route element={<Questions />} path="/QA/questions/" />,
-    <Route element={<QuestionDetailPage />} path="/QA/questions/{questionSlug}/" />,
+    <Route element={<QuestionDetailPage />} path="/QA/:questionSlug/" />,
     <Route element={<QuestionPost />} path="/QA/questionPost/" />
 ];

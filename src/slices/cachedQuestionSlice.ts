@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { QuestionDto } from "../types/questions";
+import type { CommentDto, QuestionDto } from "../types/questions";
 import { fetchViewedQuestion } from "../stateManagement/thunks";
 
 interface CachedQuestionsState {
@@ -28,6 +28,14 @@ const cachedQuestionSlice = createSlice({
 
         setViewedQuestion(state, action: PayloadAction<QuestionDto>) {
             state.viewedQuestion = action.payload;
+        },
+
+        setCommentsOnQuestion(state, action: PayloadAction<CommentDto>) {
+            state.viewedQuestion?.comments.push(action.payload);
+        },
+
+        clearViewedQuestion(state, _) {
+            state.viewedQuestion = null;
         }
     },
 
@@ -38,5 +46,5 @@ const cachedQuestionSlice = createSlice({
     }
 });
 
-export const { cacheQuestion, setViewedQuestion } = cachedQuestionSlice.actions;
+export const { cacheQuestion, setViewedQuestion,setCommentsOnQuestion, clearViewedQuestion } = cachedQuestionSlice.actions;
 export default cachedQuestionSlice.reducer;

@@ -10,7 +10,6 @@ import {
     Stack,
     IconButton,
     Button,
-    TextField,
 } from "@mui/material";
 import {
     ThumbUp,
@@ -23,80 +22,64 @@ import {
 } from "@mui/icons-material";
 import MarkdownViewer from "../profile/MarkdownViewer";
 import AnswerItem from "./AnswerItem";
-import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../slices/store";
-import { useEffect } from "react";
 import LoadingSpinner from "../LoadingSpinner";
-import { useParams } from "react-router-dom";
-import HasQuestionExpired from "../../utils/HasQuestionExpired";
-import { fetchViewedQuestion } from "../../stateManagement/thunks";
-import { getViewedQuestion } from "../../constants/urls";
-import { setViewedQuestion } from "../../slices/cachedQuestionSlice";
+import FindDateDifference from "../../utils/FindDateDifference";
+import PendingIcon from "@mui/icons-material/Pending";
+import CommentItem from "./CommentItem";
+import useQuestionDetailPage from "../../hooks/useQuestionDetailPage";
+import AddComment from "./AddComment";
+import useSnackbar from "../../hooks/useSnackbar";
+import GlobalSnackbar from "../Snackbar";
+import { initialSnackbarState } from "../../constants/initialSnackbarState";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { clearViewedQuestion } from "../../slices/cachedQuestionSlice";
 
 export default function QuestionDetailPage() {
-    const { questionSlug } = useParams<{ questionSlug: string }>();
+    const { question, commentsToShow, setCommentsToShow } = useQuestionDetailPage();
 
-    const dispatch = useDispatch<AppDispatch>();
-    const cachedQuestion = useSelector(
-        (state: RootState) => state.cachedQuestions.byId[questionSlug || ""]
-    );
-
-    const lastFetched = useSelector(
-        (state: RootState) =>
-            state.cachedQuestions.lastFetched[questionSlug || ""]
-    );
-
-    const question = useSelector((state: RootState) => state.cachedQuestions.viewedQuestion);
+    const { isSnackbarOpen, snackbarMessage, snackbarSeverity, setSnackbarState } = useSnackbar();
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        if (!cachedQuestion || HasQuestionExpired(lastFetched)) {
-            dispatch(fetchViewedQuestion(getViewedQuestion + questionSlug));
-        } else dispatch(setViewedQuestion(cachedQuestion));
-    
-    }, [questionSlug, cachedQuestion, lastFetched, dispatch]);
 
-    if (!questionSlug)
-        return <Typography variant="body1">PAGE NOT FOUND</Typography>;
+        return () => {
+            dispatch(clearViewedQuestion({}));
+        }
+    }, []);
 
     return (
         <>
+            <GlobalSnackbar
+                open={isSnackbarOpen}
+                handleClose={() => setSnackbarState(initialSnackbarState)}
+                message={snackbarMessage}
+                severity={snackbarSeverity}
+            />
+
             {question ? (
                 <Container maxWidth="lg" sx={{ py: 4 }}>
-                    <Paper
-                        elevation={0}
-                        sx={{
-                            p: 3,
-                            border: "1px solid",
-                            borderColor: "divider",
-                        }}
-                    >
+                    <Paper elevation={0} sx={{p: 3,border: "1px solid",borderColor: "divider"}}>
                         <Box sx={{ mb: 3 }}>
-                            <Typography
-                                variant="h4"
-                                component="h1"
-                                sx={{ mb: 2, fontWeight: 600 }}
-                            >
+                            <Typography variant="h4" component="h1" sx={{ mb: 2, fontWeight: 600 }}>
                                 {question.questionTitle}
                             </Typography>
 
                             <Stack
                                 direction="row"
                                 spacing={3}
-                                sx={{
-                                    mb: 2,
-                                    color: "text.secondary",
-                                    fontSize: "0.875rem",
-                                }}
-                            >
-                                <Box
-                                    sx={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        gap: 0.5,
-                                    }}
-                                >
+                                sx={{mb: 2,color: "text.secondary",fontSize: "0.875rem"}}>
+                                
+                                <Box sx={{display: "flex",alignItems: "center",gap: 0.5,}}>
                                     <AccessTime fontSize="small" />
-                                    <span>Asked {question.createdAt}</span>
+                                    <span>
+                                        Asked{" "}
+                                        {FindDateDifference(
+                                            new Date(
+                                                question.createdAt
+                                            ).getTime()
+                                        )}
+                                    </span>
                                 </Box>
                                 <Box
                                     sx={{
@@ -105,7 +88,14 @@ export default function QuestionDetailPage() {
                                         gap: 0.5,
                                     }}
                                 >
-                                    <span>Modified {question.updatedAt}</span>
+                                    <span>
+                                        Modified{" "}
+                                        {FindDateDifference(
+                                            new Date(
+                                                question.updatedAt
+                                            ).getTime()
+                                        )}
+                                    </span>
                                 </Box>
                                 <Box
                                     sx={{
@@ -212,18 +202,8 @@ export default function QuestionDetailPage() {
                                             label={tag}
                                             size="small"
                                             variant="outlined"
-                                            sx={{
-                                                bgcolor: "#e3f2fd",
-                                                borderColor: "#90caf9",
-                                                color: "#1565c0",
-                                                fontSize: "0.75rem",
-                                                fontWeight: "bold",
-                                                cursor: "pointer",
-                                                height: 24,
-                                                "&:hover": {
-                                                    bgcolor: "#bbdefb",
-                                                },
-                                            }}
+                                            sx={{ bgcolor: "#e3f2fd", borderColor: "#90caf9",
+                                                color: "#1565c0", fontSize: "0.75rem", fontWeight: "bold", cursor: "pointer", height: 24, "&:hover": { bgcolor: "#bbdefb",},}}
                                         />
                                     ))}
                                 </Stack>
@@ -250,25 +230,35 @@ export default function QuestionDetailPage() {
                         <Box sx={{ mt: 4, pl: 9 }}>
                             <Divider sx={{ mb: 2 }} />
 
-                            <Typography
-                                variant="body2"
-                                sx={{ mb: 2, color: "text.secondary" }}
-                            >
-                                Add a comment
-                            </Typography>
+                            {question.comments
+                                .slice(0, commentsToShow)
+                                .map((comment) => (
+                                    <CommentItem
+                                        key={comment.id}
+                                        comment={comment}
+                                    />
+                                ))}
 
-                            <TextField
-                                multiline
-                                rows={3}
-                                fullWidth
-                                placeholder="Use comments to ask for more information or suggest improvements. Avoid answering questions in comments."
-                                variant="outlined"
-                                sx={{ mb: 2 }}
-                            />
+                            {commentsToShow < question.comments.length && (
+                                <Typography
+                                    variant="subtitle2"
+                                    onClick={() =>
+                                        setCommentsToShow((prev) => prev + 3)
+                                    }
+                                    sx={{
+                                        mb: 2,
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        gap: 1,
+                                        cursor: "pointer",
+                                    }}
+                                >
+                                    <PendingIcon /> Load more comments.
+                                </Typography>
+                            )}
 
-                            <Button variant="outlined" size="small">
-                                Add Comment
-                            </Button>
+                            <AddComment questionId={question.id} setSnackbarState={setSnackbarState} />
                         </Box>
                     </Paper>
 
