@@ -1,4 +1,4 @@
 export interface ProfileResponse {
-    id?: string,
+    id?: number,
     message: string,
 }

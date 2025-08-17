@@ -11,6 +11,7 @@ import ProjectCard from "./ProjectCard";
 import { v4 as id } from 'uuid';
 import ConvertToSkill from "../../utils/ConvertToSkill.";
 import useProjectFieldDistributor from "../../distributers/useProjectFieldDistributer";
+import type { ProfileResponse } from "../../types/userProfileTypes/ProfileResponse";
 
 export default function Projects({isCurrentUser}: {isCurrentUser: boolean}) {
     const isSmall = useMediaQuery("(max-width: 420px)");
@@ -19,7 +20,7 @@ export default function Projects({isCurrentUser}: {isCurrentUser: boolean}) {
     const { isSnackbarOpen, setSnackbarState, snackbarMessage, snackbarSeverity } = useSnackbar();
 
     const handleAddProject = async (addedData: any) => {
-        const response = await useAddCredentials(
+        const response = await useAddCredentials<ProfileResponse>(
             addedData,
             "http://localhost:8080/api/v1/profile/addProject/"
         );

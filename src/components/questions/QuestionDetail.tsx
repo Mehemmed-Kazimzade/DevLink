@@ -10,6 +10,7 @@ import {
     Stack,
     IconButton,
     Button,
+    useMediaQuery,
 } from "@mui/material";
 import {
     ThumbUp,
@@ -32,20 +33,34 @@ import useSnackbar from "../../hooks/useSnackbar";
 import GlobalSnackbar from "../Snackbar";
 import { initialSnackbarState } from "../../constants/initialSnackbarState";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { clearViewedQuestion } from "../../slices/cachedQuestionSlice";
+import type { RootState } from "../../slices/store";
+import AddAnswer from "./AddAnswer";
+import { selectUserDto } from "../../stateManagement/selectors";
+import type { UserDto } from "../../types/questions";
 
 export default function QuestionDetailPage() {
+    const isSmall = useMediaQuery("(max-width:507px)");
+    const isXSmall = useMediaQuery("(max-width: 400px)");
     const { question, commentsToShow, setCommentsToShow } = useQuestionDetailPage();
-
+    const { id, fullName, userSlug, profileImageUrl } = useSelector(selectUserDto);
     const { isSnackbarOpen, snackbarMessage, snackbarSeverity, setSnackbarState } = useSnackbar();
     const dispatch = useDispatch();
+
+    const user: UserDto = {
+        id: id,
+        fullName: fullName,
+        userSlug: userSlug,
+        profileImageUrl: profileImageUrl ?? ""
+    }
 
     useEffect(() => {
 
         return () => {
             dispatch(clearViewedQuestion({}));
         }
+
     }, []);
 
     return (
@@ -61,16 +76,16 @@ export default function QuestionDetailPage() {
                 <Container maxWidth="lg" sx={{ py: 4 }}>
                     <Paper elevation={0} sx={{p: 3,border: "1px solid",borderColor: "divider"}}>
                         <Box sx={{ mb: 3 }}>
-                            <Typography variant="h4" component="h1" sx={{ mb: 2, fontWeight: 600 }}>
+                            <Typography variant={isSmall ? "h6" : "h4"} component="h1" sx={{ mb: 2, fontWeight: 600 }}>
                                 {question.questionTitle}
                             </Typography>
 
                             <Stack
-                                direction="row"
+                                direction={isXSmall ? "column" : "row"}
                                 spacing={3}
                                 sx={{mb: 2,color: "text.secondary",fontSize: "0.875rem"}}>
                                 
-                                <Box sx={{display: "flex",alignItems: "center",gap: 0.5,}}>
+                                <Box sx={{display: "flex",alignItems: "center",gap: 0.5}}>
                                     <AccessTime fontSize="small" />
                                     <span>
                                         Asked{" "}
@@ -121,12 +136,18 @@ export default function QuestionDetailPage() {
                                 borderRadius: 1,
                             }}
                         >
-                            <Typography
-                                variant="subtitle2"
-                                sx={{ mb: 1, color: "text.secondary" }}
-                            >
-                                Asked by
-                            </Typography>
+                            <Box display={"flex"} alignItems={"center"} gap={0.4} mb={1}>
+                                <Typography
+                                    variant="subtitle2"
+                                    sx={{ color: "text.secondary" }}
+                                >
+                                    Asked by 
+                                </Typography>
+
+                                {question.user.id === id && <Typography color="success"
+                                    fontWeight={"bold"} variant="subtitle2">(Your Question)</Typography>}
+                            </Box>
+
                             <Stack
                                 direction="row"
                                 spacing={2}
@@ -148,11 +169,11 @@ export default function QuestionDetailPage() {
                             </Stack>
                         </Box>
 
-                        <Box sx={{ display: "flex", gap: 3 }}>
+                        <Box sx={{ display: "flex", flexDirection: isSmall ? "column" : "row", gap: 3 }}>
                             <Box
                                 sx={{
                                     display: "flex",
-                                    flexDirection: "column",
+                                    flexDirection: isSmall ? "row" : "column",
                                     alignItems: "center",
                                     minWidth: 60,
                                 }}
@@ -176,7 +197,7 @@ export default function QuestionDetailPage() {
                                     <ThumbDown />
                                 </IconButton>
                                 <IconButton
-                                    sx={{ mt: 2, color: "text.secondary" }}
+                                    sx={{ mt: isSmall ? 0 : 2, color: "text.secondary" }}
                                 >
                                     <Bookmark />
                                 </IconButton>
@@ -227,7 +248,7 @@ export default function QuestionDetailPage() {
                             </Box>
                         </Box>
 
-                        <Box sx={{ mt: 4, pl: 9 }}>
+                        <Box sx={{ mt: 4, pl: isSmall ? 4 : 9 }}>
                             <Divider sx={{ mb: 2 }} />
 
                             {question.comments
@@ -258,7 +279,7 @@ export default function QuestionDetailPage() {
                                 </Typography>
                             )}
 
-                            <AddComment questionId={question.id} setSnackbarState={setSnackbarState} />
+                            <AddComment questionId={question.id} setSnackbarState={setSnackbarState} user={user} />
                         </Box>
                     </Paper>
 
@@ -271,9 +292,12 @@ export default function QuestionDetailPage() {
 
                     <Stack spacing={3}>
                         {question.answers.map((answer) => (
-                            <AnswerItem answer={answer} />
+                            <AnswerItem key={answer.id} answer={answer} setSnackbarState={setSnackbarState} />
                         ))}
                     </Stack>
+
+                    <AddAnswer setSnackbarState={setSnackbarState} questionId={question.id} />
+
                 </Container>
             ) : (
                 <LoadingSpinner />

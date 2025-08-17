@@ -29,7 +29,7 @@ export type AnswerDto = {
   downVotes: number;
   comments: CommentDto[];
   createdAt: string;
-  lastEdited: string;
+  updatedAt: string;
 };
 
 export type QuestionStatus = 'OPEN' | 'CLOSED' | 'DRAFT';

@@ -3,18 +3,20 @@ import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 // import "highlight.js/styles/github.css"; // You can pick any highlight.js theme here
 import "highlight.js/styles/atom-one-dark.css"; // Dark theme
-import { useTheme } from "@mui/material";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 interface MarkdownViewerProps {
     content: string;
 }
 
 const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ content }) => {
+    const isSmall = useMediaQuery("(max-width:507px)");
     const theme = useTheme();
 
     return (
-        <div className={theme.palette.mode === "dark" ? "dark-theme" : "light-theme"}>
-            <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
+        <div className={theme.palette.mode === "dark" ? "dark-theme" : "light-theme"} 
+            style={{ fontSize: isSmall ? "14px" : "16px" }}>
+            <ReactMarkdown rehypePlugins={[rehypeHighlight]} >
                 {content}
             </ReactMarkdown>
             <style>{`

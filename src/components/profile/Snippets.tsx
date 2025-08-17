@@ -11,6 +11,7 @@ import useSnackbar from "../../hooks/useSnackbar";
 import { addSnippet } from "../../slices/userSlice";
 import GlobalSnackbar from "../Snackbar";
 import { initialSnackbarState } from "../../constants/initialSnackbarState";
+import type { ProfileResponse } from "../../types/userProfileTypes/ProfileResponse";
 
 export default function Snippets({isCurrentUser}: {isCurrentUser: boolean}) {
     const isSmall = useMediaQuery("(max-width: 420px)");
@@ -24,7 +25,7 @@ export default function Snippets({isCurrentUser}: {isCurrentUser: boolean}) {
     } = useSnackbar();
 
     const handleAddSnippet = async (addedData: any) => {
-        const response = await useAddCredentials(
+        const response = await useAddCredentials<ProfileResponse>(
             ConvertToFormData(addedData),
             "http://localhost:8080/api/v1/snippet/addSnippet/"
         );

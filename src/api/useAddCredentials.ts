@@ -2,8 +2,8 @@ import axios from "axios";
 import type { ProfileResponse } from "../types/userProfileTypes/ProfileResponse";
 import type { ApiResponse } from "../types/ApiResponse";
 
-export default function useAddCredentials(data: any, link: string) {
-    const sendRequest = async (): Promise<ApiResponse<ProfileResponse>> => {
+export default function useAddCredentials<T>(data: any, link: string) {
+    const sendRequest = async (): Promise<ApiResponse<T>> => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.post(link, data, {

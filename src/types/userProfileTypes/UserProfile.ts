@@ -4,6 +4,7 @@ import type { Snippet } from "./Snippet";
 import type { UserInfo } from "./UserInfo";
 
 export interface UserProfile {
+    id: number,
     fullName: string, 
     userSlug: string, 
     userInfo: UserInfo | null,

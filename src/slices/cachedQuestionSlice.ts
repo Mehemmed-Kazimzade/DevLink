@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { CommentDto, QuestionDto } from "../types/questions";
+import type { AnswerDto, CommentDto, QuestionDto } from "../types/questions";
 import { fetchViewedQuestion } from "../stateManagement/thunks";
 
 interface CachedQuestionsState {
@@ -11,7 +11,7 @@ interface CachedQuestionsState {
 const initialState: CachedQuestionsState = {
     byId: {},
     lastFetched: {},
-    viewedQuestion: null
+    viewedQuestion: null,
 };
 
 const cachedQuestionSlice = createSlice({
@@ -34,17 +34,34 @@ const cachedQuestionSlice = createSlice({
             state.viewedQuestion?.comments.push(action.payload);
         },
 
+        addAnswerOnQuestion(state, action: PayloadAction<AnswerDto>) {
+            state.viewedQuestion?.answers.push(action.payload);
+        },
+
+        deleteAnswerOnQuestion(state, action) {
+            state.viewedQuestion?.answers.filter(
+                (answer) => answer.id !== action.payload
+            );
+        },
+
         clearViewedQuestion(state, _) {
             state.viewedQuestion = null;
-        }
+        },
     },
 
-    extraReducers: builder => {
+    extraReducers: (builder) => {
         builder.addCase(fetchViewedQuestion.fulfilled, (state, action) => {
             state.viewedQuestion = action.payload;
-        })
-    }
+        });
+    },
 });
 
-export const { cacheQuestion, setViewedQuestion,setCommentsOnQuestion, clearViewedQuestion } = cachedQuestionSlice.actions;
+export const {
+    cacheQuestion,
+    setViewedQuestion,
+    setCommentsOnQuestion,
+    addAnswerOnQuestion,
+    clearViewedQuestion,
+    deleteAnswerOnQuestion
+} = cachedQuestionSlice.actions;
 export default cachedQuestionSlice.reducer;

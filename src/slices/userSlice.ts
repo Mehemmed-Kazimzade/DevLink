@@ -8,6 +8,7 @@ import {
 } from "../stateManagement/thunks";
 
 const initialState: UserProfile = {
+    id: -1,
     userSlug: "",
     fullName: "",
     userInfo: null,
@@ -72,7 +73,12 @@ const userSlice = createSlice({
             state.userInfo = action.payload;
         },
 
+        setId(state, action) {
+            state.id = action.payload;
+        },
+
         clearProfile(state) {
+            state.id = -1;
             state.userSlug = "";
             state.fullName = "";
             state.skills = null;
@@ -110,5 +116,6 @@ export const {
     deleteSnippet,
     updateSnippet,
     addSnippet,
+    setId
 } = userSlice.actions;
 export default userSlice.reducer;

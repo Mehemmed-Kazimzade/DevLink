@@ -5,15 +5,17 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../slices/store";
-import { setFullName } from "../slices/userSlice";
+import { setFullName, setId } from "../slices/userSlice";
 
 interface jwtPayload extends JwtPayload {
     fullName: string,
+    id: number,
 }
 
 export default function ProtectedRoute() {
     const [isValid, setIsValid] = useState<null | boolean>(null);
-    const fullName = useSelector((root: RootState) => root.user.fullName);
+    const fullName = useSelector((state: RootState) => state.user.fullName);
+    const id = useSelector((state: RootState ) => state.user.id);
     const dispatch = useDispatch();
 
     const helper = () => {
@@ -28,6 +30,8 @@ export default function ProtectedRoute() {
             const fullName = temp.charAt(0).toUpperCase() + temp.slice(1);
             dispatch(setFullName(fullName));
         }
+
+        if (!id || id === -1) dispatch(setId(decoded.id));
     }
 
     useEffect(() => {
